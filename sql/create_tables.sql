@@ -10,13 +10,13 @@ CREATE TABLE member(
     Street VARCHAR(25),
     Street_num SMALLINT,
     Postal_code SMALLINT,
-    MBirthdate VARCHAR(30),
+    MBirthdate DATE,
     PRIMARY KEY(memberID)
 );
 
 CREATE TABLE publisher(
     pubName VARCHAR(30) NOT NULL,
-    estYear INTEGER,
+    estYear YEAR,
     Street VARCHAR(25),
     Street_num SMALLINT,
     Postal_code SMALLINT,
@@ -26,7 +26,7 @@ CREATE TABLE publisher(
 CREATE TABLE book(
     ISBN VARCHAR(30) NOT NULL,
     title VARCHAR(50) NOT NULL DEFAULT '',
-    pubYear INTEGER,
+    pubYear YEAR,
     numPages INTEGER,
     pubName VARCHAR(50),
     PRIMARY KEY(ISBN),
@@ -37,7 +37,7 @@ CREATE TABLE author(
     authID INTEGER NOT NULL AUTO_INCREMENT,
     AFirst VARCHAR(20) NOT NULL,
     ALast VARCHAR(25),
-    ABirthdate VARCHAR(30),
+    ABirthdate DATE,
     PRIMARY KEY(authID)
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE category(
 );
 
 CREATE TABLE employee(
-    empID INTEGER NOT NULL,
+    empID INTEGER NOT NULL AUTO_INCREMENT,
     EFirst VARCHAR(20) NOT NULL,
     ELast VARCHAR(25),
     SALARY INTEGER,
@@ -66,7 +66,7 @@ CREATE TABLE employee(
 
 CREATE TABLE permanent_employee(
     empID INTEGER NOT NULL,
-    HiringDate VARCHAR(30),
+    HiringDate DATE,
     PRIMARY KEY (empID),
     FOREIGN KEY (empID) REFERENCES employee(empID)
 );
@@ -82,8 +82,8 @@ CREATE TABLE borrows(
     memberID INTEGER NOT NULL,
     ISBN VARCHAR(30) NOT NULL,
     copyNr INTEGER NOT NULL,
-    date_of_borrowing VARCHAR(20) NOT NULL,
-    date_of_return VARCHAR(20),
+    date_of_borrowing DATE NOT NULL,
+    date_of_return DATE,
     PRIMARY KEY (memberID, ISBN, copyNr, date_of_borrowing),
     FOREIGN KEY (memberID) REFERENCES member(memberID),
     FOREIGN KEY (ISBN) REFERENCES book(ISBN),
@@ -111,8 +111,8 @@ CREATE TABLE reminder(
     empID INTEGER NOT NULL,
     ISBN VARCHAR(30) NOT NULL,
     copyNr INTEGER NOT NULL,
-    date_of_borrowing VARCHAR(20) NOT NULL,
-    date_of_reminder VARCHAR(20) NOT NULL,
+    date_of_borrowing DATE NOT NULL,
+    date_of_reminder DATE NOT NULL,
     PRIMARY KEY (memberID, empID, ISBN, copyNr, date_of_borrowing, date_of_reminder),
     FOREIGN KEY (empID) REFERENCES employee(empID),
     FOREIGN KEY (memberID) REFERENCES member(memberID),
