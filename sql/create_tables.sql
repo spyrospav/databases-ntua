@@ -32,3 +32,26 @@ CREATE TABLE book(
     PRIMARY KEY(ISBN),
     FOREIGN KEY(pubName) REFERENCES publisher(pubName)
 );
+
+CREATE TABLE author(
+    authID INTEGER NOT NULL,
+    Afirst VARCHAR(20) NOT NULL,
+    Alast VARCHAR(25),
+    Abirthdate VARCHAR(30),
+    PRIMARY KEY(authID)
+);
+
+CREATE TABLE copies(
+    ISBN VARCHAR(30) NOT NULL,
+    copyNr INTEGER NOT NULL,
+    shelf VARCHAR(15) ,
+    PRIMARY KEY (ISBN,copyNr),
+    FOREIGN KEY (ISBN) REFERENCES book(ISBN)
+);
+
+CREATE TABLE category(
+    categoryName VARCHAR(25) NOT NULL,
+    supercategoryName VARCHAR(25),
+    PRIMARY KEY (categoryName),
+    FOREIGN KEY (supercategoryName) REFERENCES category(categoryName)
+);
