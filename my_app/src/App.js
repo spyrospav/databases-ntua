@@ -1,10 +1,10 @@
 import React from 'react';
 import { Welcome } from './Welcome';
 import { SignIn } from './SignIn';
-import { Member } from './Member';
 import { SignUp } from './SignUp';
-
-//state = 'welcome', 'signIn', 'signUp', 'memberPage'
+import { Member } from './Member';
+import { Employee } from './Employee';
+//state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
 
 const initialState = {
   status: "welcome",
@@ -65,6 +65,15 @@ class App extends React.Component {
        <div className="App">
          <h1> Library </h1>
          <Member handleChangeState={this.handleChangeState} books={this.state.books} />
+         <button onClick={() => this.handleChangeState("welcome")}>  Back </button>
+       </div>
+     );
+   }
+   else if (this.state.status === 'employeePage') {
+     return (
+       <div className="App">
+         <h1> Library </h1>
+         <Employee handleChangeState={this.handleChangeState} books={this.state.books} />
          <button onClick={() => this.handleChangeState("welcome")}>  Back </button>
        </div>
      );
