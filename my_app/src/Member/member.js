@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Member = ({ books }) => {
+const Member = ({ books, handleChangeState }) => {
   return (
     <div>
       <h2> Search: </h2>
@@ -16,7 +16,7 @@ const Member = ({ books }) => {
 
       <h2> Borrowed books </h2>
       {books.map(book =>
-        <p> test </p>
+        <p> {book.title}, {book.author} </p>
       )}
       <h2> Reminders </h2>
     </div>

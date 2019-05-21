@@ -7,7 +7,7 @@ import { SignUp } from './SignUp';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage'
 
 const initialState = {
-  state: "welcome",
+  status: "welcome",
   employee: false,
   books: [
     {
@@ -25,15 +25,51 @@ class App extends React.Component {
   constructor (props) {
     super(props);
     this.state = initialState;
+
+    this.handleChangeState = this.handleChangeState.bind(this);
+  }
+  handleChangeState (status) {
+    this.setState({
+      status: status
+    });
   }
   render () {
-    return (
-      <div className="App">
-        <h1> Library </h1>
-        <Member books={this.state.books} />
-      </div>
-    );
-  }
+    if (this.state.status === 'welcome') {
+      return (
+        <div className="App">
+          <h1> Library </h1>
+          <Welcome handleChangeState={this.handleChangeState}/>
+        </div>
+      );
+    }
+   else if (this.state.status === 'signIn') {
+     return (
+       <div className="App">
+         <h1> Library </h1>
+         <SignIn handleChangeState={this.handleChangeState}/>
+         <button onClick={() => this.handleChangeState("welcome")}>  Back </button>
+       </div>
+     );
+   }
+   else if (this.state.status === 'signUp') {
+     return (
+       <div className="App">
+         <h1> Library </h1>
+         <SignUp handleChangeState={this.handleChangeState}/>
+         <button onClick={() => this.handleChangeState("welcome")}>  Back </button>
+       </div>
+     );
+   }
+   else if (this.state.status === 'memberPage') {
+     return (
+       <div className="App">
+         <h1> Library </h1>
+         <Member handleChangeState={this.handleChangeState} books={this.state.books} />
+         <button onClick={() => this.handleChangeState("welcome")}>  Back </button>
+       </div>
+     );
+   }
+ }
 };
 
 export default App;

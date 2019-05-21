@@ -1,13 +1,14 @@
 import React from 'react';
 
-const Welcome = () => {
+const Welcome = ( { handleChangeState } ) => {
   return (
   <div>
-    <button> Login as Member</button>
+    <button onClick={() => handleChangeState("memberPage")}> Login as Member</button>
     <br/>
-    <button> Login as Employee </button>
+    <button onClick={() => handleChangeState("employeePage")}> Login as Employee </button>
     <br/>
-    <button> Sign up </button>
+    <button onClick={() => handleChangeState("signUp")}> Sign up </button>
+    <br/>
   </div>
 );
 };
