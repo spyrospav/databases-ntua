@@ -92,7 +92,7 @@ class SignUp extends React.Component {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign In
+            Sign Up
           </Typography>
           <form className={classes.form} onSubmit={this.handleSubmit}>
 

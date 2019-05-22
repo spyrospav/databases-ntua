@@ -9,6 +9,8 @@ import { Employee } from './Employee';
 const initialState = {
   status: "welcome",
   employee: false,
+  username: 'steph',
+  password: 'curry',
   books: [
     {
       title: "book1",
