@@ -1,19 +1,10 @@
 import React from 'react';
+import { SearchForm } from './SearchForm';
 
-const Member = ({ books, handleChangeState }) => {
+const Member = ({ books, handleChangeState, handleSearch }) => {
   return (
     <div>
-      <h2> Search: </h2>
-      <form>
-        <input type="text" name="name" /> <br/>
-        <p> Title </p>
-        <input type="radio" />
-        <p> Author </p>
-        <input type="radio" />
-        <p> Category </p>
-        <input type="radio" />
-      </form>
-
+      <SearchForm />
       <h2> Borrowed books </h2>
       {books.map(book =>
         <p> {book.title}, {book.author} </p>
