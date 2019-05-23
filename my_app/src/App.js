@@ -11,7 +11,17 @@ const initialState = {
   employee: false,
   username: 'steph',
   password: 'curry',
-  books: [
+  borrowedBooks: [
+    {
+      title: "book1",
+      author: "author1"
+    },
+    {
+      title: "book2",
+      author: "author2"
+    }
+  ],
+  foundBooks: [
     {
       title: "book1",
       author: "author1"
@@ -23,10 +33,12 @@ const initialState = {
   ],
   reminders: [
     {
-      title: "book3"
+      title: "book3",
+      expirationDate: '1/7'
     },
     {
-      title: 'book4'
+      title: 'book4',
+      expirationDate: '2/7'
     }
   ]
 };
@@ -96,7 +108,8 @@ class App extends React.Component {
          <h1> Library </h1>
          <Member
           handleChangeStatus={this.handleChangeStatus}
-          books={this.state.books}
+          foundBooks={this.state.foundBooks}
+          borrowedBooks={this.state.borrowedBooks}
           reminders={this.state.reminders}
           />
          <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
