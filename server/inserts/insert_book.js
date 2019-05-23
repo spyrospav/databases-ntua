@@ -27,7 +27,7 @@ con.connect(function(err){
     });
 
     var i;
-    for (i=1; i<number_of_copies; i++){
+    for (i=1; i<=number_of_copies; i++){
         var val2 = [ISBN, i, shelf];
         var sql2 = "INSERT INTO copies (ISBN, copyNr, shelf) VALUES (?, ?, ?)";
         con.query(sql2, val2, function (err, result) {

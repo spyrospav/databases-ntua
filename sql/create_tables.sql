@@ -14,6 +14,8 @@ CREATE TABLE member(
     PRIMARY KEY(memberID)
 );
 
+ALTER TABLE member AUTO_INCREMENT = 1;
+
 CREATE TABLE publisher(
     pubName VARCHAR(30) NOT NULL,
     estYear YEAR,
@@ -25,11 +27,11 @@ CREATE TABLE publisher(
 
 CREATE TABLE book(
     ISBN VARCHAR(30) NOT NULL,
-    title VARCHAR(50) NOT NULL DEFAULT '',
+    title VARCHAR(50) NOT NULL,
     pubYear YEAR,
     numPages INTEGER,
     pubName VARCHAR(50),
-    remaining INTEGER DEFAULT 1,
+    remaining INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
     FOREIGN KEY(pubName) REFERENCES publisher(pubName)
 );
@@ -45,6 +47,7 @@ CREATE TABLE author(
 CREATE TABLE copies(
     ISBN VARCHAR(30) NOT NULL,
     copyNr INTEGER NOT NULL,
+    available BOOLEAN DEFAULT true,
     shelf VARCHAR(15) ,
     PRIMARY KEY (ISBN,copyNr),
     FOREIGN KEY (ISBN) REFERENCES book(ISBN)
@@ -136,9 +139,35 @@ FOR EACH ROW
     SET remaining = remaining - 1
     WHERE b.ISBN = new.ISBN;
 
+DELIMITER $$
 CREATE TRIGGER increaseRemainingCopiesBorrow
 AFTER UPDATE ON borrows
 FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NOT NULL) THEN
     UPDATE book AS b
-    SET remaining = remaining +1
+    SET remaining = remaining + 1
     WHERE b.ISBN = new.ISBN;
+END IF;
+END$$
+DELIMITER ;
+
+CREATE TRIGGER makeCopyUnavailable
+AFTER INSERT ON borrows
+FOR EACH ROW
+    UPDATE copies AS c
+    SET c.available = false
+    WHERE c.ISBN = new.ISBN AND c.copyNr = new.copyNr;
+
+DELIMITER $$
+CREATE TRIGGER makeCopyAvailable
+AFTER UPDATE ON borrows
+FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NOT NULL) THEN
+    UPDATE copies AS c
+    SET c.available = true
+    WHERE c.ISBN = new.ISBN AND c.copyNr = new.copyNr;
+END IF;
+END$$
+DELIMITER ;
