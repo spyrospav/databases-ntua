@@ -63,7 +63,6 @@ class App extends React.Component {
     if (this.state.status === 'welcome') {
       return (
         <div className="App">
-          <h1> Library </h1>
           <Welcome handleChangeStatus={this.handleChangeStatus}/>
         </div>
       );
@@ -71,7 +70,6 @@ class App extends React.Component {
    else if (this.state.status === 'signIn') {
      return (
        <div className="App">
-         <h1> Library </h1>
          <p> Sign in as: {this.state.employee ? <a>employee</a> : <a>member</a>} </p>
          <SignIn
             handleConnect={this.handleConnect}
@@ -84,7 +82,6 @@ class App extends React.Component {
    else if (this.state.status === 'signUp') {
      return (
        <div className="App">
-         <h1> Library </h1>
          <SignUp handleChangeStatus={this.handleChangeStatus}/>
          <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
@@ -93,7 +90,6 @@ class App extends React.Component {
    else if (this.state.status === 'memberPage') {
      return (
        <div className="App">
-         <h1> Library </h1>
          <Member
           handleChangeStatus={this.handleChangeStatus}
           books={this.state.books}
@@ -106,7 +102,6 @@ class App extends React.Component {
    else if (this.state.status === 'employeePage') {
      return (
        <div className="App">
-         <h1> Library </h1>
          <Employee handleChangeStatus={this.handleChangeStatus} books={this.state.books} />
          <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
