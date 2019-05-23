@@ -9,7 +9,7 @@ var con = mysql.createConnection({
 
 con.connect(function(err){
     if (err) throw err;
-    //possible nested query
+
     var search = 'SELECT * FROM borrows WHERE date_of_return IS NULL ';
     con.query(search, function (err, result) {
         if (err) throw err;
