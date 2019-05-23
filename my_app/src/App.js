@@ -20,6 +20,14 @@ const initialState = {
       title: "book2",
       author: "author2"
     }
+  ],
+  reminders: [
+    {
+      title: "book3"
+    },
+    {
+      title: 'book4'
+    }
   ]
 };
 
@@ -86,7 +94,11 @@ class App extends React.Component {
      return (
        <div className="App">
          <h1> Library </h1>
-         <Member handleChangeStatus={this.handleChangeStatus} books={this.state.books} />
+         <Member
+          handleChangeStatus={this.handleChangeStatus}
+          books={this.state.books}
+          reminders={this.state.reminders}
+          />
          <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
      );
