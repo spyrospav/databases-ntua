@@ -29,6 +29,7 @@ CREATE TABLE book(
     pubYear YEAR,
     numPages INTEGER,
     pubName VARCHAR(50),
+    remaining INTEGER DEFAULT 1,
     PRIMARY KEY(ISBN),
     FOREIGN KEY(pubName) REFERENCES publisher(pubName)
 );
@@ -36,7 +37,7 @@ CREATE TABLE book(
 CREATE TABLE author(
     authID INTEGER NOT NULL AUTO_INCREMENT,
     AFirst VARCHAR(20) NOT NULL,
-    ALast VARCHAR(25),
+    ALast VARCHAR(25) NOT NULL,
     ABirthdate DATE,
     PRIMARY KEY(authID)
 );
@@ -60,7 +61,7 @@ CREATE TABLE employee(
     empID INTEGER NOT NULL AUTO_INCREMENT,
     EFirst VARCHAR(20) NOT NULL,
     ELast VARCHAR(25),
-    SALARY INTEGER,
+    Salary INTEGER,
     PRIMARY KEY(empID)
 );
 
@@ -120,3 +121,24 @@ CREATE TABLE reminder(
     FOREIGN KEY (memberID, ISBN, copyNr, date_of_borrowing) REFERENCES borrows(memberID, ISBN, copyNr, date_of_borrowing),
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
 );
+
+CREATE TRIGGER increaseRemainingCopiesAdd
+AFTER INSERT ON copies
+FOR EACH ROW
+    UPDATE book AS b
+    SET remaining = remaining +1
+    WHERE b.ISBN = new.ISBN;
+
+CREATE TRIGGER decreaseRemainingCopiesBorrow
+AFTER INSERT ON borrows
+FOR EACH ROW
+    UPDATE book AS b
+    SET remaining = remaining - 1
+    WHERE b.ISBN = new.ISBN;
+
+CREATE TRIGGER increaseRemainingCopiesBorrow
+AFTER UPDATE ON borrows
+FOR EACH ROW
+    UPDATE book AS b
+    SET remaining = remaining +1
+    WHERE b.ISBN = new.ISBN;

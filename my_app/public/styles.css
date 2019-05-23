@@ -1,0 +1,56 @@
+/*defining colors*/
+:root {
+    --primary: #dddddd
+}
+
+body {
+    margin: 0;
+}
+
+.navbar {
+  overflow: hidden;
+  background-color: #dddddd;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navbar a{
+  float: left;
+  display: block;
+  color: #000000;
+  text-align: center;
+  padding: 5px 20px;
+  text-decoration: none;
+  font-size: 20px;
+
+  transition: color 2s, border-bottom 2s;
+  margin-top: 50px;
+  margin-right: 20px;
+    border-bottom: 2px solid #dddddd;
+}
+
+.navbar a:hover {
+  color: black;
+  border-bottom: 2px solid #ff1493;
+}
+
+.navbar img{
+  float: left;
+  display: block;
+  color: #555555;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#root {
+  padding: 16px;
+  margin-top: 100px;
+  height: 1500px; /* Used in this example to enable scrolling */
+}
+
+#search-buttons p, input {
+    float: left;
+}
