@@ -122,16 +122,23 @@ CREATE TABLE reminder(
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
 );
 
-CREATE TRIGGER increaseCopiesAdd
+CREATE TRIGGER increaseRemainingCopiesAdd
 AFTER INSERT ON copies
 FOR EACH ROW
     UPDATE book AS b
     SET remaining = remaining +1
     WHERE b.ISBN = new.ISBN;
 
-CREATE TRIGGER decreaseCopies
+CREATE TRIGGER decreaseRemainingCopiesBorrow
 AFTER INSERT ON borrows
 FOR EACH ROW
     UPDATE book AS b
-    SET remaining = remaining -1
+    SET remaining = remaining - 1
+    WHERE b.ISBN = new.ISBN;
+
+CREATE TRIGGER increaseRemainingCopiesBorrow
+AFTER UPDATE ON borrows
+FOR EACH ROW
+    UPDATE book AS b
+    SET remaining = remaining +1
     WHERE b.ISBN = new.ISBN;
