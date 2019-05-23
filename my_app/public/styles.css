@@ -1,6 +1,15 @@
+/*defining colors*/
+:root {
+    --primary: #dddddd
+}
+
+body {
+    margin: 0;
+}
+
 .navbar {
   overflow: hidden;
-  background-color: #acacac;
+  background-color: #dddddd;
   position: fixed;
   top: 0;
   width: 100%;
@@ -14,16 +23,16 @@
   padding: 5px 20px;
   text-decoration: none;
   font-size: 20px;
-  
-  transition: color 2s, border-bottom 2s;   
+
+  transition: color 2s, border-bottom 2s;
   margin-top: 50px;
   margin-right: 20px;
-    border-bottom: 2px solid #acacac;
+    border-bottom: 2px solid #dddddd;
 }
 
 .navbar a:hover {
   color: black;
-  border-bottom: 2px solid ;
+  border-bottom: 2px solid #ff1493;
 }
 
 .navbar img{
@@ -40,4 +49,8 @@
   padding: 16px;
   margin-top: 100px;
   height: 1500px; /* Used in this example to enable scrolling */
+}
+
+#search-buttons p, input {
+    float: left;
 }
