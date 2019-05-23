@@ -70,10 +70,7 @@ class SignIn extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     console.log(this.state.username,this.state.password);
-  //   this.props.handleConnect({
-  //     username: this.state.username,
-  //     password: this.state.password
-  //   });
+     this.props.handleConnect(this.state.username, this.state.password);
 
     // socket.emit("LOGIN",{
     //   username: this.state.username,

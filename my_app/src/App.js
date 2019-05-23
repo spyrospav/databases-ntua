@@ -65,7 +65,10 @@ class App extends React.Component {
        <div className="App">
          <h1> Library </h1>
          <p> Sign in as: {this.state.employee ? <a>employee</a> : <a>member</a>} </p>
-         <SignIn handleChangeStatus={this.handleChangeStatus}/>
+         <SignIn
+            handleConnect={this.handleConnect}
+            handleChangeStatus={this.handleChangeStatus}
+          />
          <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
      );
