@@ -9,7 +9,7 @@ CREATE TABLE member(
     MLast VARCHAR(25),
     Street VARCHAR(25),
     Street_num SMALLINT,
-    Postal_code SMALLINT,
+    Postal_code INTEGER,
     MBirthdate DATE,
     PRIMARY KEY(memberID)
 );
@@ -21,7 +21,7 @@ CREATE TABLE publisher(
     estYear YEAR,
     Street VARCHAR(25),
     Street_num SMALLINT,
-    Postal_code SMALLINT,
+    Postal_code INTEGER,
     PRIMARY KEY(pubName)
 );
 
