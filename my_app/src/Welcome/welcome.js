@@ -1,14 +1,14 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
-const Welcome = ( { handleChangeState } ) => {
+const Welcome = ( { handleChangeStatus } ) => {
   return (
   <div>
-    <Button variant="outlined" onClick={() => handleChangeState("signIn")}> Login as Member</Button>
+    <Button variant="outlined" onClick={() => handleChangeStatus('signIn', 'member')}> Login as Member</Button>
     <br/>
-    <Button variant="outlined" onClick={() => handleChangeState("signIn")}> Login as Employee </Button>
+    <Button variant="outlined" onClick={() => handleChangeStatus('signIn', 'employee')}> Login as Employee </Button>
     <br/>
-    <Button variant="outlined" onClick={() => handleChangeState("signUp")}> Sign up </Button>
+    <Button variant="outlined" onClick={() => handleChangeStatus('signUp')}> Sign up </Button>
     <br/>
   </div>
 );

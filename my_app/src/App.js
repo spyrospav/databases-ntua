@@ -28,19 +28,35 @@ class App extends React.Component {
     super(props);
     this.state = initialState;
 
-    this.handleChangeState = this.handleChangeState.bind(this);
+    this.handleChangeStatus = this.handleChangeStatus.bind(this);
+    this.handleConnect = this.handleConnect.bind(this);
   }
-  handleChangeState (status) {
+  handleChangeStatus (status, user) {
+    let employee;
+    if (user === "member") {
+        employee = false;
+    }
+    else {
+      employee = true;
+    }
     this.setState({
+      employee: employee,
       status: status
     });
   }
+  handleConnect (username, password) {
+    this.setState({
+      username: username,
+      password: password
+    })
+  }
+
   render () {
     if (this.state.status === 'welcome') {
       return (
         <div className="App">
           <h1> Library </h1>
-          <Welcome handleChangeState={this.handleChangeState}/>
+          <Welcome handleChangeStatus={this.handleChangeStatus}/>
         </div>
       );
     }
@@ -48,8 +64,9 @@ class App extends React.Component {
      return (
        <div className="App">
          <h1> Library </h1>
-         <SignIn handleChangeState={this.handleChangeState}/>
-         <button onClick={() => this.handleChangeState("welcome")}>  Back </button>
+         <p> Sign in as: {this.state.employee ? <a>employee</a> : <a>member</a>} </p>
+         <SignIn handleChangeStatus={this.handleChangeStatus}/>
+         <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
      );
    }
@@ -57,8 +74,8 @@ class App extends React.Component {
      return (
        <div className="App">
          <h1> Library </h1>
-         <SignUp handleChangeState={this.handleChangeState}/>
-         <button onClick={() => this.handleChangeState("welcome")}>  Back </button>
+         <SignUp handleChangeStatus={this.handleChangeStatus}/>
+         <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
      );
    }
@@ -66,8 +83,8 @@ class App extends React.Component {
      return (
        <div className="App">
          <h1> Library </h1>
-         <Member handleChangeState={this.handleChangeState} books={this.state.books} />
-         <button onClick={() => this.handleChangeState("welcome")}>  Back </button>
+         <Member handleChangeStatus={this.handleChangeStatus} books={this.state.books} />
+         <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
      );
    }
@@ -75,8 +92,8 @@ class App extends React.Component {
      return (
        <div className="App">
          <h1> Library </h1>
-         <Employee handleChangeState={this.handleChangeState} books={this.state.books} />
-         <button onClick={() => this.handleChangeState("welcome")}>  Back </button>
+         <Employee handleChangeStatus={this.handleChangeStatus} books={this.state.books} />
+         <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
      );
    }
