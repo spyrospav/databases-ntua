@@ -1,24 +1,28 @@
-ISBN, title, pubYear, numPages, pubName
-9781846140495, Les Miserables, 2012, 1232, Penguin Books Ltd
-9780141394930, Twenty Thousand Leagues Under the Sea, 2018, 496, Penguin Books Ltd
-9780141185491, Nausea, 2000, 272, Penguin Books Ltd
-9780141187945, The Fall, 2006, 96, Penguin Books Ltd
-9780141023991, The Myth of Sisyphus, 2005, 144, Penguin Books Ltd
-9780141198064, The Outsider, 2004, 128, Penguin Books Ltd
-9780141185132, The Plague, 2002, 256, Penguin Books Ltd
-9780330508117, The Hitchhiker's Guide to the Galaxy, 2009, 208, Pan Macmillan
-9781509860142, The Hitchhiker's Guide to the Galaxy, 2017, 240, Pan Macmillan
-9781473200661, The Restaurant at the End of the Universe, 2013, 208, Orion Publishing Co
-9781840221732, The Complete Fairy Tales, 2009, 1184, Wordsworth Editions Ltd
-9781848373181, Oliver Twist, 2009, 432, Arcturus Publishing Ltd
-9780007458424, The Hobbit, 2012, 368, HarperCollins Publishers
-9780007350896, A Tale of Two Cities, 2010, 464, HarperCollins Publishers
-9780141036144, 1984, 2008, 336, Penguin Books Ltd
-9781853267345, Complete Ghost Stories, 1997, 336, Wordsworth Editions Ltd
-9780753729694, Jungle Book, 2015, 224, Octopus Publishing Group
-9780007420124, The Art of War, 2011, 112, HarperCollins Publishers
-9780141036137, Animal Farm, 2008, 112, Penguin Books Ltd
-9780099512240, War and Peace, 2009, 1296, Vintage Publishing
-9781848373198, Great Expectations, 2009, 448, Arcturus Publishing Ltd
-9781904919797, Don Quixote, 2006, 1032, Pan Macmillan
-9780571273577, Lord of the Flies, 2011, 256, Faber & Faber
+ISBN,title,pubYear,numPages,pubName
+9789603307,Digital Signal Processing,1999,978,Penguin Books Ltd
+9710603307,Signals and Systems,1995,1015,Fountas
+9712647888,Circuit Analysis,1990,568,Fountas
+9730553210,Mathematical Analysis I,2003,1235,Simmetria
+9781846140495,Les Miserables,2012,1232,Penguin Books Ltd
+9780141394930,Twenty Thousand Leagues Under the Sea,2018,496,Penguin Books Ltd
+9780141185491,Nausea,2000,272,Penguin Books Ltd
+9780141187945,The Fall,2006,96,Penguin Books Ltd
+9780141023991,The Myth of Sisyphus,2005,144,Penguin Books Ltd
+9780141198064,The Outsider,2004,128,Penguin Books Ltd
+9780141185132,The Plague,2002,256,Penguin Books Ltd
+9780330508117,The Hitchhiker’s Guide to the Galaxy,2009,208,Pan Macmillan
+9781509860142,The Hitchhiker’s Guide to the Galaxy,2017,201,Pan Macmillan
+9781473200661,The Reastaurant at the End of the Universe,2013,208,Orion Publishing Co
+9781840221732,The Complete Fairy Tales,2009,1184,Wordsworth Editions Ltd
+9781848373181,Oliver Twist,2011,432,Arcturus Publishing Ltd
+9780007458424,The Hobbit,2012,368,HarperCollins Publishers
+9780007350896,A Tale of Two Cities,2010,464,HarperCollins Publishers
+9780141036144,1984,2008,336,Pan Macmillan
+9781853267345,Complete Ghost Stories,1997,336,Wordsworth Editions Ltd
+9780753729694,Jungle Book,2015,224,Octopus Publishing Group
+9780007420124,The Art of War,2011,112,HarperCollins Publishers
+9780141036137,Animal Farm,2008,112,Penguin Books Ltd
+9780099512240,War and Peace,2009,1296,Vintage Publishing
+9781848373198,Great Expectations,2009,448,Arcturus Publishing Ltd
+9781904919797,Don Quixote,2006,1032,Pan Macmillan
+9780571273577,Lord of the Flies,2011,256,Faber & Faber

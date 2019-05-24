@@ -17,7 +17,7 @@ CREATE TABLE member(
 ALTER TABLE member AUTO_INCREMENT = 1;
 
 CREATE TABLE publisher(
-    pubName VARCHAR(30) NOT NULL,
+    pubName VARCHAR(50) NOT NULL,
     estYear YEAR,
     Street VARCHAR(25),
     Street_num SMALLINT,
@@ -27,10 +27,10 @@ CREATE TABLE publisher(
 
 CREATE TABLE book(
     ISBN VARCHAR(30) NOT NULL,
-    title VARCHAR(50) NOT NULL,
+    title VARCHAR(70) NOT NULL,
     pubYear YEAR,
-    numPages INTEGER,
-    pubName VARCHAR(50),
+    numPages SMALLINT,
+    pubName VARCHAR(50) NOT NULL,
     remaining INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
     FOREIGN KEY(pubName) REFERENCES publisher(pubName)
@@ -125,10 +125,12 @@ CREATE TABLE reminder(
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
 );
 
+/* NOT A GOOD Idea!!
 CREATE VIEW book_view AS
 SELECT B.title, B.ISBN, P.pubName, B.pubYear, A.AFirst, A.ALast, B.remaining
 FROM book as B, publisher as P, author as A, written_by as W
 WHERE B.pubName = P.pubName AND B.ISBN = W.ISBN AND A.authID = W.authID;
+*/
 
 CREATE TRIGGER increaseRemainingCopiesAdd
 AFTER INSERT ON copies
