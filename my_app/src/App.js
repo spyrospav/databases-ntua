@@ -7,7 +7,7 @@ import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
 
 const initialState = {
-  status: "signUp",
+  status: "employeePage",
   employee: false,
   username: 'steph',
   password: 'curry',
@@ -39,6 +39,16 @@ const initialState = {
     {
       title: 'book4',
       expirationDate: '2/7'
+    }
+  ]
+  ,
+  expiredBooks: [
+    {
+      memberID: "1789",
+      ISBN: "123012741041",
+      copyNumber: "23",
+      dateOfBorrowing: "1/7",
+      dueDate: "31/7"
     }
   ]
 };
@@ -115,7 +125,9 @@ class App extends React.Component {
    else if (this.state.status === 'employeePage') {
      return (
        <div className="App">
-         <Employee handleChangeStatus={this.handleChangeStatus} books={this.state.books} />
+         <Employee
+         handleChangeStatus={this.handleChangeStatus}
+         expiredBooks={this.state.expiredBooks} />
          <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
      );

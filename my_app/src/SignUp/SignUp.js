@@ -154,8 +154,6 @@ class SignUp extends React.Component {
               >
             </TextField>
 
-          //  <p> {this.props.message} </p>
-
             <Button
                 type="submit"
                 fullWidth

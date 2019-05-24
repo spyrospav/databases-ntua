@@ -15,6 +15,20 @@ const Employee = ({ expiredBooks, handleChangeState }) => {
       </form>
 
       <h2> Expired: </h2>
+      {expiredBooks.map(book =>
+        <div key={book.memberID+book.ISBN}>
+          <p> Member ID: {book.memberID}</p>
+          <p> ISBN: {book.ISBN}</p>
+          <p> Copy Number: {book.copyNumber}</p>
+          <p> Date of Borrowing: {book.dateOfBorrowing} </p>
+          <p> Due to: {book.dueDate} </p>
+          <button> Send reminder </button>
+        </div>
+      )}
+
+      <h2> Add new employee: </h2>
+      <button> Add </button>
+
     </div>
   );
 };
