@@ -125,6 +125,11 @@ CREATE TABLE reminder(
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
 );
 
+CREATE VIEW book_view AS
+SELECT B.title, B.ISBN, P.pubName, B.pubYear, A.AFirst, A.ALast, B.remaining
+FROM book as B, publisher as P, author as A, written_by as W
+WHERE B.pubName = P.pubName AND B.ISBN = W.ISBN AND A.authID = W.authID;
+
 CREATE TRIGGER increaseRemainingCopiesAdd
 AFTER INSERT ON copies
 FOR EACH ROW
