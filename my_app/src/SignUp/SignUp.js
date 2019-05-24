@@ -47,7 +47,12 @@ class SignUp extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      username: "",
+      mFirst: "",
+      mLast: "",
+      street: "",
+      streetNum: "",
+      postalCode: "",
+      MBirthDate: "",
       password: "",
     };
   }
@@ -97,8 +102,17 @@ class SignUp extends React.Component {
           <form className={classes.form} onSubmit={this.handleSubmit}>
 
             <TextField
-                onChange={this.handleChange("username")}
-                label="Username"
+                onChange={this.handleChange("mFirst")}
+                label="First Name"
+                margin="normal"
+                required
+                fullWidth
+              >
+            </TextField>
+
+            <TextField
+                onChange = {this.handleChange("mLast")}
+                label="Last Name"
                 margin="normal"
                 required
                 fullWidth
@@ -114,8 +128,33 @@ class SignUp extends React.Component {
                 fullWidth
               >
             </TextField>
+            <TextField
+                onChange = {this.handleChange("street")}
+                label="Street"
+                margin="normal"
+                required
+                fullWidth
+              >
+            </TextField>
+            <TextField
+                onChange = {this.handleChange("streetNum")}
+                label="Street Number"
+                margin="normal"
+                required
+                fullWidth
+              >
+            </TextField>
 
-            <p> {this.props.message} </p>
+            <TextField
+                onChange = {this.handleChange("postalCode")}
+                label="Birth Date (i.e. 10/5/98)"
+                margin="normal"
+                required
+                fullWidth
+              >
+            </TextField>
+
+          //  <p> {this.props.message} </p>
 
             <Button
                 type="submit"

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Employee = ({ books, handleChangeState }) => {
+const Employee = ({ expiredBooks, handleChangeState }) => {
   return (
     <div>
       <h2> Search: </h2>

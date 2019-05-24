@@ -7,7 +7,7 @@ import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
 
 const initialState = {
-  status: "memberPage",
+  status: "signUp",
   employee: false,
   username: 'steph',
   password: 'curry',
