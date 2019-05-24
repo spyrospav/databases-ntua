@@ -9,27 +9,29 @@ CREATE TABLE member(
     MLast VARCHAR(25),
     Street VARCHAR(25),
     Street_num SMALLINT,
-    Postal_code SMALLINT,
+    Postal_code INTEGER,
     MBirthdate DATE,
     PRIMARY KEY(memberID)
 );
+
+ALTER TABLE member AUTO_INCREMENT = 1;
 
 CREATE TABLE publisher(
     pubName VARCHAR(30) NOT NULL,
     estYear YEAR,
     Street VARCHAR(25),
     Street_num SMALLINT,
-    Postal_code SMALLINT,
+    Postal_code INTEGER,
     PRIMARY KEY(pubName)
 );
 
 CREATE TABLE book(
     ISBN VARCHAR(30) NOT NULL,
-    title VARCHAR(50) NOT NULL DEFAULT '',
+    title VARCHAR(50) NOT NULL,
     pubYear YEAR,
     numPages INTEGER,
     pubName VARCHAR(50),
-    remaining INTEGER DEFAULT 1,
+    remaining INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
     FOREIGN KEY(pubName) REFERENCES publisher(pubName)
 );
@@ -45,6 +47,7 @@ CREATE TABLE author(
 CREATE TABLE copies(
     ISBN VARCHAR(30) NOT NULL,
     copyNr INTEGER NOT NULL,
+    available BOOLEAN DEFAULT true,
     shelf VARCHAR(15) ,
     PRIMARY KEY (ISBN,copyNr),
     FOREIGN KEY (ISBN) REFERENCES book(ISBN)
@@ -122,6 +125,11 @@ CREATE TABLE reminder(
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
 );
 
+CREATE VIEW book_view AS
+SELECT B.title, B.ISBN, P.pubName, B.pubYear, A.AFirst, A.ALast, B.remaining
+FROM book as B, publisher as P, author as A, written_by as W
+WHERE B.pubName = P.pubName AND B.ISBN = W.ISBN AND A.authID = W.authID;
+
 CREATE TRIGGER increaseRemainingCopiesAdd
 AFTER INSERT ON copies
 FOR EACH ROW
@@ -136,9 +144,35 @@ FOR EACH ROW
     SET remaining = remaining - 1
     WHERE b.ISBN = new.ISBN;
 
+DELIMITER $$
 CREATE TRIGGER increaseRemainingCopiesBorrow
 AFTER UPDATE ON borrows
 FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NOT NULL) THEN
     UPDATE book AS b
-    SET remaining = remaining +1
+    SET remaining = remaining + 1
     WHERE b.ISBN = new.ISBN;
+END IF;
+END$$
+DELIMITER ;
+
+CREATE TRIGGER makeCopyUnavailable
+AFTER INSERT ON borrows
+FOR EACH ROW
+    UPDATE copies AS c
+    SET c.available = false
+    WHERE c.ISBN = new.ISBN AND c.copyNr = new.copyNr;
+
+DELIMITER $$
+CREATE TRIGGER makeCopyAvailable
+AFTER UPDATE ON borrows
+FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NOT NULL) THEN
+    UPDATE copies AS c
+    SET c.available = true
+    WHERE c.ISBN = new.ISBN AND c.copyNr = new.copyNr;
+END IF;
+END$$
+DELIMITER ;

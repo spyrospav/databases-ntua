@@ -1,0 +1,19 @@
+member_id, first_name, last_name, street, street_num, postal_code, member_birth_date
+1, Spyros, Pavlatos, Prigkipos,40,16673,1998-06-06
+2, Iasonas, Nikolaou, Trollias,10,12345,1998-05-10
+3, Chariton, Charitonidis, Makria,42,19013,1998-07-30
+4, Katerina, Doka, Glyfada,99,11111,1988-01-01
+5, Nektarios, Kozyris, Polytechneiou,1,16384,1978-01-01
+6, Piper, Chapman, Litchfield,6,20191,1990-04-12
+7, Walter, White, Albuquerque,8,20152,1970-12-12
+8, Ford, Prefect, Adams str,42,42424,2000-05-30
+9, Han, Solo, Star Wars Ave.,100,10301,1999-08-10
+10, Jack, Sparrow, Peiraton,75,19013,2006-10-10
+11, Hermione, Granger, Hogwarts,3,19019,1997-02-23
+12, Anakin, Skywalker, Star Wars Ave.,102,10301,1990-11-11
+13, Buzz, Lightyear, Toy Story Str.,15,93721,2000-09-20
+14, Hanibal, Lecter, Creepy Ave.,666,13013,1996-08-15
+15, Winston, Smith, Revolution Str.,1,12399,1984-01-10
+16, Dave, Bowman, Odysseos,32,18943,2001-06-19
+17, Bill, Hartford, Fidelio,31,89432,1997-04-12
+18, Zaphod, Beeblebrox, Spacetime,99,99999,1979-07-20
