@@ -33,7 +33,8 @@ CREATE TABLE book(
     pubName VARCHAR(50) NOT NULL,
     remaining INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
-    FOREIGN KEY(pubName) REFERENCES publisher(pubName)
+    FOREIGN KEY(pubName) REFERENCES publisher(pubName),
+    CHECK(remaining>=0)
 );
 
 CREATE TABLE author(
@@ -54,7 +55,7 @@ CREATE TABLE copies(
 );
 
 CREATE TABLE category(
-    categoryName VARCHAR(25) NOT NULL,
+    categoryName VARCHAR(25),
     supercategoryName VARCHAR(25),
     PRIMARY KEY (categoryName),
     FOREIGN KEY (supercategoryName) REFERENCES category(categoryName)
@@ -106,8 +107,8 @@ CREATE TABLE written_by(
     ISBN VARCHAR(30) NOT NULL,
     authID INTEGER NOT NULL,
     PRIMARY KEY(ISBN, authID),
-    FOREIGN KEY (ISBN) REFERENCES book(ISBN),
-    FOREIGN KEY (authID) REFERENCES author(authID)
+    FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON DELETE CASCADE,
+    FOREIGN KEY (authID) REFERENCES author(authID) ON DELETE CASCADE
 );
 
 CREATE TABLE reminder(
@@ -124,7 +125,6 @@ CREATE TABLE reminder(
     FOREIGN KEY (memberID, ISBN, copyNr, date_of_borrowing) REFERENCES borrows(memberID, ISBN, copyNr, date_of_borrowing),
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
 );
-
 
 CREATE VIEW book_view AS
 SELECT B.title, B.ISBN, P.pubName, B.pubYear, A.AFirst, A.ALast, B.remaining
@@ -150,7 +150,7 @@ CREATE TRIGGER increaseRemainingCopiesBorrow
 AFTER UPDATE ON borrows
 FOR EACH ROW
 BEGIN
-IF (new.date_of_return IS NOT NULL) THEN
+IF (new.date_of_return IS NOT NULL AND old.date_of_return IS NULL) THEN
     UPDATE book AS b
     SET remaining = remaining + 1
     WHERE b.ISBN = new.ISBN;
@@ -170,10 +170,21 @@ CREATE TRIGGER makeCopyAvailable
 AFTER UPDATE ON borrows
 FOR EACH ROW
 BEGIN
-IF (new.date_of_return IS NOT NULL) THEN
+IF (new.date_of_return IS NOT NULL AND old.date_of_return IS NULL) THEN
     UPDATE copies AS c
     SET c.available = true
     WHERE c.ISBN = new.ISBN AND c.copyNr = new.copyNr;
+END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER addPublisher
+BEFORE INSERT on book
+FOR EACH ROW
+BEGIN
+IF (new.pubName NOT IN (SELECT P.pubName FROM publisher as P)) THEN
+    INSERT INTO publisher(pubName) VALUES (new.pubName);
 END IF;
 END$$
 DELIMITER ;
