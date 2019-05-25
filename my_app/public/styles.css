@@ -26,12 +26,12 @@ body {
   transition: color 2s, border-bottom 2s;
   margin-top: 50px;
   margin-right: 20px;
-  border-bottom: 2px solid #dddddd;
+  border-bottom: 2px solid #eee;
 }
 
 .navbar a:hover {
   color: black;
-  border-bottom: 2px solid #ff1493;
+  border-bottom: 2px solid #4CAF50;
 }
 
 .navbar img{
