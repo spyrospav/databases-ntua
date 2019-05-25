@@ -29,18 +29,27 @@ class SearchForm extends React.Component {
 
   render() {
     return (
+    <div class="searchform">
       <form onSubmit={this.handleSubmit}>
-        <p> Title </p>
-        <input type="radio" name="searchOption" onClick={() => this.handleClick("title")}/>
-        <p> Author </p>
-        <input type="radio" name="searchOption" onClick={() => this.handleClick("author")}/>
-        <p> Category </p>
-        <input type="radio" name="searchOption" onClick={() => this.handleClick("category")}/> <br/>
-        Search:
-        <input type="text" value={this.state.value} onChange={this.handleChange} />
-
-        <input type="submit" value="Search" />
+        <div class="search-by">
+            <h3>Search</h3>
+            <div class="radiotext">
+                <p> Title </p>
+                <input type="radio" name="searchOption" onClick={() => this.handleClick("title")}/>
+            </div>
+            <div class="radiotext">
+                <p> Author </p>
+                <input type="radio" name="searchOption" onClick={() => this.handleClick("author")}/>
+            </div>
+            <div class="radiotext">
+                <p> Category </p>
+                <input type="radio" name="searchOption" onClick={() => this.handleClick("category")}/> <br/>
+            </div>
+        </div>
+            <input type="text" value={this.state.value} onChange={this.handleChange} />
+            <input type="submit" value="Search" />
       </form>
+    </div>
     );
   }
 }
