@@ -7,7 +7,7 @@ import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
 
 const initialState = {
-  status: "signUpMember",
+  status: "employeePage",
   employee: false,
   username: 'steph',
   password: 'curry',
@@ -127,6 +127,7 @@ class App extends React.Component {
        <div className="App">
          <Employee
          handleChangeStatus={this.handleChangeStatus}
+         foundBooks={this.state.foundBooks}
          expiredBooks={this.state.expiredBooks} />
          <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>

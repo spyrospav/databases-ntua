@@ -1,7 +1,13 @@
 import React from 'react';
 import { SearchForm } from './SearchForm';
 
-const Member = ({ foundBooks, borrowedBooks, reminders, handleChangeState, handleSearch }) => {
+const Member = ({
+  foundBooks,
+  borrowedBooks,
+  reminders,
+  handleChangeState,
+  handleSearch
+  }) => {
   return (
     <div>
         <div class="left-div content-box">

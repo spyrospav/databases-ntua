@@ -1,18 +1,31 @@
 import React from 'react';
+import { SearchForm } from './SearchForm';
 
-const Employee = ({ expiredBooks, handleChangeState }) => {
+const Employee = ({
+  foundBooks,
+  expiredBooks,
+  handleChangeState,
+  handleAddEmployee,
+  handleSendReminder
+  }) => {
+    console.log(foundBooks);
   return (
     <div>
-      <h2> Search: </h2>
-      <form>
-        <input type="text" name="name" /> <br/>
-        <p> Title </p>
-        <input type="radio" />
-        <p> Author </p>
-        <input type="radio" />
-        <p> Category </p>
-        <input type="radio" />
-      </form>
+      <div class="middle-div content-box">
+        <SearchForm />
+      <div class="results">
+        <h2>Results</h2>
+              {foundBooks.map(book =>
+              <div class="book">
+                  <div key={book.title+book.author}>
+                      <p> {book.title}, {book.author} </p>
+                      <button class="btn"> borrow </button>
+                  </div>
+              </div>
+              )}
+          </div>
+      </div>
+
 
       <h2> Expired: </h2>
       {expiredBooks.map(book =>
@@ -22,12 +35,12 @@ const Employee = ({ expiredBooks, handleChangeState }) => {
           <p> Copy Number: {book.copyNumber}</p>
           <p> Date of Borrowing: {book.dateOfBorrowing} </p>
           <p> Due to: {book.dueDate} </p>
-          <button> Send reminder </button>
+          <button onClick={() => handleSendReminder}> Send reminder </button>
         </div>
       )}
 
       <h2> Add new employee: </h2>
-      <button> Add </button>
+      <button onClick={() => handleAddEmployee() }> Add </button>
 
     </div>
   );
