@@ -1,13 +1,13 @@
 import React from 'react';
 import { Welcome } from './Welcome';
 import { SignIn } from './SignIn';
-import { SignUp } from './SignUp';
+import { SignUpMember } from './SignUpMember';
 import { Member } from './Member';
 import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
 
 const initialState = {
-  status: "employeePage",
+  status: "signUpMember",
   employee: false,
   username: 'steph',
   password: 'curry',
@@ -101,10 +101,10 @@ class App extends React.Component {
        </div>
      );
    }
-   else if (this.state.status === 'signUp') {
+   else if (this.state.status === 'signUpMember') {
      return (
        <div className="App">
-         <SignUp handleChangeStatus={this.handleChangeStatus}/>
+         <SignUpMember handleChangeStatus={this.handleChangeStatus}/>
          <button onClick={() => this.handleChangeStatus("welcome")}>  Back </button>
        </div>
      );

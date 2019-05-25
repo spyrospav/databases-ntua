@@ -43,7 +43,7 @@ const styles = theme => ({
   },
 });
 
-class SignUp extends React.Component {
+class SignUpMember extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -171,4 +171,4 @@ class SignUp extends React.Component {
 }
 
 
-export default withStyles(styles)(SignUp);
+export default withStyles(styles)(SignUpMember);
