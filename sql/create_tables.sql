@@ -138,12 +138,18 @@ FOR EACH ROW
     SET remaining = remaining +1
     WHERE b.ISBN = new.ISBN;
 
+DELIMITER $$
 CREATE TRIGGER decreaseRemainingCopiesBorrow
 AFTER INSERT ON borrows
 FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NULL) THEN
     UPDATE book AS b
     SET remaining = remaining - 1
     WHERE b.ISBN = new.ISBN;
+END IF;
+END$$
+DELIMITER ;
 
 DELIMITER $$
 CREATE TRIGGER increaseRemainingCopiesBorrow
@@ -158,12 +164,18 @@ END IF;
 END$$
 DELIMITER ;
 
+DELIMITER $$
 CREATE TRIGGER makeCopyUnavailable
 AFTER INSERT ON borrows
 FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NULL) THEN
     UPDATE copies AS c
     SET c.available = false
     WHERE c.ISBN = new.ISBN AND c.copyNr = new.copyNr;
+END IF;
+END$$
+DELIMITER ;
 
 DELIMITER $$
 CREATE TRIGGER makeCopyAvailable
