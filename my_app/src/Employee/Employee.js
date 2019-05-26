@@ -16,14 +16,14 @@ const Employee = ({
         <SearchForm />
       <div className="results">
         <h2>Results</h2>
-              {foundBooks.map(book =>
-              <div key={book.title+book.author} className="book">
-                  <div>
-                      <p> {book.title}, {book.author} </p>
-                  </div>
-              </div>
-              )}
-          </div>
+        {foundBooks.map(book =>
+        <div key={book.title+book.author} className="book">
+            <div>
+                <p> {book.title}, {book.author} </p>
+            </div>
+        </div>
+        )}
+      </div>
       </div>
 
       <h2> Expired: </h2>
