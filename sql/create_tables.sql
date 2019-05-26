@@ -30,10 +30,10 @@ CREATE TABLE book(
     title VARCHAR(70) NOT NULL,
     pubYear YEAR,
     numPages SMALLINT,
-    pubName VARCHAR(50) NOT NULL,
+    pubName VARCHAR(50),
     remaining INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
-    FOREIGN KEY(pubName) REFERENCES publisher(pubName),
+    FOREIGN KEY(pubName) REFERENCES publisher(pubName) ON DELETE SET NULL,
     CHECK(remaining>=0)
 );
 
@@ -73,14 +73,14 @@ CREATE TABLE permanent_employee(
     empID INTEGER NOT NULL,
     HiringDate DATE,
     PRIMARY KEY (empID),
-    FOREIGN KEY (empID) REFERENCES employee(empID)
+    FOREIGN KEY (empID) REFERENCES employee(empID) ON DELETE CASCADE
 );
 
 CREATE TABLE temporary_employee(
     empID INTEGER NOT NULL,
     ContrantNr INTEGER,
     PRIMARY KEY (empID),
-    FOREIGN KEY (empID) REFERENCES employee(empID)
+    FOREIGN KEY (empID) REFERENCES employee(empID) ON DELETE CASCADE
 );
 
 CREATE TABLE borrows(
@@ -97,10 +97,10 @@ CREATE TABLE borrows(
 
 CREATE TABLE belongs_to(
     ISBN VARCHAR(30) NOT NULL,
-    categoryName VARCHAR(25) NOT NULL,
+    categoryName VARCHAR(25) ,
     PRIMARY KEY (ISBN, categoryName),
-    FOREIGN KEY (ISBN) REFERENCES book(ISBN),
-    FOREIGN KEY (categoryName) REFERENCES category(categoryName)
+    FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON DELETE CASCADE,
+    FOREIGN KEY (categoryName) REFERENCES category(categoryName) ON DELETE SET NULL
 );
 
 CREATE TABLE written_by(
