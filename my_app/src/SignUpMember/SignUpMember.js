@@ -74,7 +74,7 @@ class SignUpMember extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.username,this.state.password);
+    console.log(this.state.username, this.state.password);
   //   this.props.handleConnect({
   //     username: this.state.username,
   //     password: this.state.password

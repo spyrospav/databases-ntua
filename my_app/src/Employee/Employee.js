@@ -8,7 +8,6 @@ const Employee = ({
   handleAddEmployee,
   handleSendReminder
   }) => {
-    console.log(foundBooks);
   return (
     <div>
       <div class="middle-div content-box">
@@ -19,7 +18,6 @@ const Employee = ({
               <div class="book">
                   <div key={book.title+book.author}>
                       <p> {book.title}, {book.author} </p>
-                      <button class="btn"> borrow </button>
                   </div>
               </div>
               )}
@@ -35,7 +33,7 @@ const Employee = ({
           <p> Copy Number: {book.copyNumber}</p>
           <p> Date of Borrowing: {book.dateOfBorrowing} </p>
           <p> Due to: {book.dueDate} </p>
-          <button onClick={() => handleSendReminder}> Send reminder </button>
+          <button onClick={() => handleSendReminder()}> Send reminder </button>
         </div>
       )}
 
