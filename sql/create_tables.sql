@@ -97,10 +97,10 @@ CREATE TABLE borrows(
 
 CREATE TABLE belongs_to(
     ISBN VARCHAR(30) NOT NULL,
-    categoryName VARCHAR(25) ,
+    categoryName VARCHAR(25),
     PRIMARY KEY (ISBN, categoryName),
     FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON DELETE CASCADE,
-    FOREIGN KEY (categoryName) REFERENCES category(categoryName) ON DELETE SET NULL
+    FOREIGN KEY (categoryName) REFERENCES category(categoryName) ON DELETE CASCADE
 );
 
 CREATE TABLE written_by(
