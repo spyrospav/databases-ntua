@@ -12,13 +12,13 @@ const Employee = ({
   }) => {
   return (
     <div>
-      <div class="middle-div content-box">
+      <div className="middle-div content-box">
         <SearchForm />
-      <div class="results">
+      <div className="results">
         <h2>Results</h2>
               {foundBooks.map(book =>
-              <div class="book">
-                  <div key={book.title+book.author}>
+              <div key={book.title+book.author} className="book">
+                  <div>
                       <p> {book.title}, {book.author} </p>
                   </div>
               </div>

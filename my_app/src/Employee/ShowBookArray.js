@@ -12,9 +12,11 @@ class ShowBookArray extends React.Component {
     return (
       <div>
         <h2> Books </h2>
-        <button> Insert book </button>
+        <button onClick={() => this.setState({status:'insert'})}>
+          Insert book
+        </button>
         {this.props.booksArray.map(book => (
-          <div>
+          <div key={book.ISBN}>
             <p>{ book.ISBN }</p>
             <p>{ book.title }</p>
             <p>{ book.author }</p>
