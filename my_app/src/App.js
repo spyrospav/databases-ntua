@@ -2,6 +2,7 @@ import React from 'react';
 import { Welcome } from './Welcome';
 import { SignIn } from './SignIn';
 import { SignUpMember } from './SignUpMember';
+import { SignUpEmployee } from './SignUpEmployee';
 import { Member } from './Member';
 import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
@@ -119,7 +120,12 @@ class App extends React.Component {
    else if (this.state.status === 'signUp') {
      return (
        <div className="App">
+        {this.state.employee
+          ?
+          <SignUpEmployee />
+          :
          <SignUpMember handleChangeStatus={this.handleChangeStatus}/>
+        }
          <button
          className="btn"
          onClick={() => this.goToWelcome()}

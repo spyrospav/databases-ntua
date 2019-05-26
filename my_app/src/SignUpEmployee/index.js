@@ -1,2 +1,2 @@
-import SignUpMember from './SignUpMember';
-export { SignUpMember };
+import SignUpEmployee from './SignUpEmployee';
+export { SignUpEmployee };
