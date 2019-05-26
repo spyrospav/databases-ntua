@@ -6,20 +6,20 @@ const Welcome = ( { handleChangeStatus } ) => {
   <div>
     <h4> Welcome to our Library, if you don't have an account please Sign Up</h4>
     <Button
-     class="btn"
+     className="btn"
      variant="outlined"
      onClick={() => handleChangeStatus('signIn', 'member')}>
       Login as Member
     </Button>
     <br/>
-    <Button class="btn"
+    <Button className="btn"
     variant="outlined"
     onClick={() => handleChangeStatus('signIn', 'employee')}>
     Login as Employee
     </Button>
     <br/>
     <Button
-    class="btn"
+    className="btn"
     variant="outlined"
     onClick={() => handleChangeStatus('signUp')}>
      Sign up

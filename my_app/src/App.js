@@ -8,7 +8,7 @@ import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
 
 const initialState = {
-  status: "employeePage",
+  status: "welcome",
   employee: false,
   username: 'steph',
   password: 'curry',
@@ -48,6 +48,27 @@ const initialState = {
       memberID: "1",
       expirationDate: "1/7"
     }
+  ],
+  booksArray: [
+    {
+      ISBN: "121212423",
+      title: 'title1',
+      author: 'nikolaou',
+      publisher: 'bucks',
+      publicationYear: '1914',
+      numOfPages: "576",
+      numOfCopies: '100'
+    },
+    {
+      ISBN: "98321718",
+      title: "title2",
+      author: "paulatos",
+      publisher: "charitonidis",
+      publicationYear: "1918",
+      numOfPages: "455",
+      numOfCopies: '166'
+    }
+
   ]
 };
 
@@ -158,6 +179,7 @@ class App extends React.Component {
          <Employee
          handleChangeStatus={this.handleChangeStatus}
          handleAddEmployee={this.handleAddEmployee}
+         booksArray={this.state.booksArray}
          foundBooks={this.state.foundBooks}
          expiredBooks={this.state.expiredBooks}
          />

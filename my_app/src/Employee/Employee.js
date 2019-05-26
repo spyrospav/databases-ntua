@@ -1,9 +1,11 @@
 import React from 'react';
 import { SearchForm } from './SearchForm';
+import { ShowBookArray } from './ShowBookArray';
 
 const Employee = ({
   foundBooks,
   expiredBooks,
+  booksArray,
   handleChangeState,
   handleAddEmployee,
   handleSendReminder
@@ -24,7 +26,6 @@ const Employee = ({
           </div>
       </div>
 
-
       <h2> Expired: </h2>
       {expiredBooks.map(book =>
         <div key={book.memberID+book.ISBN}>
@@ -37,8 +38,22 @@ const Employee = ({
         </div>
       )}
 
-      <h2> Add new employee: </h2>
-      <button onClick={() => handleAddEmployee() }> Add </button>
+      <form>
+        <div className="radiotext">
+            <p> Title </p>
+            <input type="radio" name="searchOption"/>
+        </div>
+        <div className="radiotext">
+            <p> Author </p>
+            <input type="radio" name="searchOption"/>
+        </div>
+        <div className="radiotext">
+            <p> Category </p>
+            <input type="radio" name="searchOption"/> <br/>
+        </div>
+      </form>
+
+      <ShowBookArray booksArray={booksArray}/>
 
     </div>
   );
