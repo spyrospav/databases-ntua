@@ -7,7 +7,7 @@ import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
 
 const initialState = {
-  status: "welcome",
+  status: "employeePage",
   employee: false,
   username: 'steph',
   password: 'curry',
@@ -57,8 +57,10 @@ class App extends React.Component {
 
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
+    this.handleAddEmployee = this.handleAddEmployee.bind(this);
     this.goToWelcome = this.goToWelcome.bind(this);
   }
+
   handleChangeStatus (status, user) {
     let employee;
     if (user === "member") {
@@ -78,7 +80,12 @@ class App extends React.Component {
       password: password
     })
   }
-
+  handleAddEmployee () {
+    this.setState({
+      employee: true,
+      status: 'signUp'
+    })
+  }
   goToWelcome () {
     this.setState({
       status: 'welcome'
@@ -101,7 +108,11 @@ class App extends React.Component {
             handleConnect={this.handleConnect}
             handleChangeStatus={this.handleChangeStatus}
           />
-         <button onClick={() => this.goToWelcome()}>  Back </button>
+         <button
+         className='btn'
+         onClick={() => this.goToWelcome()}>
+          Back
+          </button>
        </div>
      );
    }
@@ -109,7 +120,12 @@ class App extends React.Component {
      return (
        <div className="App">
          <SignUpMember handleChangeStatus={this.handleChangeStatus}/>
-         <button onClick={() => this.goToWelcome()}>  Back </button>
+         <button
+         className="btn"
+         onClick={() => this.goToWelcome()}
+         >
+         Back
+         </button>
        </div>
      );
    }
@@ -122,7 +138,11 @@ class App extends React.Component {
           borrowedBooks={this.state.borrowedBooks}
           reminders={this.state.reminders}
           />
-         <button onClick={() => this.goToWelcome()}>  Back </button>
+         <button
+         className="btn"
+         onClick={() => this.goToWelcome()}>
+          Back
+          </button>
        </div>
      );
    }
@@ -131,10 +151,16 @@ class App extends React.Component {
        <div className="App">
          <Employee
          handleChangeStatus={this.handleChangeStatus}
+         handleAddEmployee={this.handleAddEmployee}
          foundBooks={this.state.foundBooks}
          expiredBooks={this.state.expiredBooks}
          />
-         <button onClick={() => this.goToWelcome()}>  Back </button>
+         <button
+         className = "btn"
+         onClick={() => this.goToWelcome()}
+         >
+          Back
+         </button>
        </div>
      );
    }
