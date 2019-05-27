@@ -13,7 +13,7 @@ class ShowBookArray extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className="books">
         <h2> Books </h2>
         {this.state.status === 'insert'
           ?
@@ -50,19 +50,19 @@ class ShowBookArray extends React.Component {
           }
           else {
             return (
-            <div key={book.ISBN}>
-              <p>{ book.ISBN }</p>
-              <p>{ book.title }</p>
-              <p>{ book.author }</p>
-              <p>{ book.publisher }</p>
-              <p>{ book.publicationYear }</p>
-              <p>{ book.numOfPages }</p>
-              <p>{ book.numOfCopies }</p>
-              <button
+            <div className="book" key={book.ISBN}>
+              <p className="col6">{ book.ISBN }</p>
+              <p className="col6">{ book.title }</p>
+              <p className="col6">{ book.author }</p>
+              <p className="col6">{ book.publisher }</p>
+              <p className="col6">{ book.publicationYear }</p>
+              <p className="col6">{ book.numOfPages }</p>
+              <p className="col6">{ book.numOfCopies }</p>
+              <button className="btn-small"
               onClick={() => this.setState({status:'edit', indexEdit: index})}>
                 Edit
               </button>
-              <button> Delete </button>
+              <button className="btn-small"> Delete </button>
             </div>
           );
           }}

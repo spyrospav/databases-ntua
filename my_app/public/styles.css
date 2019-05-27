@@ -31,7 +31,7 @@ body {
 
 .navbar a:hover {
   color: black;
-  border-bottom: 2px solid #4CAF50;
+  border-bottom: 2px solid #ff0045;
 }
 
 .navbar img{
@@ -86,7 +86,7 @@ body {
 
 
 .btn {
-  border: 2px solid #4CAF50;
+  border: 2px solid #ff0045;
   color: #000;
   padding: 8px 16px;
   text-align: center;
@@ -103,9 +103,32 @@ body {
 .btn:hover,
 .btn:active,
 .btn:visited {
-  background-color: #4CAF50;
+  background-color: #ff0045;
   color: white;
 }
+
+.btn-small {
+  border: 2px solid #ff0045;
+  color: #000;
+  padding: 4px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-small:hover,
+.btn-small:active,
+.btn-small:visited {
+  background-color: #ff0045;
+  color: white;
+}
+
 
 .book {
     margin-bottom: 15px;
@@ -118,4 +141,18 @@ body {
     height: inherit;
     padding-bottom: 80px;
     border-bottom: 2px solid #ddd;
+}
+
+
+.col6 {
+  display: inline-block;
+  float: left;
+  padding-right: 5px;
+  border-right: 1px solid black;
+  margin-right: 5px;
+}
+
+.books {
+  display: list-item;
+  margin-top: 100px;
 }

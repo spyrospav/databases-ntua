@@ -34,15 +34,15 @@ class SearchForm extends React.Component {
         <div className="search-by">
             <h3>Search</h3>
             <div className="radiotext">
-                <p> Title </p>
+                <p> by Title </p>
                 <input type="radio" name="searchOption" onClick={() => this.handleClick("title")}/>
             </div>
             <div className="radiotext">
-                <p> Author </p>
+                <p> by Author </p>
                 <input type="radio" name="searchOption" onClick={() => this.handleClick("author")}/>
             </div>
             <div className="radiotext">
-                <p> Category </p>
+                <p> by Category </p>
                 <input type="radio" name="searchOption" onClick={() => this.handleClick("category")}/> <br/>
             </div>
         </div>
