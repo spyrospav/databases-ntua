@@ -113,9 +113,9 @@ body {
   padding: 4px 8px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+/*  display: inline-block;*/
   font-size: 12px;
-  margin: 4px 2px;
+  margin: 10px;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
   cursor: pointer;
@@ -145,14 +145,22 @@ body {
 
 
 .col6 {
+  width: 100px;
   display: inline-block;
   float: left;
   padding-right: 5px;
-  border-right: 1px solid black;
   margin-right: 5px;
 }
 
-.books {
-  display: list-item;
-  margin-top: 100px;
+.row6 {
+  display: inline-block;
+  margin-bottom: 50px;
+  width: 80%;
+  margin: 0 10%;
+  border-bottom: 1px solid #ddd;
+}
+
+.bold {
+  font-weight: bold;
+  text-decoration: underline;
 }
