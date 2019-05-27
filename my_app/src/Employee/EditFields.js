@@ -2,19 +2,18 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
 
-class InsertFields extends React.Component {
+class EditFields extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ISBN: '',
-      title: '',
-      author: '',
-      publisher: '',
-      publicationYear: '',
-      copies: '',
-      pages: ''
+      ISBN: this.props.ISBN,
+      title: this.props.title,
+      author: this.props.author,
+      publisher: this.props.publisher,
+      publicationYear: this.props.publicationYear,
+      numOfCopies: this.props.numOfCopies,
+      numOfPages: this.props.numOfPages,
     }
-
   }
 
   handleChange = field => event => {
@@ -32,6 +31,7 @@ class InsertFields extends React.Component {
         <TextField
           id="outlined-name"
           label="ISBN"
+          value={this.state.ISBN}
           onChange={this.handleChange('ISBN')}
           margin="normal"
           variant="outlined"
@@ -39,6 +39,7 @@ class InsertFields extends React.Component {
         <TextField
           id="outlined-name"
           label="Title"
+          value={this.state.title}
           onChange={this.handleChange('title')}
           margin="normal"
           variant="outlined"
@@ -46,6 +47,7 @@ class InsertFields extends React.Component {
         <TextField
           id="outlined-name"
           label="Author"
+          value={this.state.author}
           onChange={this.handleChange('author')}
           margin="normal"
           variant="outlined"
@@ -53,6 +55,7 @@ class InsertFields extends React.Component {
         <TextField
           id="outlined-name"
           onChange={this.handleChange('publisher')}
+          value={this.state.publisher}
           label="Publisher"
           margin="normal"
           variant="outlined"
@@ -60,21 +63,24 @@ class InsertFields extends React.Component {
         <TextField
           id="outlined-name"
           label="Publication Year"
+          value={this.state.publicationYear}
           onChange={this.handleChange('publicationYear')}
           margin="normal"
           variant="outlined"
         />
         <TextField
           id="outlined-name"
-          onChange={this.handleChange('pages')}
+          onChange={this.handleChange('numOfPages')}
           label="Pages"
+          value={this.state.numOfPages}
           margin="normal"
           variant="outlined"
         />
         <TextField
           id="outlined-name"
-          onChange={this.handleChange('copies')}
+          onChange={this.handleChange('numOfCopies')}
           label="Copies"
+          value={this.state.numOfCopies}
           margin="normal"
           variant="outlined"
         />
@@ -83,4 +89,4 @@ class InsertFields extends React.Component {
     }
 }
 
-export { InsertFields };
+export { EditFields };
