@@ -38,7 +38,7 @@ class ShowBookArray extends React.Component {
                   key={book.ISBN}
                   ISBN={book.ISBN}
                   title={book.title}
-                  author={book.author}
+                  author={book.author} 
                   publisher={book.publisher}
                   publicationYear={book.publicationYear}
                   numOfPages={book.numOfPages}
