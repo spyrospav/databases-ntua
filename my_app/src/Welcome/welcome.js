@@ -1,29 +1,28 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
 
 const Welcome = ( { handleChangeStatus } ) => {
   return (
   <div>
-    <h4> Welcome to our Library, if you don't have an account please Sign Up</h4>
-    <Button
-     className="btn"
+    <h4> Welcome to our Library! if you don't have an account please Sign Up.</h4>
+    <button
+     className="btn-large"
      variant="outlined"
      onClick={() => handleChangeStatus('signIn', 'member')}>
       Login as Member
-    </Button>
+    </button>
     <br/>
-    <Button className="btn"
+    <button className="btn-large"
     variant="outlined"
     onClick={() => handleChangeStatus('signIn', 'employee')}>
     Login as Employee
-    </Button>
+    </button>
     <br/>
-    <Button
-    className="btn"
+    <button className="btn-large"
     variant="outlined"
     onClick={() => handleChangeStatus('signUp')}>
      Sign up
-     </Button>
+     </button>
     <br/>
   </div>
 );
