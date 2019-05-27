@@ -68,7 +68,6 @@ const initialState = {
       numOfPages: "455",
       numOfCopies: '166'
     }
-
   ]
 };
 

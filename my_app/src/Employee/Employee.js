@@ -38,6 +38,9 @@ const Employee = ({
         </div>
       )}
 
+      <h2> Add new employee </h2>
+      <button onClick={() => handleAddEmployee()}> Add </button>
+
       <form>
         <div className="radiotext">
             <p> Title </p>
