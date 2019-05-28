@@ -67,22 +67,13 @@ class SignUpMember extends React.Component {
       ...this.state,
       [field]: event.target.value
     })
+
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.mFirst, this.state.mLast);
-  //   this.props.handleConnect({
-  //     username: this.state.username,
-  //     password: this.state.password
-  //   });
-
-    // socket.emit("LOGIN",{
-    //   username: this.state.username,
-    //   password: this.state.password
-    // });
-    // add call to action emitter from this.props
-  }
+    this.props.socket.emit('SIGNUP_MEMBER', this.state);
+}
 
   render(){
     const classes  = this.props.classes;
@@ -143,7 +134,16 @@ class SignUpMember extends React.Component {
             </TextField>
 
             <TextField
-                onChange = {this.handleChange("postalCode")}
+                onChange={this.handleChange("postalCode")}
+                label="Postal Code"
+                margin="normal"
+                required
+                fullWidth
+              >
+            </TextField>
+
+            <TextField
+                onChange = {this.handleChange("MBirthDate")}
                 label="Birth Date (i.e. 10/5/98)"
                 margin="normal"
                 required
