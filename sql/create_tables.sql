@@ -14,7 +14,7 @@ CREATE TABLE member(
     PRIMARY KEY(memberID)
 );
 
-ALTER TABLE member AUTO_INCREMENT = 1;
+ALTER TABLE member AUTO_INCREMENT = 1000;
 
 CREATE TABLE publisher(
     pubName VARCHAR(50) NOT NULL,
