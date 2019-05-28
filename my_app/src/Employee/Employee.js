@@ -13,7 +13,7 @@ const Employee = ({
 }) => {
   if (navBarStatus === 'search') {
     return (
-    <div className="left-div content-box">
+    <div className="">
       <SearchForm />
       <div className="results">
         <h2>Results</h2>
@@ -55,7 +55,7 @@ const Employee = ({
     return (
       <div>
         <h2> Add new employee </h2>
-        <button onClick={() => handleAddEmployee()}> Add </button>
+        <button className="btn" onClick={() => handleAddEmployee()}> Add </button>
       </div>
     )
   }
