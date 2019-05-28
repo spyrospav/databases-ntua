@@ -7,9 +7,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-// import io from 'socket.io-client';
-//
-// const socket = io('http://localhost:8000');
+
 
 const styles = theme => ({
   main: {
@@ -69,12 +67,11 @@ class SignUpMember extends React.Component {
       ...this.state,
       [field]: event.target.value
     })
-    //this.props.handleChange();
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.username, this.state.password);
+    console.log(this.state.mFirst, this.state.mLast);
   //   this.props.handleConnect({
   //     username: this.state.username,
   //     password: this.state.password
