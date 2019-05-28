@@ -11,12 +11,9 @@ import io from 'socket.io-client';
 const url = "http://localhost:8000";
 let socket = io(url);
 
-socket.on("SUCCESSFUL_LOGIN", () => {
-
-})
 
 const initialState = {
-  status: "employeePage",
+  status: "welcome",
   employee: false,
   username: 'steph',
   password: 'curry',
@@ -172,9 +169,9 @@ class App extends React.Component {
        </div>
         {this.state.employee
           ?
-          <SignUpEmployee />
+          <SignUpEmployee socket={socket}/>
           :
-         <SignUpMember handleChangeStatus={this.handleChangeStatus}/>
+         <SignUpMember socket={socket} handleChangeStatus={this.handleChangeStatus}/>
         }
          <button
          className="btn"

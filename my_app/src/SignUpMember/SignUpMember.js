@@ -69,23 +69,14 @@ class SignUpMember extends React.Component {
       ...this.state,
       [field]: event.target.value
     })
-    //this.props.handleChange();
+
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.username, this.state.password);
-  //   this.props.handleConnect({
-  //     username: this.state.username,
-  //     password: this.state.password
-  //   });
-
-    // socket.emit("LOGIN",{
-    //   username: this.state.username,
-    //   password: this.state.password
-    // });
-    // add call to action emitter from this.props
-  }
+    console.log(this.state.mFirst, this.state.mLast);
+    this.props.socket.emit('SINGUP_MEMBER', this.state)
+}
 
   render(){
     const classes  = this.props.classes;
