@@ -13,15 +13,14 @@ body {
   z-index: 1000;
 }
 
-.navbar a{
+.navbar a {
   float: left;
   display: block;
-  color: #000000;
+  color: #000;
   text-align: center;
   padding: 5px 20px;
   text-decoration: none;
   font-size: 15px;
-
   transition: color 2s, border-bottom 2s;
   margin-top: 50px;
   margin-right: 20px;
@@ -50,38 +49,35 @@ body {
 }
 
 .content-box {
-    display: inline-block;
-    float: left;
-    text-align: center;
-    margin: 0 10px;
+  display: inline-block;
+  float: left;
+  text-align: center;
+  margin: 0 10px;
 }
 
 
 .left-div {
-    width: 28%;
+  width: 28%;
 }
 
 
 .middle-div {
-    width: 33%;
+  width: 33%;
 }
 
 .right-div {
-    width: 28%;
+  width: 28%;
 }
 
 .radiotext {
-    float:left;
-    margin-left: 4px;
+  float:left;
+  margin-left: 4px;
 }
 
 .radiotext p {
-    float: left;
+  float: left;
 }
 
-.radiotext form {
-
-}
 
 
 .btn {
