@@ -13,7 +13,7 @@ const Employee = ({
 }) => {
   if (navBarStatus === 'search') {
     return (
-    <div className="">
+    <div>
       <SearchForm />
       <div className="results">
         <h2>Results</h2>
@@ -33,8 +33,9 @@ const Employee = ({
   }
   else if (navBarStatus === 'reminders') {
     return (
-      <div className="middle-div content-box">
+      <div>
         <h2> Expired: </h2>
+        <div>
         {expiredBooks.map(book => (
           <div key={book.memberID + book.ISBN}>
             <p> Member ID: {book.memberID}</p>
@@ -42,12 +43,13 @@ const Employee = ({
             <p> Copy Number: {book.copyNumber}</p>
             <p> Date of Borrowing: {book.dateOfBorrowing} </p>
             <p> Due to: {book.dueDate} </p>
-            <button onClick={() => handleSendReminder()}>
+            <button className="btn" onClick={() => handleSendReminder()}>
               {" "}
               Send reminder{" "}
             </button>
           </div>
         ))}
+      </div>
       </div>
     );
   }
