@@ -26,13 +26,13 @@ class ShowBookArray extends React.Component {
           </button>
         )}
         <div className="row6 bold">
-                <p className="col6">ISBN</p>
-                <p className="col6">Title</p>
-                <p className="col6">Author</p>
-                <p className="col6">Publisher</p>
-                <p className="col6">Published</p>
-                <p className="col6">Pages</p>
-                <p className="col6">Avail. Copies</p>
+            <p className="col6">ISBN</p>
+            <p className="col6">Title</p>
+            <p className="col6">Author</p>
+            <p className="col6">Publisher</p>
+            <p className="col6">Published</p>
+            <p className="col6">Pages</p>
+            <p className="col6">Avail. Copies</p>
         </div>
 
         {this.props.booksArray.map((book, index) => {

@@ -8,10 +8,11 @@ import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
 
 const initialState = {
-  status: "employeePage",
+  status: "welcome",
   employee: false,
   username: 'steph',
   password: 'curry',
+  navBarStatus: 'search', //'search','manageBooks','reminders','addEmployee'
   borrowedBooks: [
     {
       title: "book1",
@@ -117,6 +118,10 @@ class App extends React.Component {
     if (this.state.status === 'welcome') {
       return (
         <div className="App">
+        <div className="navbar">
+            <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
+            <a href="#home">CODeS Public Library</a>
+        </div>
           <Welcome handleChangeStatus={this.handleChangeStatus}/>
         </div>
       );
@@ -124,6 +129,10 @@ class App extends React.Component {
    else if (this.state.status === 'signIn') {
      return (
        <div className="App">
+       <div className="navbar">
+           <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
+           <a href="#home">CODeS Public Library</a>
+       </div>
          <p> Sign in as: {this.state.employee ? <a>employee</a> : <a>member</a>} </p>
          <SignIn
             handleConnect={this.handleConnect}
@@ -140,6 +149,10 @@ class App extends React.Component {
    else if (this.state.status === 'signUp') {
      return (
        <div className="App">
+       <div className="navbar">
+           <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
+           <a href="#home">CODeS Public Library</a>
+       </div>
         {this.state.employee
           ?
           <SignUpEmployee />
@@ -158,6 +171,10 @@ class App extends React.Component {
    else if (this.state.status === 'memberPage') {
      return (
        <div className="App">
+         <div className="navbar">
+             <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
+             <a href="#home">CODeS Public Library</a>
+         </div>
          <Member
           handleChangeStatus={this.handleChangeStatus}
           foundBooks={this.state.foundBooks}
@@ -175,7 +192,17 @@ class App extends React.Component {
    else if (this.state.status === 'employeePage') {
      return (
        <div className="App">
+         <div className="navbar">
+             <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
+             <a href="#">CODeS Public Library</a>
+             <a onClick={() => this.setState({navBarStatus: 'search'})} href="#">Search</a>
+             <a onClick={() => this.setState({navBarStatus: 'manageBooks'})} href="#">Manage Books</a>
+             <a href="#">Manage Authors</a>
+             <a onClick={() => this.setState({navBarStatus: 'reminders'})} href="#">Reminders </a>
+             <a onClick={() => this.setState({navBarStatus: 'addEmployee'})} href="#">Add Employee</a>
+         </div>
          <Employee
+         navBarStatus={this.state.navBarStatus}
          handleChangeStatus={this.handleChangeStatus}
          handleAddEmployee={this.handleAddEmployee}
          booksArray={this.state.booksArray}
@@ -189,6 +216,7 @@ class App extends React.Component {
           Back
          </button>
        </div>
+
      );
    }
  }
