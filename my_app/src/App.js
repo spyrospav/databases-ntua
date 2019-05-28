@@ -7,6 +7,14 @@ import { Member } from './Member';
 import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
 
+import io from 'socket.io-client';
+const url = "http://localhost:8000";
+let socket = io(url);
+
+socket.on("SUCCESSFUL_LOGIN", () => {
+
+})
+
 const initialState = {
   status: "employeePage",
   employee: false,
@@ -77,6 +85,14 @@ class App extends React.Component {
     super(props);
     this.state = initialState;
 
+    socket.on("SUCCESSFUL_LOGIN", () => {
+      if (this.state.employee) {
+        this.setState({status: 'employeePage'})
+      }
+      else {
+        this.setState({status: 'memberPage'});
+      }
+    })
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
     this.handleAddEmployee = this.handleAddEmployee.bind(this);
@@ -135,6 +151,7 @@ class App extends React.Component {
        </div>
          <p> Sign in as: {this.state.employee ? <a>employee</a> : <a>member</a>} </p>
          <SignIn
+            socket={socket}
             handleConnect={this.handleConnect}
             handleChangeStatus={this.handleChangeStatus}
           />

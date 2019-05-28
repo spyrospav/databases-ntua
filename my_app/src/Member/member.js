@@ -10,7 +10,7 @@ const Member = ({
   }) => {
   return (
     <div>
-        <div class="left-div content-box">
+        <div className="left-div content-box">
             <h2> Borrowed books </h2>
           {borrowedBooks.map(book =>
             <div key={book.title+book.author}>
@@ -19,25 +19,25 @@ const Member = ({
           )}
         </div>
 
-        <div class="middle-div content-box">
+        <div className="middle-div content-box">
           <SearchForm />
-        <div class="results">
+        <div className="results">
           <h2>Results</h2>
                 {foundBooks.map(book =>
-                <div class="book">
-                    <div key={book.title+book.author}>
+                <div key={book.title+book.author} className="book">
+                    <div>
                         <p> {book.title}, {book.author} </p>
-                        <button class="btn"> borrow </button>
+                        <button className="btn"> borrow </button>
                     </div>
                 </div>
                 )}
             </div>
         </div>
 
-        <div class="right-div content-box">
+        <div className="right-div content-box">
           <h2> Reminders </h2>
           {reminders.map(reminder =>
-            <div>
+            <div key={reminder.title}>
               <p>return book: {reminder.title}</p>
               <p>exiration date: {reminder.expirationDate}</p>
             </div>
