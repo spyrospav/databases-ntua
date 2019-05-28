@@ -11,7 +11,6 @@ import io from 'socket.io-client';
 const url = "http://localhost:8000";
 let socket = io(url);
 
-
 const initialState = {
   status: "welcome",
   employee: false,
@@ -89,6 +88,11 @@ class App extends React.Component {
       else {
         this.setState({status: 'memberPage'});
       }
+    })
+
+    socket.on("SUCCESSFUL_SIGNUP", (memberID) => {
+      alert(`Your member id is: ${memberID}`);
+      this.setState({status: 'memberPage'});
     })
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     this.handleConnect = this.handleConnect.bind(this);

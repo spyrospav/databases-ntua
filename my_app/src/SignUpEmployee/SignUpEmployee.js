@@ -146,7 +146,15 @@ class SignUpEmployee extends React.Component {
             </TextField>
 
             <TextField
-                onChange = {this.handleChange("postalCode")}
+                onChange={this.handleChange("postalCode")}
+                label="Postal Code"
+                margin="normal"
+                required
+                fullWidth
+              >
+            </TextField>
+            <TextField
+                onChange = {this.handleChange("MBirthDate")}
                 label="Birth Date (i.e. 10/5/98)"
                 margin="normal"
                 required

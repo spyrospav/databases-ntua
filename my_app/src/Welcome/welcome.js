@@ -20,7 +20,7 @@ const Welcome = ( { handleChangeStatus } ) => {
     <br/>
     <button className="btn-large"
     variant="outlined"
-    onClick={() => handleChangeStatus('signUp')}>
+    onClick={() => handleChangeStatus('signUp', 'member')}>
      Sign up
      </button>
     <br/>
