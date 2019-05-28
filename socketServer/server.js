@@ -34,9 +34,11 @@ io.on('connection', function(socket) {
         con.query(sql, username , function (err, result) {
             if (err) throw err;
             if (result[0]['COUNT(*)'] === 1) {
+                console.log('User successful login');
                 socket.emit('SUCCESSFUL_LOGIN')
             }
             else {
+                console.log('User failed login');
                 socket.emit('UNSUCCESSFUL_LOGIN')
             }
         });
