@@ -35,22 +35,29 @@ const Employee = ({
     return (
       <div>
         <h2> Expired: </h2>
-        <div>
+        <div className="row6">
+          <h3 className="col6">Member ID </h3>
+          <h3 className="col6">ISBN </h3>
+          <h3 className="col6">Copy Number </h3>
+          <h3 className="col6">Borrowed on</h3>
+          <h3 className="col6">Due</h3>
+          <h3 className="col6"> </h3>
+        </div>
         {expiredBooks.map(book => (
-          <div key={book.memberID + book.ISBN}>
-            <p> Member ID: {book.memberID}</p>
-            <p> ISBN: {book.ISBN}</p>
-            <p> Copy Number: {book.copyNumber}</p>
-            <p> Date of Borrowing: {book.dateOfBorrowing} </p>
-            <p> Due to: {book.dueDate} </p>
-            <button className="btn" onClick={() => handleSendReminder()}>
+          <div className="row6" key={book.memberID + book.ISBN}>
+            <p className="col6">{book.memberID}</p>
+            <p className="col6"> {book.ISBN}</p>
+            <p className="col6"> {book.copyNumber}</p>
+            <p className="col6"> {book.dateOfBorrowing} </p>
+            <p className="col6"> {book.dueDate} </p>
+            <button className="col6 btn" onClick={() => handleSendReminder()}>
               {" "}
               Send reminder{" "}
             </button>
           </div>
         ))}
       </div>
-      </div>
+
     );
   }
   else if (navBarStatus === 'addEmployee') {

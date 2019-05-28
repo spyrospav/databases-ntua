@@ -26,13 +26,13 @@ class ShowBookArray extends React.Component {
           </button>
         )}
         <div className="row6 bold">
-            <p className="col6">ISBN</p>
-            <p className="col6">Title</p>
-            <p className="col6">Author</p>
-            <p className="col6">Publisher</p>
-            <p className="col6">Published</p>
-            <p className="col6">Pages</p>
-            <p className="col6">Avail. Copies</p>
+            <p className="col7">ISBN</p>
+            <p className="col7">Title</p>
+            <p className="col7">Author</p>
+            <p className="col7">Publisher</p>
+            <p className="col7">Published</p>
+            <p className="col7">Pages</p>
+            <p className="col7">Avail. Copies</p>
         </div>
 
         {this.props.booksArray.map((book, index) => {
@@ -54,14 +54,14 @@ class ShowBookArray extends React.Component {
             );
           } else {
             return (
-              <div className="row6" key={book.ISBN}>
-                <p className="col6">{book.ISBN}</p>
-                <p className="col6">{book.title}</p>
-                <p className="col6">{book.author}</p>
-                <p className="col6">{book.publisher}</p>
-                <p className="col6">{book.publicationYear}</p>
-                <p className="col6">{book.numOfPages}</p>
-                <p className="col6">{book.numOfCopies}</p>
+              <div className="row7" key={book.ISBN}>
+                <p className="col7">{book.ISBN}</p>
+                <p className="col7">{book.title}</p>
+                <p className="col7">{book.author}</p>
+                <p className="col7">{book.publisher}</p>
+                <p className="col7">{book.publicationYear}</p>
+                <p className="col7">{book.numOfPages}</p>
+                <p className="col7">{book.numOfCopies}</p>
                 <button
                   className="btn-small"
                   onClick={() =>
