@@ -6,10 +6,11 @@ body {
 
 .navbar {
   overflow: hidden;
-  background-color: #eee;
+  background-color: #ddd;
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 1000;
 }
 
 .navbar a{
@@ -24,7 +25,7 @@ body {
   transition: color 2s, border-bottom 2s;
   margin-top: 50px;
   margin-right: 20px;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid #ddd;
 }
 
 .navbar a:hover {
