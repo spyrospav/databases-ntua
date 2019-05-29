@@ -12,7 +12,7 @@ const url = "http://localhost:8000";
 let socket = io(url);
 
 const initialState = {
-  status: "welcome",
+  status: "employeePage",
   employee: false,
   username: 'steph',
   password: 'curry',
@@ -153,6 +153,7 @@ class App extends React.Component {
          <p> Sign in as: {this.state.employee ? <a>employee</a> : <a>member</a>} </p>
          <SignIn
             socket={socket}
+            employee={this.state.employee}
             handleConnect={this.handleConnect}
             handleChangeStatus={this.handleChangeStatus}
           />
