@@ -50,7 +50,7 @@ io.on('connection', function(socket) {
             if (err) throw err;
             if (result[0]['COUNT(*)'] === 1) {
                 console.log('Employee successful login');
-                socket.emit('SUCCESSFUL_EMP_LOGIN')
+                socket.emit('SUCCESSFUL_LOGIN')
             }
             else {
                 console.log('Employee failed login');
