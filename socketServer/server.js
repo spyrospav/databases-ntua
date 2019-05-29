@@ -44,7 +44,7 @@ io.on('connection', function(socket) {
         });
     })
 
-    socket.on('EMP_LOGIN', ({username, password}) => {
+    socket.on('EMPLOYEE_LOGIN', ({username, password}) => {
         const sql = "SELECT COUNT(*) FROM employee WHERE empID = ?";
         con.query(sql, username , function (err, result) {
             if (err) throw err;

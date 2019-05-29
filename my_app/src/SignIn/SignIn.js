@@ -72,7 +72,7 @@ class SignIn extends React.Component {
     console.log(this.state.username,this.state.password);
      this.props.handleConnect(this.state.username, this.state.password);
      if (this.props.employee) {
-         this.props.socket.emit("EMP_LOGIN",{
+         this.props.socket.emit("EMPLOYEE_LOGIN",{
             username: this.state.username,
             password: this.state.password
           });
