@@ -81,7 +81,7 @@ class SignIn extends React.Component {
          this.props.socket.emit("LOGIN",{
             username: this.state.username,
             password: this.state.password
-          }););
+        });
      }
     // add call to action emitter from this.props
   }
