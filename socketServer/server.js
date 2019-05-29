@@ -34,12 +34,27 @@ io.on('connection', function(socket) {
         con.query(sql, username , function (err, result) {
             if (err) throw err;
             if (result[0]['COUNT(*)'] === 1) {
-                console.log('User successful login');
+                console.log('Member successful login');
                 socket.emit('SUCCESSFUL_LOGIN')
             }
             else {
-                console.log('User failed login');
+                console.log('Member failed login');
                 socket.emit('UNSUCCESSFUL_LOGIN')
+            }
+        });
+    })
+
+    socket.on('EMP_LOGIN', ({username, password}) => {
+        const sql = "SELECT COUNT(*) FROM employee WHERE empID = ?";
+        con.query(sql, username , function (err, result) {
+            if (err) throw err;
+            if (result[0]['COUNT(*)'] === 1) {
+                console.log('Employee successful login');
+                socket.emit('SUCCESSFUL_EMP_LOGIN')
+            }
+            else {
+                console.log('Employee failed login');
+                socket.emit('UNSUCCESSFUL_EMP_LOGIN')
             }
         });
     })

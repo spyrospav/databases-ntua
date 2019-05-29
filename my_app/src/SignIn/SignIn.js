@@ -71,11 +71,18 @@ class SignIn extends React.Component {
     event.preventDefault();
     console.log(this.state.username,this.state.password);
      this.props.handleConnect(this.state.username, this.state.password);
-
-    this.props.socket.emit("LOGIN",{
-       username: this.state.username,
-       password: this.state.password
-     });
+     if (this.state.employee) {
+         this.props.socket.emit("EMP_LOGIN",{
+            username: this.state.username,
+            password: this.state.password
+          });
+     }
+     else {
+         this.props.socket.emit("LOGIN",{
+            username: this.state.username,
+            password: this.state.password
+          }););
+     }
     // add call to action emitter from this.props
   }
 
