@@ -74,5 +74,16 @@ io.on('connection', function(socket) {
         });
     });
 
+    socket.on('SEARCH_BOOK'. ({title}) => {
+        const sql = "SELECT ISBN FROM book WHERE title LIKE ?";
+
+        con.query(sql, "'%" + title "%'" , function (err, result) {
+            if (err) throw err;
+            //console.log('Search for ', title);
+            console.log(JSON.stringify(result));
+            //socket.emit('')
+        });
+    })
+
    console.log("connection ok!");
  })
