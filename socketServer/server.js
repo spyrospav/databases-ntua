@@ -54,7 +54,7 @@ io.on('connection', function(socket) {
             }
             else {
                 console.log('Employee failed login');
-                socket.emit('UNSUCCESSFUL_EMP_LOGIN')
+                socket.emit('UNSUCCESSFUL_LOGIN')
             }
         });
     })
@@ -74,10 +74,59 @@ io.on('connection', function(socket) {
         });
     });
 
-    socket.on('SEARCH_BOOK'. ({title}) => {
+    socket.on('FETCH_BOOKS', () => {
+        const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
+        + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN";
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            //console.log('Search for ', title);
+            const books = JSON.parse(JSON.stringify(result));
+            //console.log(books);
+            const booksWithAuthors = books.map(book => {
+                const sql2 = "SELECT AFirst, ALast FROM author AS A, written_by as W WHERE W.ISBN LIKE '" + book.ISBN +"' AND A.authID=W.authID";
+                let authorsString;
+                con.query(sql2, function (err, result) {
+                    if (err) throw err;
+                    const authors = JSON.parse(JSON.stringify(result));
+                    authorsString = authors.reduce((acc, x, index) =>
+                      acc + x.AFirst + " " + x.ALast + " ",
+                    "");
+                });
+                console.log({...book, author: authorsString});
+            })
+            //console.log(booksWithAuthors);
+
+            //socket.emit('')
+        });
+    })
+
+    socket.on('FETCH_AUTHORS', () => {
+        const sql = "SELECT * FROM author";
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            const authors = JSON.parse(JSON.stringify(result));
+            console.log(authors);
+            //socket.emit('FETCHED_AUTHORS', authors)
+        });
+    })
+
+    socket.on('FETCH_PUBLISHERS', () => {
+        const sql = "SELECT * FROM publisher";
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            const publishers = JSON.parse(JSON.stringify(result));
+            console.log(publishers);
+            //socket.emit('FETCHED_PUBLISHERS', authors)
+        });
+    })
+
+    socket.on('SEARCH_BOOK', ({title}) => {
         const sql = "SELECT ISBN FROM book WHERE title LIKE ?";
 
-        con.query(sql, "'%" + title "%'" , function (err, result) {
+        con.query(sql, "'%" + title + "%'" , function (err, result) {
             if (err) throw err;
             //console.log('Search for ', title);
             console.log(JSON.stringify(result));

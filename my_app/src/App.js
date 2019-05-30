@@ -12,7 +12,7 @@ const url = "http://localhost:8000";
 let socket = io(url);
 
 const initialState = {
-  status: "welcome",
+  status: "employeePage",
   employee: false,
   username: 'steph',
   password: 'curry',
@@ -51,6 +51,9 @@ const initialState = {
   expiredBooks: [
     {
       memberID: "1",
+      ISBN: "123012",
+      copyNumber: "123",
+      dateOfBorrowing: "9/6",
       expirationDate: "1/7"
     }
   ],
@@ -94,6 +97,9 @@ class App extends React.Component {
       alert(`Your member id is: ${memberID}`);
       this.setState({status: 'memberPage'});
     })
+
+    socket.on("UNSUCCESSFUL_LOGIN", () => alert("Invalid credentials."))
+
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
     this.handleAddEmployee = this.handleAddEmployee.bind(this);
@@ -203,7 +209,7 @@ class App extends React.Component {
          <button
          className="btn"
          onClick={() => this.goToWelcome()}>
-          Back
+          Logout
           </button>
        </div>
      );
@@ -215,12 +221,19 @@ class App extends React.Component {
              <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
              <a href="#">CODeS Public Library</a>
              <a onClick={() => this.setState({navBarStatus: 'search'})} href="#">Search</a>
-             <a onClick={() => this.setState({navBarStatus: 'manageBooks'})} href="#">Manage Books</a>
-             <a href="#">Manage Authors</a>
+             <a onClick={() => {
+               this.setState({navBarStatus: 'manageBooks'})
+               socket.emit("FETCH_BOOKS")
+             }}
+             href="#">
+             Manage Books</a>
+             <a href="#" onClick={() => socket.emit("FETCH_AUTHORS")}>Manage Authors</a>
+             <a href="#" onClick={() => socket.emit("FETCH_PUBLISHERS")}> Manage Publishers </a>
              <a onClick={() => this.setState({navBarStatus: 'reminders'})} href="#">Reminders </a>
              <a onClick={() => this.setState({navBarStatus: 'addEmployee'})} href="#">Add Employee</a>
          </div>
          <Employee
+         socket={socket}
          navBarStatus={this.state.navBarStatus}
          handleChangeStatus={this.handleChangeStatus}
          handleAddEmployee={this.handleAddEmployee}
@@ -232,7 +245,7 @@ class App extends React.Component {
          className = "btn"
          onClick={() => this.goToWelcome()}
          >
-          Back
+          Logout
          </button>
        </div>
 

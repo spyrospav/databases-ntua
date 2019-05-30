@@ -3,6 +3,7 @@ import { SearchForm } from "./SearchForm";
 import { ShowBookArray } from "./ShowBookArray";
 
 const Employee = ({
+  socket,
   navBarStatus,
   foundBooks,
   expiredBooks,
@@ -49,7 +50,7 @@ const Employee = ({
             <p className="col6"> {book.ISBN}</p>
             <p className="col6"> {book.copyNumber}</p>
             <p className="col6"> {book.dateOfBorrowing} </p>
-            <p className="col6"> {book.dueDate} </p>
+            <p className="col6"> {book.expirationDate} </p>
             <button className="col6 btn" onClick={() => handleSendReminder()}>
               {" "}
               Send reminder{" "}
@@ -70,6 +71,7 @@ const Employee = ({
   }
 
   else if (navBarStatus === 'manageBooks') {
+
     return (
       <div>
          <ShowBookArray booksArray={booksArray} />
