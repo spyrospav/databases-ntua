@@ -7,7 +7,7 @@ var con = mysql.createConnection({
     database : "library"
 });
 
-var title = "tal Signal";
+var title = "the";
 
 con.connect(function(err){
     if (err) throw err;
@@ -15,6 +15,6 @@ con.connect(function(err){
     var search = "SELECT * FROM book_view WHERE title LIKE ? ORDER BY title ASC";
     con.query(search, '%' + title + '%', function (err, result) {
         if (err) throw err;
-        console.log(result);
+        console.log(JSON.parse((JSON.stringify(result))));
     });
 });

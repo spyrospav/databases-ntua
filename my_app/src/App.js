@@ -12,7 +12,7 @@ const url = "http://localhost:8000";
 let socket = io(url);
 
 const initialState = {
-  status: "employeePage",
+  status: "welcome",
   employee: false,
   username: 'steph',
   password: 'curry',
