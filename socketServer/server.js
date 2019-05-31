@@ -229,7 +229,7 @@ io.on('connection', function(socket) {
         var sql = "INSERT INTO publisher (pubName, estYear, Street, Street_num, Postal_code) VALUES (?, ?, ?, ?, ?)";
 
         var val = [pubName, estYear, Street, streetNum, postalCode];
-        con.query(sql, var, function (err, result) {
+        con.query(sql, val, function (err, result) {
             if (err) throw err;
             socket.emit('SUCCESSFUL_PUBLISHER_INSERT');
             console.log("Publisher inserted");
