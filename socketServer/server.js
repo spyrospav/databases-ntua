@@ -76,7 +76,7 @@ io.on('connection', function(socket) {
 
     socket.on('FETCH_BOOKS', () => {
         const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*), B.total"
-        + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN";
+        + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN ORDER BY title ASC";
 
         con.query(sql, async function (err, result) {
             if (err) throw err;
