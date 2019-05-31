@@ -1,13 +1,14 @@
 import React from "react";
-import { InsertFields } from "./InsertFields";
-import { EditFields } from "./EditFields";
+import { InsertBookFields } from "./InsertBookFields";
+import { EditBookFields } from "./EditBookFields";
 
 class ShowBookArray extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       status: "", //'insert', 'edit', 'delete'
-      indexEdit: -1
+      indexEdit: -1,
+      indexDelete: -1
     };
   }
   render() {
@@ -16,7 +17,7 @@ class ShowBookArray extends React.Component {
         <h2> Books </h2>
         {this.state.status === "insert" ? (
           <div>
-            <InsertFields />
+            <InsertBookFields />
             <button className="btn" onClick={() => this.setState({ status: "" })}>Undo</button>
             <button className="btn"> Insert </button>
           </div>
@@ -39,7 +40,7 @@ class ShowBookArray extends React.Component {
           if (this.state.indexEdit === index) {
             return (
               <div key={book.ISBN}>
-                <EditFields
+                <EditBookFields
                   key={book.ISBN}
                   ISBN={book.ISBN}
                   title={book.title}
@@ -49,7 +50,11 @@ class ShowBookArray extends React.Component {
                   numOfPages={book.numPages}
                   numOfCopies={book.remaining}
                 />
-                <button> Update </button>
+                <button className='btn-small'> Update </button>
+                <button className='btn-small'
+                onClick={() => this.setState({indexEdit: -1})}>
+                Undo
+                </button>
               </div>
             );
           } else {
@@ -62,6 +67,7 @@ class ShowBookArray extends React.Component {
                 <p className="col7">{book.pubYear}</p>
                 <p className="col7">{book.numPages}</p>
                 <p className="col7">{book.remaining}</p>
+
                 <button
                   className="btn-small"
                   onClick={() =>
@@ -70,7 +76,9 @@ class ShowBookArray extends React.Component {
                 >
                   Edit
                 </button>
-                <button className="btn-small">Delete</button>
+                <button className="btn-small">
+                Delete
+                </button>
               </div>
             );
           }

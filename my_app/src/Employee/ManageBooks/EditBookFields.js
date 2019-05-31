@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
 
-class EditFields extends React.Component {
+class EditBookFields extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -89,4 +89,4 @@ class EditFields extends React.Component {
     }
 }
 
-export { EditFields };
+export { EditBookFields };

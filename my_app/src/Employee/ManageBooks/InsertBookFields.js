@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
 
-class InsertFields extends React.Component {
+class InsertBookFields extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,4 +83,4 @@ class InsertFields extends React.Component {
     }
 }
 
-export { InsertFields };
+export { InsertBookFields };
