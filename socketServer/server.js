@@ -146,6 +146,7 @@ io.on('connection', function(socket) {
         });
     })
 
+    /* working on it
     socket.on('BORROW', ({memberID, ISBN}) => {
         const sql = "SELECT max(copyNr) FROM copies WHERE ISBN LIKE '?' AND available = true";
 
@@ -155,13 +156,16 @@ io.on('connection', function(socket) {
             console.log(borrows);
             //socket.emit('FETCHED_PUBLISHERS', authors)
         });
-    })
+    })*/
 
+    /* working on it
     socket.on('MEMBER_REMINDERS', ({memberID})){
         const sql = "SELECT R.ISBN, R.date_of_borrowing, R.date_of_reminder FROM reminder AS R INNER JOIN borrows WHERE R.memberID = ? AND date_of_return IS NULL";
     }
+    */
 
-    /*socket.on('SEARCH_BOOK', ({title}) => {
+    /* working on it
+    socket.on('SEARCH_BOOK', ({title}) => {
         const sql = "SELECT ISBN FROM book WHERE title LIKE ?";
 
         con.query(sql, "'%" + title + "%'" , function (err, result) {
