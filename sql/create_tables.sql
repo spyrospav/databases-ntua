@@ -88,6 +88,7 @@ CREATE TABLE borrows(
     ISBN VARCHAR(30) NOT NULL,
     copyNr INTEGER NOT NULL,
     date_of_borrowing DATE NOT NULL,
+    due_date DATE AS (DATE_ADD(date_of_borrowing, INTERVAL 30 DAY)),
     date_of_return DATE,
     PRIMARY KEY (memberID, ISBN, copyNr, date_of_borrowing),
     FOREIGN KEY (memberID) REFERENCES member(memberID),
@@ -200,3 +201,17 @@ IF (new.pubName NOT IN (SELECT P.pubName FROM publisher as P)) THEN
 END IF;
 END$$
 DELIMITER ;
+
+/*
+DELIMITER $$
+CREATE TRIGGER deleteReminder
+AFTER UPDATE on borrows
+FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NOT NULL AND old.date_of_return IS NULL) THEN
+    DELETE FROM reminders WHERE memberID = old.memberID AND ISBN = old.ISBN AND
+    date_of_borrowing = old.date_of_borrowing AND copyNr = old.copyNr;
+END IF;
+END$$
+DELIMITER ;
+*/
