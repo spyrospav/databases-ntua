@@ -1,19 +1,19 @@
 member_id, first_name, last_name, street, street_num, postal_code, member_birth_date
-1001, Spyros, Pavlatos, Prigkipos,40,16673,1998-06-06
-1002, Iasonas, Nikolaou, Trollias,10,12345,1998-05-10
-1003, Chariton, Charitonidis, Makria,42,19013,1998-07-30
-1004, Katerina, Doka, Glyfada,99,11111,1988-01-01
-1005, Nektarios, Kozyris, Polytechneiou,1,16384,1978-01-01
-1006, Piper, Chapman, Litchfield,6,20191,1990-04-12
-1007, Walter, White, Albuquerque,8,20152,1970-12-12
-1008, Ford, Prefect, Adams str,42,42424,2000-05-30
-1009, Han, Solo, Star Wars Ave.,100,10301,1999-08-10
-1010, Jack, Sparrow, Peiraton,75,19013,2006-10-10
-1011, Hermione, Granger, Hogwarts,3,19019,1997-02-23
-1012, Anakin, Skywalker, Star Wars Ave.,102,10301,1990-11-11
-1013, Buzz, Lightyear, Toy Story Str.,15,93721,2000-09-20
-1014, Hanibal, Lecter, Creepy Ave.,666,13013,1996-08-15
-1015, Winston, Smith, Revolution Str.,1,12399,1984-01-10
-1016, Dave, Bowman, Odysseos,32,18943,2001-06-19
-1017, Bill, Hartford, Fidelio,31,89432,1997-04-12
-1018, Zaphod, Beeblebrox, Spacetime,99,99999,1979-07-20
+1001,Spyros,Pavlatos,Prigkipos,40,16673,1998-06-06
+1002,Iasonas,Nikolaou,Trollias,10,12345,1998-05-10
+1003,Chariton,Charitonidis,Makria,42,19013,1998-07-30
+1004,Katerina,Doka,Polytechneiou,99,11111,1988-01-01
+1005,Nektarios,Kozyris,Polytechneiou,1,16384,1978-01-01
+1006,Piper,Chapman,Litchfield,6,20191,1990-04-12
+1007,Walter,White,Albuquerque,8,20152,1970-12-12
+1008,Ford,Prefect,Adams str,42,42424,2000-05-30
+1009,Han,Solo,Star Wars Ave.,100,10301,1999-08-10
+1010,Jack,Sparrow,Peiraton,75,19013,2006-10-10
+1011,Hermione,Granger,Hogwarts,3,19019,1997-02-23
+1012,Anakin,Skywalker,Star Wars Ave.,102,10301,1990-11-11
+1013,Buzz,Lightyear,Toy Story Str.,15,93721,2000-09-20
+1014,Hanibal,Lecter,Creepy Ave.,666,13013,1996-08-15
+1015,Winston,Smith,Revolution Str.,1,12399,1984-01-10
+1016,Dave,Bowman,Odysseos,32,18943,2001-06-19
+1017,Bill,Hartford,Fidelio,31,89432,1997-04-12
+1018,Zaphod,Beeblebrox,Spacetime,99,99999,1979-07-20

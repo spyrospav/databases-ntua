@@ -151,7 +151,7 @@ class App extends React.Component {
            <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
            <a href="#home">CODeS Public Library</a>
        </div>
-         <p> Sign in as: {this.state.employee ? <a>employee</a> : <a>member</a>} </p>
+         <p> Sign in as:<strong> {this.state.employee ? <a>employee</a> : <a>member</a>} </strong></p>
          <SignIn
             socket={socket}
             employee={this.state.employee}
