@@ -12,8 +12,7 @@ CREATE TABLE member(
     Postal_code VARCHAR(10),
     MBirthdate DATE,
     current_borrows SMALLINT DEFAULT 0,
-    PRIMARY KEY(memberID),
-    CHECK(current_borrows<=5)
+    PRIMARY KEY(memberID)
 );
 
 ALTER TABLE member AUTO_INCREMENT = 1001;
@@ -36,7 +35,7 @@ CREATE TABLE book(
     remaining INTEGER DEFAULT 0,
     total INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
-    FOREIGN KEY(pubName) REFERENCES publisher(pubName) ON DELETE SET NULL
+    FOREIGN KEY(pubName) REFERENCES publisher(pubName) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE author(
@@ -47,13 +46,34 @@ CREATE TABLE author(
     PRIMARY KEY(authID)
 );
 
+CREATE TABLE written_by(
+    ISBN VARCHAR(30) NOT NULL,
+    authID INTEGER NOT NULL,
+    PRIMARY KEY(ISBN, authID),
+    FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (authID) REFERENCES author(authID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 CREATE TABLE copies(
     ISBN VARCHAR(30) NOT NULL,
     copyNr INTEGER NOT NULL,
     available BOOLEAN DEFAULT true,
     shelf VARCHAR(15) ,
     PRIMARY KEY (ISBN,copyNr),
-    FOREIGN KEY (ISBN) REFERENCES book(ISBN)
+    FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE borrows(
+    memberID INTEGER NOT NULL,
+    ISBN VARCHAR(30) NOT NULL,
+    copyNr INTEGER NOT NULL,
+    date_of_borrowing DATE NOT NULL,
+    due_date DATE AS (DATE_ADD(date_of_borrowing, INTERVAL 30 DAY)),
+    date_of_return DATE,
+    PRIMARY KEY (memberID, ISBN, copyNr, date_of_borrowing),
+    FOREIGN KEY (memberID) REFERENCES member(memberID) ON DELETE CASCADE,
+    FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr) ON UPDATE CASCADE
 );
 
 CREATE TABLE category(
@@ -61,6 +81,14 @@ CREATE TABLE category(
     supercategoryName VARCHAR(25),
     PRIMARY KEY (categoryName),
     FOREIGN KEY (supercategoryName) REFERENCES category(categoryName)
+);
+
+CREATE TABLE belongs_to(
+    ISBN VARCHAR(30) NOT NULL,
+    categoryName VARCHAR(25),
+    PRIMARY KEY (ISBN, categoryName),
+    FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (categoryName) REFERENCES category(categoryName) ON DELETE CASCADE
 );
 
 CREATE TABLE employee(
@@ -85,35 +113,6 @@ CREATE TABLE temporary_employee(
     FOREIGN KEY (empID) REFERENCES employee(empID) ON DELETE CASCADE
 );
 
-CREATE TABLE borrows(
-    memberID INTEGER NOT NULL,
-    ISBN VARCHAR(30) NOT NULL,
-    copyNr INTEGER NOT NULL,
-    date_of_borrowing DATE NOT NULL,
-    due_date DATE AS (DATE_ADD(date_of_borrowing, INTERVAL 30 DAY)),
-    date_of_return DATE,
-    PRIMARY KEY (memberID, ISBN, copyNr, date_of_borrowing),
-    FOREIGN KEY (memberID) REFERENCES member(memberID),
-    FOREIGN KEY (ISBN) REFERENCES book(ISBN),
-    FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
-);
-
-CREATE TABLE belongs_to(
-    ISBN VARCHAR(30) NOT NULL,
-    categoryName VARCHAR(25),
-    PRIMARY KEY (ISBN, categoryName),
-    FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON DELETE CASCADE,
-    FOREIGN KEY (categoryName) REFERENCES category(categoryName) ON DELETE CASCADE
-);
-
-CREATE TABLE written_by(
-    ISBN VARCHAR(30) NOT NULL,
-    authID INTEGER NOT NULL,
-    PRIMARY KEY(ISBN, authID),
-    FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON DELETE CASCADE,
-    FOREIGN KEY (authID) REFERENCES author(authID) ON DELETE CASCADE
-);
-
 CREATE TABLE reminder(
     memberID INTEGER NOT NULL,
     empID INTEGER NOT NULL,
@@ -123,14 +122,15 @@ CREATE TABLE reminder(
     date_of_reminder DATE NOT NULL,
     PRIMARY KEY (memberID, empID, ISBN, copyNr, date_of_borrowing, date_of_reminder),
     FOREIGN KEY (empID) REFERENCES employee(empID),
-    FOREIGN KEY (memberID) REFERENCES member(memberID),
-    FOREIGN KEY (ISBN) REFERENCES book(ISBN),
-    FOREIGN KEY (memberID, ISBN, copyNr, date_of_borrowing) REFERENCES borrows(memberID, ISBN, copyNr, date_of_borrowing),
+    FOREIGN KEY (memberID) REFERENCES member(memberID) ON DELETE CASCADE,
+    FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (memberID, ISBN, copyNr, date_of_borrowing) REFERENCES borrows(memberID, ISBN, copyNr, date_of_borrowing)
+        ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
 );
 
 CREATE VIEW member_view AS
-SELECT MFirst, MLast, Street, Street_num, Postal_code, MBirthdate
+SELECT memberID, MFirst, MLast, Street, Street_num, Postal_code, MBirthdate
 FROM member;
 
 CREATE VIEW book_view AS
@@ -249,6 +249,32 @@ FOR EACH ROW
 BEGIN
 IF (new.pubName NOT IN (SELECT P.pubName FROM publisher as P)) THEN
     INSERT INTO publisher(pubName) VALUES (new.pubName);
+END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER DeleteBorrows
+BEFORE DELETE on borrows
+FOR EACH ROW
+BEGIN
+IF (old.date_of_return IS NULL) THEN
+    UPDATE copies AS C
+    SET C.available = true
+    WHERE old.ISBN = C.ISBN AND old.copyNr = C.copyNr;
+END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER DeleteBorrows2
+BEFORE DELETE on borrows
+FOR EACH ROW
+BEGIN
+IF (old.date_of_return IS NULL) THEN
+    UPDATE book AS B
+    SET B.remaining = B.remaining +1
+    WHERE B.ISBN = old.ISBN;
 END IF;
 END$$
 DELIMITER ;
