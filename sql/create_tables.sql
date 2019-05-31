@@ -11,7 +11,9 @@ CREATE TABLE member(
     Street_num SMALLINT,
     Postal_code VARCHAR(10),
     MBirthdate DATE,
-    PRIMARY KEY(memberID)
+    current_borrows SMALLINT DEFAULT 0,
+    PRIMARY KEY(memberID),
+    CHECK(current_borrows<=5)
 );
 
 ALTER TABLE member AUTO_INCREMENT = 1001;
@@ -127,6 +129,10 @@ CREATE TABLE reminder(
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
 );
 
+CREATE VIEW member_view AS
+SELECT MFirst, MLast, Street, Street_num, Postal_code, MBirthdate
+FROM member;
+
 CREATE VIEW book_view AS
 SELECT B.title, B.ISBN, P.pubName, B.pubYear, A.AFirst, A.ALast, B.remaining
 FROM book as B, publisher as P, author as A, written_by as W
@@ -161,6 +167,32 @@ IF (new.date_of_return IS NOT NULL AND old.date_of_return IS NULL) THEN
     UPDATE book AS b
     SET remaining = remaining + 1
     WHERE b.ISBN = new.ISBN;
+END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER increaseCurrentBorrows
+AFTER INSERT ON borrows
+FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NULL) THEN
+    UPDATE member AS m
+    SET m.current_borrows = m.current_borrows + 1
+    WHERE m.memberID = new.memberID;
+END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER decreaseCurrentBorrows
+AFTER UPDATE ON borrows
+FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NOT NULL AND old.date_of_return IS NULL) THEN
+    UPDATE member AS m
+    SET m.current_borrows = m.current_borrows - 1
+    WHERE m.memberID = new.memberID;
 END IF;
 END$$
 DELIMITER ;
@@ -202,6 +234,17 @@ END IF;
 END$$
 DELIMITER ;
 
+DELIMITER $$
+CREATE TRIGGER checkCurrentBorrows
+BEFORE UPDATE ON member
+FOR EACH ROW
+BEGIN
+    IF (old.current_borrows=5 AND new.current_borrows=6) THEN
+    SIGNAL SQLSTATE '10000'
+        SET MESSAGE_TEXT = 'User has already 5 borrowed books';
+    END IF;
+END$$
+DELIMITER ;
 /*
 DELIMITER $$
 CREATE TRIGGER deleteReminder

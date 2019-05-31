@@ -176,5 +176,45 @@ io.on('connection', function(socket) {
         });
     })*/
 
+    socket.on('DELETE_BOOK', ({ISBN}) => {
+        const sql = "DELETE FROM book WHERE ISBN = ?";
+
+        con.query(sql, [ISBN], function (err, result) {
+            if (err) throw err;
+            console.log("Deleted book");
+            //socket.emit('DELETED_BOOK');
+        });
+    })
+
+    socket.on('DELETE_BOOK', ({pubName}) => {
+        const sql = "DELETE FROM publisher WHERE pubName = ?";
+
+        con.query(sql, [pubName], function (err, result) {
+            if (err) throw err;
+            console.log("Deleted book");
+            //socket.emit('DELETED_BOOK');
+        });
+    })
+
+    socket.on('DELETE_AUTHOR', ({autID}) => {
+        const sql = "DELETE FROM author WHERE authID = ?";
+
+        con.query(sql, [authID], function (err, result) {
+            if (err) throw err;
+            console.log("Deleted book");
+            //socket.emit('DELETED_BOOK');
+        });
+    })
+
+    socket.on('DELETE_MEMBER', ({autID}) => {
+        const sql = "DELETE FROM author WHERE authID = ?";
+
+        con.query(sql, [authID], function (err, result) {
+            if (err) throw err;
+            console.log("Deleted book");
+            //socket.emit('DELETED_BOOK');
+        });
+    })
+
    console.log("connection ok!");
  })
