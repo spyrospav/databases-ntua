@@ -11,15 +11,17 @@ class ShowPublisherArray extends React.Component {
       indexDelete: -1
     };
   }
+  handleInsert = () => {
+    this.setState({status: ""});
+  }
   render() {
     return (
       <div className="books">
         <h2> Publishers </h2>
         {this.state.status === "insert" ? (
           <div>
-            <InsertPublisherFields />
-            <button className="btn" onClick={() => this.setState({ status: "" })}>Undo</button>
-            <button className="btn"> Insert </button>
+            <InsertPublisherFields socket={this.props.socket} handleInsert={this.handleInsert}/>
+            <button className="btn" onClick={() => this.setState({ status: ""})}>Undo</button>
           </div>
         ) : (
           <button className="btn" onClick={() => this.setState({ status: "insert" })}>
@@ -70,7 +72,11 @@ class ShowPublisherArray extends React.Component {
                 >
                   Edit
                 </button>
-                <button className="btn-small">
+                <button className="btn-small"
+                  onClick={() => {
+                    this.props.socket.emit("DELETE_PUBLISHER", publisher.pubName)
+                    this.setState({status: ""})
+                  }}>
                 Delete
                 </button>
               </div>

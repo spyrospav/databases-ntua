@@ -17,9 +17,8 @@ class ShowBookArray extends React.Component {
         <h2> Books </h2>
         {this.state.status === "insert" ? (
           <div>
-            <InsertBookFields />
+            <InsertBookFields socket={this.props.socket}/>
             <button className="btn" onClick={() => this.setState({ status: "" })}>Undo</button>
-            <button className="btn"> Insert </button>
           </div>
         ) : (
           <button className="btn" onClick={() => this.setState({ status: "insert" })}>

@@ -36,7 +36,7 @@ const Employee = ({
     </div>
     );
   }
-  else if (navBarStatus === 'reminders') {
+  else if (navBarStatus === 'borrowedBooks') {
     return (
       <div>
         <h2> Borrowed Books: </h2>
@@ -77,19 +77,19 @@ const Employee = ({
   else if (navBarStatus === 'manageBooks') {
     return (
       <div>
-         <ShowBookArray booksArray={booksArray} />
+         <ShowBookArray booksArray={booksArray} socket={socket}/>
        </div>
     );
   }
   else if (navBarStatus === 'manageAuthors') {
     return (
       <div>
-        <ShowAuthorArray authorsArray={authorsArray} />
+        <ShowAuthorArray authorsArray={authorsArray} socket={socket}/>
       </div>
     );
   }
   else if (navBarStatus === 'managePublishers') {
-    return <ShowPublisherArray publishersArray={publishersArray}/>
+    return <ShowPublisherArray socket={socket} publishersArray={publishersArray}/>
   }
 };
 

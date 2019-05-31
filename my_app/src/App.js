@@ -16,7 +16,7 @@ const initialState = {
   employee: false,
   username: 'steph',
   password: 'curry',
-  navBarStatus: 'search', //'search','manageBooks','reminders','addEmployee'
+  navBarStatus: 'search', //'search','manageBooks','borrowedBooks','addEmployee'
   borrowedBooks: [
     {
       title: "book1",
@@ -88,6 +88,15 @@ class App extends React.Component {
     socket.on("FETCH_BOOKS", books => this.setState({booksArray: books}))
     socket.on("FETCH_AUTHORS", authors => this.setState({authorsArray: authors}))
     socket.on("FETCH_PUBLISHERS", publishers => this.setState({publishersArray: publishers}))
+
+    socket.on("SUCCESSFUL_INSERT_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
+    socket.on("SUCCESSFUL_DELETE_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
+    socket.on("SUCCESSFUL_UPDATE_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
+
+    socket.on("SUCCESSFUL_INSERT_PUBLISHER", () => socket.emit("FETCH_PUBLISHERS"));
+    socket.on("SUCCESSFUL_DELETE_PUBLISHER", () => socket.emit("FETCH_PUBLISHERS"));
+    socket.on("SUCCESSFUL_UPDATE_PUBLISHER", () => socket.emit("FETCH_PUBLISHERS"));
+
     //======================
 
 
@@ -231,7 +240,10 @@ class App extends React.Component {
              }}>
               Manage Publishers
              </a>
-             <a onClick={() => this.setState({navBarStatus: 'reminders'})} href="#">Reminders </a>
+             <a onClick={() => {
+               socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE");
+               this.setState({navBarStatus: 'borrowedBooks'})
+             }} href="#">Borrowed Books </a>
              <a onClick={() => this.setState({navBarStatus: 'addEmployee'})} href="#">Add Employee</a>
          </div>
          <Employee

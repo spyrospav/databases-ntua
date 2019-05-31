@@ -12,7 +12,6 @@ class InsertPublisherFields extends React.Component {
       Street_num: '',
       Postal_code: '',
     }
-
   }
 
   handleChange = field => event => {
@@ -21,7 +20,6 @@ class InsertPublisherFields extends React.Component {
       ...this.state,
       [field]: event.target.value
     })
-    //this.props.handleChange();
   };
 
   render() {
@@ -62,6 +60,10 @@ class InsertPublisherFields extends React.Component {
           margin="normal"
           variant="outlined"
         />
+        <button className="btn" onClick={ () => {
+          this.props.socket.emit("INSERT_PUBLISHER", this.state)
+          this.props.handleInsert();
+        }}> Insert </button>
       </div>
       );
     }

@@ -20,7 +20,6 @@ class InsertAuthorFields extends React.Component {
       ...this.state,
       [field]: event.target.value
     })
-    //this.props.handleChange();
   };
 
   render() {
@@ -47,6 +46,10 @@ class InsertAuthorFields extends React.Component {
           margin="normal"
           variant="outlined"
         />
+        <button className="btn" onClick={ () => {
+          this.props.socket.emit("INSERT_AUTHOR", this.state)
+          this.props.handleInsert();
+        }}> Insert </button>
       </div>
       );
     }

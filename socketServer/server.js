@@ -68,7 +68,7 @@ io.on('connection', function(socket) {
 
     socket.on('FETCH_BOOKS', () => {
         //SQL Query with JOIN and ORDER BY and AGGREGATE FUNCTION COUNT()
-        const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*), B.total"
+        const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
         + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN ORDER BY title ASC";
 
         con.query(sql, async function (err, result) {
@@ -98,7 +98,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('FETCH_AUTHORS', () => {
-        const sql = "SELECT * FROM author";
+        const sql = "SELECT * FROM author ORDER BY ALast ASC";
 
         con.query(sql, function (err, result) {
             if (err) throw err;
@@ -114,7 +114,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('FETCH_PUBLISHERS', () => {
-        const sql = "SELECT * FROM publisher";
+        const sql = "SELECT * FROM publisher ORDER BY pubName ASC";
 
         con.query(sql, function (err, result) {
             if (err) throw err;
@@ -144,7 +144,14 @@ io.on('connection', function(socket) {
         con.query(sql, function (err, result) {
             if (err) throw err;
             const borrows = JSON.parse(JSON.stringify(result));
-            console.log(borrows);
+            const borrowsFixDate = borrows.map(borrow => ({
+              memberID: borrow.memberID,
+              ISBN: borrow.ISBN,
+              copyNumber: borrow.copyNumber,
+              date_of_borrowing: borrow.date_of_borrowing.substr(0,10),
+              due_date: borrow.due_date.substr(0,10),
+            }))
+            console.log(borrowsFixDate);
             //socket.emit('FETCHED_ACTIVE_BORROWS_EMPLOYEE', borrows);
         });
     })
@@ -157,27 +164,27 @@ io.on('connection', function(socket) {
         con.query(sql, [ISBN], function (err, result) {
             if (err) throw err;
             console.log("Deleted book");
-            //socket.emit('DELETED_BOOK');
+            //socket.emit('SUCCESSFUL_DELETE_BOOK');
         });
     })
 
-    socket.on('DELETE_PUBLISHER', ({pubName}) => {
+    socket.on('DELETE_PUBLISHER', (pubName) => {
         const sql = "DELETE FROM publisher WHERE pubName = ?";
 
         con.query(sql, [pubName], function (err, result) {
             if (err) throw err;
             console.log("Deleted publisher");
-            //socket.emit('DELETED_BOOK');
+            socket.emit('SUCCESSFUL_DELETE_PUBLISHER');
         });
     })
 
-    socket.on('DELETE_AUTHOR', ({autID}) => {
+    socket.on('DELETE_AUTHOR', (authID) => {
         const sql = "DELETE FROM author WHERE authID = ?";
 
         con.query(sql, [authID], function (err, result) {
             if (err) throw err;
             console.log("Deleted author");
-            //socket.emit('DELETED_BOOK');
+            socket.emit('SUCCESSFUL_DELETE_AUTHOR');
         });
     })
 
@@ -236,9 +243,24 @@ io.on('connection', function(socket) {
         var val = [pubName, estYear, Street, streetNum, postalCode];
         con.query(sql, val, function (err, result) {
             if (err) throw err;
-            socket.emit('SUCCESSFUL_PUBLISHER_INSERT');
+            socket.emit('SUCCESSFUL_INSERT_PUBLISHER');
             console.log("Publisher inserted");
         });
+    });
+
+    socket.on('INSERT_AUTHOR', ({AFirst, ALast, ABirthdate}) =>{
+        var sql = "INSERT INTO author (AFirst, ALast, ABirthdate) VALUES (?, ?, ?)";
+
+        var val = [AFirst, ALast, ABirthdate];
+        con.query(sql, val, function (err, result) {
+            if (err) throw err;
+            socket.emit('SUCCESSFUL_INSERT_AUTHOR');
+            console.log("Author inserted");
+        });
+    });
+
+    socket.on('INSERT_BOOK', ({ISBN, title, pubYear, numPages, }) =>{
+        //socket.emit('FETCH_BOOK')
     });
 
 //--------------------------- UPDATES ---------------------------\\
@@ -250,20 +272,32 @@ io.on('connection', function(socket) {
         var val = [pubName, estYear, Street, streetNum, postalCode, pubName];
         con.query(sql, val, function (err, result) {
             if (err) throw err;
-            socket.emit('SUCCESSFUL_PUBLISHER_update');
+            socket.emit('SUCCESSFUL_UPDATE_PUBLISHER');
             console.log("Publisher updated");
         });
     });
 
     socket.on('UPDATE_AUTHOR', ({authID, AFirst, ALast, ABirthdate}) =>{
         var sql = "UPDATE author"
-        + " SET authID = ?, AFirst = ?, ALast = ?, ABirthdate = ? WHERE pubName LIKE '?'";
+        + " SET AFirst = ?, ALast = ?, ABirthdate = ? WHERE authID = ?";
 
-        var val = [authID, AFirst, ALast, ABirthdate, authID];
+        var val = [AFirst, ALast, ABirthdate, authID];
         con.query(sql, val, function (err, result) {
             if (err) throw err;
-            socket.emit('SUCCESSFUL_PUBLISHER_update');
-            console.log("Publisher updated");
+            socket.emit('SUCCESSFUL_UPDATE_AUTHOR');
+            console.log("Author updated");
+        });
+    });
+
+    socket.on('UPDATE_BOOK', ({ISBN, title, pubYear, numPages, pubName}) =>{
+        var sql = "UPDATE author"
+        + " SET ISBN = ?, title = ?, pubYear = ?, numPages = ? pubName= ? WHERE ISBN LIKE '?'";
+
+        var val = [ISBN, title, pubYear, numPages, pubName, ISBN];
+        con.query(sql, val, function (err, result) {
+            if (err) throw err;
+            socket.emit('SUCCESSFUL_UPDATE_BOOK');
+            console.log("Book updated");
         });
     });
 

@@ -6,7 +6,7 @@ class EditAuthorFields extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      authorID: this.props.authorID,
+      authID: this.props.authID,
       AFirst: this.props.AFirst,
       ALast: this.props.ALast,
       ABirthdate: this.props.ABirthdate,
@@ -48,6 +48,11 @@ class EditAuthorFields extends React.Component {
           margin="normal"
           variant="outlined"
         />
+        <button className='btn-small' onClick={ () => {
+          this.props.socket.emit("UPDATE_AUTHOR", this.state);
+          this.props.handleEdit();
+        }}>
+        Update </button>
       </div>
       );
     }
