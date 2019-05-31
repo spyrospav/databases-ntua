@@ -1,5 +1,5 @@
 LOAD DATA LOCAL INFILE './sql/data/publishers.csv' INTO TABLE publisher FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
-LOAD DATA LOCAL INFILE './sql/data/members.csv' INTO TABLE member FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
+LOAD DATA LOCAL INFILE './sql/data/members.csv' INTO TABLE member FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS (memberID, MFirst, MLast, Street, Street_num, Postal_code, MBirthDate);
 LOAD DATA LOCAL INFILE './sql/data/books.csv' INTO TABLE book FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS (ISBN, title, pubYear, numPages, pubName);
 LOAD DATA LOCAL INFILE './sql/data/authors.csv' INTO TABLE author FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS (AFirst, ALast, ABirthdate);
 LOAD DATA LOCAL INFILE './sql/data/written_by.csv' INTO TABLE written_by FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
