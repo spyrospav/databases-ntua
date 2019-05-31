@@ -34,6 +34,7 @@ CREATE TABLE book(
     numPages SMALLINT,
     pubName VARCHAR(50),
     remaining INTEGER DEFAULT 0,
+    total INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
     FOREIGN KEY(pubName) REFERENCES publisher(pubName) ON DELETE SET NULL
 );
@@ -137,6 +138,13 @@ SELECT B.title, B.ISBN, P.pubName, B.pubYear, A.AFirst, A.ALast, B.remaining
 FROM book as B, publisher as P, author as A, written_by as W
 WHERE B.pubName = P.pubName AND B.ISBN = W.ISBN AND A.authID = W.authID;
 
+CREATE TRIGGER increaseTotalCopies
+AFTER INSERT ON copies
+FOR EACH ROW
+    UPDATE book AS b
+    SET total = total + 1
+    WHERE b.ISBN = new.ISBN;
+
 CREATE TRIGGER increaseRemainingCopiesAdd
 AFTER INSERT ON copies
 FOR EACH ROW
@@ -197,6 +205,18 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
+CREATE TRIGGER checkCurrentBorrows
+BEFORE UPDATE ON member
+FOR EACH ROW
+BEGIN
+    IF (old.current_borrows=5 AND new.current_borrows=6) THEN
+    SIGNAL SQLSTATE '10000'
+        SET MESSAGE_TEXT = 'User has already 5 borrowed books';
+    END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
 CREATE TRIGGER makeCopyUnavailable
 AFTER INSERT ON borrows
 FOR EACH ROW
@@ -232,28 +252,3 @@ IF (new.pubName NOT IN (SELECT P.pubName FROM publisher as P)) THEN
 END IF;
 END$$
 DELIMITER ;
-
-DELIMITER $$
-CREATE TRIGGER checkCurrentBorrows
-BEFORE UPDATE ON member
-FOR EACH ROW
-BEGIN
-    IF (old.current_borrows=5 AND new.current_borrows=6) THEN
-    SIGNAL SQLSTATE '10000'
-        SET MESSAGE_TEXT = 'User has already 5 borrowed books';
-    END IF;
-END$$
-DELIMITER ;
-/*
-DELIMITER $$
-CREATE TRIGGER deleteReminder
-AFTER UPDATE on borrows
-FOR EACH ROW
-BEGIN
-IF (new.date_of_return IS NOT NULL AND old.date_of_return IS NULL) THEN
-    DELETE FROM reminders WHERE memberID = old.memberID AND ISBN = old.ISBN AND
-    date_of_borrowing = old.date_of_borrowing AND copyNr = old.copyNr;
-END IF;
-END$$
-DELIMITER ;
-*/
