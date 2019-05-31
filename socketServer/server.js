@@ -82,7 +82,7 @@ io.on('connection', function(socket) {
             if (err) throw err;
             //console.log('Search for ', title);
             const books = JSON.parse(JSON.stringify(result));
-            //console.log(books);
+
             const promises = books.map(book => {
                 const sql2 = "SELECT AFirst, ALast FROM author AS A, written_by as W WHERE W.ISBN LIKE '" + book.ISBN +"' AND A.authID=W.authID";
                 return new Promise((resolve, reject) => {
@@ -93,13 +93,13 @@ io.on('connection', function(socket) {
                       authorsString = authors.reduce((acc, x, index) =>
                         acc + x.AFirst + " " + x.ALast + " ",
                       "");
+                      return resolve({...book, author: authorsString});
                   });
-                  return resolve({...book, author: authorsString});
                 })
             })
-            console.log(promises);
-            const booksWithAuthors = await Promise.all(promises);
 
+            const booksWithAuthors = await Promise.all(promises);
+            console.log(booksWithAuthors);
 
             //socket.emit('')
         });
