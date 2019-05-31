@@ -123,7 +123,45 @@ io.on('connection', function(socket) {
         });
     })
 
-    socket.on('SEARCH_BOOK', ({title}) => {
+    socket.on('FETCH_ACTIVE_BORROWS_MEMBERS', (memberID) => {
+        const sql = "SELECT (ISBN, date_of_borrowing, due_date) FROM borrows"
+        + "WHERE memberID = ? AND date_of_return IS NULL ORDER BY due_date";
+
+        con.query(sql, [memberID], function (err, result) {
+            if (err) throw err;
+            const borrows = JSON.parse(JSON.stringify(result));
+            console.log(borrows);
+            //socket.emit('FETCHED_ACTIVE_BORROWS_MEMBERS', borrows);
+        });
+    })
+
+    socket.on('FETCH_ACTIVE_BORROWS_EMPLOYEE', () => {
+        const sql = "SELECT * FROM borrows WHERE date_of_return IS NULL ORDER BY memberID ASC";
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            const borrows = JSON.parse(JSON.stringify(result));
+            console.log(borrows);
+            //socket.emit('FETCHED_ACTIVE_BORROWS_EMPLOYEE', borrows);
+        });
+    })
+
+    socket.on('BORROW', ({memberID, ISBN}) => {
+        const sql = "SELECT max(copyNr) FROM copies WHERE ISBN LIKE '?' AND available = true";
+
+        con.query(sql, [ISBN], function (err, result) {
+            if (err) throw err;
+            const borrows = JSON.parse(JSON.stringify(result));
+            console.log(borrows);
+            //socket.emit('FETCHED_PUBLISHERS', authors)
+        });
+    })
+
+    socket.on('MEMBER_REMINDERS', ({memberID})){
+        const sql = "SELECT R.ISBN, R.date_of_borrowing, R.date_of_reminder FROM reminder AS R INNER JOIN borrows WHERE R.memberID = ? AND date_of_return IS NULL";
+    }
+
+    /*socket.on('SEARCH_BOOK', ({title}) => {
         const sql = "SELECT ISBN FROM book WHERE title LIKE ?";
 
         con.query(sql, "'%" + title + "%'" , function (err, result) {
@@ -132,7 +170,7 @@ io.on('connection', function(socket) {
             console.log(JSON.stringify(result));
             //socket.emit('')
         });
-    })
+    })*/
 
    console.log("connection ok!");
  })

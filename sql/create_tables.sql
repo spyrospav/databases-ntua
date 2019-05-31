@@ -88,6 +88,7 @@ CREATE TABLE borrows(
     ISBN VARCHAR(30) NOT NULL,
     copyNr INTEGER NOT NULL,
     date_of_borrowing DATE NOT NULL,
+    due_date DATE AS (DATE_ADD(date_of_borrowing, INTERVAL 30 DAY)),
     date_of_return DATE,
     PRIMARY KEY (memberID, ISBN, copyNr, date_of_borrowing),
     FOREIGN KEY (memberID) REFERENCES member(memberID),
