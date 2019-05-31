@@ -35,8 +35,7 @@ CREATE TABLE book(
     pubName VARCHAR(50),
     remaining INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
-    FOREIGN KEY(pubName) REFERENCES publisher(pubName) ON DELETE SET NULL,
-    CHECK(remaining>=0)
+    FOREIGN KEY(pubName) REFERENCES publisher(pubName) ON DELETE SET NULL
 );
 
 CREATE TABLE author(
