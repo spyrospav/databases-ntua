@@ -241,6 +241,32 @@ io.on('connection', function(socket) {
         });
     });
 
+//--------------------------- UPDATES ---------------------------\\
+
+    socket.on('UPDATE_PUBLISHER', ({pubName, estYear, Street, streetNum, postalCode}) =>{
+        var sql = "UPDATE publisher"
+        + " SET pubName = ?, estYear = ?, Street = ?, Street_num = ?, Postal_code = ? WHERE pubName LIKE '?'";
+
+        var val = [pubName, estYear, Street, streetNum, postalCode, pubName];
+        con.query(sql, val, function (err, result) {
+            if (err) throw err;
+            socket.emit('SUCCESSFUL_PUBLISHER_update');
+            console.log("Publisher updated");
+        });
+    });
+
+    socket.on('UPDATE_AUTHOR', ({authID, AFirst, ALast, ABirthdate}) =>{
+        var sql = "UPDATE author"
+        + " SET authID = ?, AFirst = ?, ALast = ?, ABirthdate = ? WHERE pubName LIKE '?'";
+
+        var val = [authID, AFirst, ALast, ABirthdate, authID];
+        con.query(sql, val, function (err, result) {
+            if (err) throw err;
+            socket.emit('SUCCESSFUL_PUBLISHER_update');
+            console.log("Publisher updated");
+        });
+    });
+
    console.log("connection ok!");
 
  })
