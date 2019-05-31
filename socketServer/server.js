@@ -78,24 +78,28 @@ io.on('connection', function(socket) {
         const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
         + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN";
 
-        con.query(sql, function (err, result) {
+        con.query(sql, async function (err, result) {
             if (err) throw err;
             //console.log('Search for ', title);
             const books = JSON.parse(JSON.stringify(result));
             //console.log(books);
-            const booksWithAuthors = books.map(book => {
+            const promises = books.map(book => {
                 const sql2 = "SELECT AFirst, ALast FROM author AS A, written_by as W WHERE W.ISBN LIKE '" + book.ISBN +"' AND A.authID=W.authID";
-                let authorsString;
-                con.query(sql2, function (err, result) {
-                    if (err) throw err;
-                    const authors = JSON.parse(JSON.stringify(result));
-                    authorsString = authors.reduce((acc, x, index) =>
-                      acc + x.AFirst + " " + x.ALast + " ",
-                    "");
-                });
-                console.log({...book, author: authorsString});
+                return new Promise((resolve, reject) => {
+                  let authorsString;
+                  con.query(sql2, function (err, result) {
+                      if (err) return reject(err);
+                      const authors = JSON.parse(JSON.stringify(result));
+                      authorsString = authors.reduce((acc, x, index) =>
+                        acc + x.AFirst + " " + x.ALast + " ",
+                      "");
+                  });
+                  return resolve({...book, author: authorsString});
+                })
             })
-            //console.log(booksWithAuthors);
+            console.log(promises);
+            const booksWithAuthors = await Promise.all(promises);
+
 
             //socket.emit('')
         });
