@@ -1,6 +1,7 @@
 import React from "react";
 import { SearchForm } from "./SearchForm";
 import { ShowBookArray } from "./ManageBooks/ShowBookArray";
+import { ShowAuthorArray } from "./ManageAuthors/ShowAuthorArray";
 
 const Employee = ({
   socket,
@@ -81,12 +82,7 @@ const Employee = ({
   else if (navBarStatus === 'manageAuthors') {
     return (
       <div>
-      {authorsArray.map(author =>
-        <div key={author.authID}>
-          <p>{author.AFirst}</p>
-          <p>{author.ALast}</p>
-        </div>
-      )}
+        <ShowAuthorArray authorsArray={authorsArray} />
       </div>
     );
   }

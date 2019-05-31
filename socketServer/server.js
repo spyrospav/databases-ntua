@@ -109,8 +109,13 @@ io.on('connection', function(socket) {
         con.query(sql, function (err, result) {
             if (err) throw err;
             const authors = JSON.parse(JSON.stringify(result));
-
-            socket.emit('FETCH_AUTHORS', authors)
+            const authorsFixDate = authors.map(author => ({
+              authID: author.authID,
+              AFirst: author.AFirst,
+              ALast: author.ALast,
+              ABirthdate: author.ABirthdate.substr(0,10)
+            }))
+            socket.emit('FETCH_AUTHORS', authorsFixDate)
         });
     })
 

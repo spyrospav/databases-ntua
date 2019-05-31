@@ -58,12 +58,7 @@ const initialState = {
     }
   ],
   booksArray: [],
-  authorsArray: [
-    {
-      AFirst: "Steve",
-      ALast: 'Nash'
-    }
-  ]
+  authorsArray: []
 };
 
 class App extends React.Component {
