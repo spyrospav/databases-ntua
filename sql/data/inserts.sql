@@ -7,6 +7,8 @@ LOAD DATA LOCAL INFILE './sql/data/employee.csv' INTO TABLE employee FIELDS TERM
 LOAD DATA LOCAL INFILE './sql/data/permanent.csv' INTO TABLE permanent_employee FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
 LOAD DATA LOCAL INFILE './sql/data/temporary.csv' INTO TABLE temporary_employee FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
 LOAD DATA LOCAL INFILE './sql/data/copies.csv' INTO TABLE copies FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS (ISBN, copyNr, shelf);
+LOAD DATA LOCAL INFILE './sql/data/main_categories.csv' INTO TABLE category FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS (categoryName);
+
 LOAD DATA LOCAL INFILE './sql/data/categories.csv' INTO TABLE category FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
 LOAD DATA LOCAL INFILE './sql/data/belongs_to.csv' INTO TABLE belongs_to FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
 LOAD DATA LOCAL INFILE './sql/data/borrows.csv' INTO TABLE borrows FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS (memberID, ISBN, copyNr, date_of_borrowing);

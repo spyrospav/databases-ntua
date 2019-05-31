@@ -201,3 +201,17 @@ IF (new.pubName NOT IN (SELECT P.pubName FROM publisher as P)) THEN
 END IF;
 END$$
 DELIMITER ;
+
+/*
+DELIMITER $$
+CREATE TRIGGER deleteReminder
+AFTER UPDATE on borrows
+FOR EACH ROW
+BEGIN
+IF (new.date_of_return IS NOT NULL AND old.date_of_return IS NULL) THEN
+    DELETE FROM reminders WHERE memberID = old.memberID AND ISBN = old.ISBN AND
+    date_of_borrowing = old.date_of_borrowing AND copyNr = old.copyNr;
+END IF;
+END$$
+DELIMITER ;
+*/
