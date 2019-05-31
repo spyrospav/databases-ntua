@@ -44,10 +44,10 @@ class ShowBookArray extends React.Component {
                   ISBN={book.ISBN}
                   title={book.title}
                   author={book.author}
-                  publisher={book.publisher}
-                  publicationYear={book.publicationYear}
-                  numOfPages={book.numOfPages}
-                  numOfCopies={book.numOfCopies}
+                  publisher={book.pubName}
+                  publicationYear={book.pubYear}
+                  numOfPages={book.numPages}
+                  numOfCopies={book.remaining}
                 />
                 <button> Update </button>
               </div>
@@ -58,10 +58,10 @@ class ShowBookArray extends React.Component {
                 <p className="col7">{book.ISBN}</p>
                 <p className="col7">{book.title}</p>
                 <p className="col7">{book.author}</p>
-                <p className="col7">{book.publisher}</p>
-                <p className="col7">{book.publicationYear}</p>
-                <p className="col7">{book.numOfPages}</p>
-                <p className="col7">{book.numOfCopies}</p>
+                <p className="col7">{book.pubName}</p>
+                <p className="col7">{book.pubYear}</p>
+                <p className="col7">{book.numPages}</p>
+                <p className="col7">{book.remaining}</p>
                 <button
                   className="btn-small"
                   onClick={() =>

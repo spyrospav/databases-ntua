@@ -57,24 +57,11 @@ const initialState = {
       expirationDate: "1/7"
     }
   ],
-  booksArray: [
+  booksArray: [],
+  authorsArray: [
     {
-      ISBN: "121212423",
-      title: 'title1',
-      author: 'nikolaou',
-      publisher: 'bucks',
-      publicationYear: '1914',
-      numOfPages: "576",
-      numOfCopies: '100'
-    },
-    {
-      ISBN: "98321718",
-      title: "title2",
-      author: "paulatos",
-      publisher: "charitonidis",
-      publicationYear: "1918",
-      numOfPages: "455",
-      numOfCopies: '166'
+      AFirst: "Steve",
+      ALast: 'Nash'
     }
   ]
 };
@@ -97,8 +84,16 @@ class App extends React.Component {
       alert(`Your member id is: ${memberID}`);
       this.setState({status: 'memberPage'});
     })
-
     socket.on("UNSUCCESSFUL_LOGIN", () => alert("Invalid credentials."))
+    //employee page:
+    socket.on("FETCH_EXPIRED_BOOKS", (expiredBooks) =>
+      this.setState({expiredBooks: expiredBooks}))
+
+    socket.on("FETCH_BOOKS", books => this.setState({booksArray: books}))
+
+    socket.on("FETCH_AUTHORS", authors => this.setState({authorsArray: authors}))
+    //======================
+
 
     this.handleChangeStatus = this.handleChangeStatus.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
@@ -226,9 +221,20 @@ class App extends React.Component {
                socket.emit("FETCH_BOOKS")
              }}
              href="#">
-             Manage Books</a>
-             <a href="#" onClick={() => socket.emit("FETCH_AUTHORS")}>Manage Authors</a>
-             <a href="#" onClick={() => socket.emit("FETCH_PUBLISHERS")}> Manage Publishers </a>
+             Manage Books
+             </a>
+             <a href="#" onClick={() => {
+               socket.emit("FETCH_AUTHORS")
+               this.setState({navBarStatus: "manageAuthors"})
+             }}>
+             Manage Authors
+             </a>
+             <a href="#" onClick={() => {
+               socket.emit("FETCH_PUBLISHERS")
+               this.setState({navBarStatus: "managePublishers"})
+             }}>
+              Manage Publishers
+             </a>
              <a onClick={() => this.setState({navBarStatus: 'reminders'})} href="#">Reminders </a>
              <a onClick={() => this.setState({navBarStatus: 'addEmployee'})} href="#">Add Employee</a>
          </div>
@@ -240,6 +246,7 @@ class App extends React.Component {
          booksArray={this.state.booksArray}
          foundBooks={this.state.foundBooks}
          expiredBooks={this.state.expiredBooks}
+         authorsArray={this.state.authorsArray}
          />
          <button
          className = "btn"

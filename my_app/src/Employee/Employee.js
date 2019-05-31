@@ -8,6 +8,7 @@ const Employee = ({
   foundBooks,
   expiredBooks,
   booksArray,
+  authorsArray,
   handleChangeState,
   handleAddEmployee,
   handleSendReminder
@@ -35,7 +36,7 @@ const Employee = ({
   else if (navBarStatus === 'reminders') {
     return (
       <div>
-        <h2> Expired: </h2>
+        <h2> Borrowed Books: </h2>
         <div className="row6">
           <h3 className="col6">Member ID </h3>
           <h3 className="col6">ISBN </h3>
@@ -71,12 +72,26 @@ const Employee = ({
   }
 
   else if (navBarStatus === 'manageBooks') {
-
     return (
       <div>
          <ShowBookArray booksArray={booksArray} />
        </div>
     );
+  }
+  else if (navBarStatus === 'manageAuthors') {
+    return (
+      <div>
+      {authorsArray.map(author =>
+        <div key={author.authID}>
+          <p>{author.AFirst}</p>
+          <p>{author.ALast}</p>
+        </div>
+      )}
+      </div>
+    );
+  }
+  else if (navBarStatus === 'managePublishers') {
+    return <h1> manage publishers </h1>;
   }
 };
 

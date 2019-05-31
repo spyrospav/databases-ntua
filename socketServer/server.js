@@ -99,9 +99,7 @@ io.on('connection', function(socket) {
             })
 
             const booksWithAuthors = await Promise.all(promises);
-            console.log(booksWithAuthors);
-
-            //socket.emit('')
+            socket.emit('FETCH_BOOKS', booksWithAuthors);
         });
     })
 
@@ -111,8 +109,8 @@ io.on('connection', function(socket) {
         con.query(sql, function (err, result) {
             if (err) throw err;
             const authors = JSON.parse(JSON.stringify(result));
-            console.log(authors);
-            //socket.emit('FETCHED_AUTHORS', authors)
+
+            socket.emit('FETCH_AUTHORS', authors)
         });
     })
 
