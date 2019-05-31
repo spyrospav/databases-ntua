@@ -153,7 +153,6 @@ io.on('connection', function(socket) {
     /* working on it
     socket.on('BORROW', ({memberID, ISBN}) => {
         const sql = "SELECT max(copyNr) FROM copies WHERE ISBN LIKE '?' AND available = true";
-
         con.query(sql, [ISBN], function (err, result) {
             if (err) throw err;
             const borrows = JSON.parse(JSON.stringify(result));
@@ -171,7 +170,6 @@ io.on('connection', function(socket) {
     /* working on it
     socket.on('SEARCH_BOOK', ({title}) => {
         const sql = "SELECT ISBN FROM book WHERE title LIKE ?";
-
         con.query(sql, "'%" + title + "%'" , function (err, result) {
             if (err) throw err;
             //console.log('Search for ', title);
