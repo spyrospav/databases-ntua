@@ -58,7 +58,8 @@ const initialState = {
     }
   ],
   booksArray: [],
-  authorsArray: []
+  authorsArray: [],
+  publishersArray: [],
 };
 
 class App extends React.Component {
@@ -85,8 +86,8 @@ class App extends React.Component {
       this.setState({expiredBooks: expiredBooks}))
 
     socket.on("FETCH_BOOKS", books => this.setState({booksArray: books}))
-
     socket.on("FETCH_AUTHORS", authors => this.setState({authorsArray: authors}))
+    socket.on("FETCH_PUBLISHERS", publishers => this.setState({publishersArray: publishers}))
     //======================
 
 
@@ -238,10 +239,11 @@ class App extends React.Component {
          navBarStatus={this.state.navBarStatus}
          handleChangeStatus={this.handleChangeStatus}
          handleAddEmployee={this.handleAddEmployee}
-         booksArray={this.state.booksArray}
          foundBooks={this.state.foundBooks}
          expiredBooks={this.state.expiredBooks}
+         booksArray={this.state.booksArray}
          authorsArray={this.state.authorsArray}
+         publishersArray={this.state.publishersArray}
          />
          <button
          className = "btn"

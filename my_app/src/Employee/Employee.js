@@ -2,6 +2,7 @@ import React from "react";
 import { SearchForm } from "./SearchForm";
 import { ShowBookArray } from "./ManageBooks/ShowBookArray";
 import { ShowAuthorArray } from "./ManageAuthors/ShowAuthorArray";
+import { ShowPublisherArray } from './ManagePublishers/ShowPublisherArray';
 
 const Employee = ({
   socket,
@@ -10,6 +11,7 @@ const Employee = ({
   expiredBooks,
   booksArray,
   authorsArray,
+  publishersArray,
   handleChangeState,
   handleAddEmployee,
   handleSendReminder
@@ -87,7 +89,7 @@ const Employee = ({
     );
   }
   else if (navBarStatus === 'managePublishers') {
-    return <h1> manage publishers </h1>;
+    return <ShowPublisherArray publishersArray={publishersArray}/>
   }
 };
 

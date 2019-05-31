@@ -119,8 +119,8 @@ io.on('connection', function(socket) {
         con.query(sql, function (err, result) {
             if (err) throw err;
             const publishers = JSON.parse(JSON.stringify(result));
-            console.log(publishers);
-            //socket.emit('FETCHED_PUBLISHERS', authors)
+            //console.log(publishers);
+            socket.emit('FETCH_PUBLISHERS', publishers)
         });
     })
 
