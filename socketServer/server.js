@@ -237,10 +237,10 @@ io.on('connection', function(socket) {
 
     });
 
-    socket.on('INSERT_PUBLISHER', ({pubName, estYear, Street, streetNum, postalCode}) =>{
+    socket.on('INSERT_PUBLISHER', ({pubName, estYear, Street, Street_num, Postal_code}) =>{
         var sql = "INSERT INTO publisher (pubName, estYear, Street, Street_num, Postal_code) VALUES (?, ?, ?, ?, ?)";
 
-        var val = [pubName, estYear, Street, streetNum, postalCode];
+        var val = [pubName, estYear, Street, Street_num, Postal_code];
         con.query(sql, val, function (err, result) {
             if (err) throw err;
             socket.emit('SUCCESSFUL_INSERT_PUBLISHER');
@@ -266,10 +266,9 @@ io.on('connection', function(socket) {
 //--------------------------- UPDATES ---------------------------\\
 
     socket.on('UPDATE_PUBLISHER', ({pubName, estYear, Street, Street_num, Postal_code}) =>{
-        var sql = "UPDATE publisher"
-        + " SET pubName = ?, estYear = ?, Street = ?, Street_num = ?, Postal_code = ? WHERE pubName LIKE '?'";
-
         var val = [pubName, estYear, Street, Street_num, Postal_code, pubName];
+        var sql = "UPDATE publisher"
+        + " SET pubName = ?, estYear = ?, Street = ?, Street_num = ?, Postal_code = ? WHERE pubName LIKE ?";
 
         con.query(sql, val, function (err, result) {
             if (err) throw err;
