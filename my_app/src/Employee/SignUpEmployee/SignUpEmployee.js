@@ -7,9 +7,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-// import io from 'socket.io-client';
-//
-// const socket = io('http://localhost:8000');
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const styles = theme => ({
   main: {
@@ -47,20 +46,12 @@ class SignUpEmployee extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      mFirst: "",
-      mLast: "",
-      street: "",
-      streetNum: "",
-      postalCode: "",
-      MBirthDate: "",
+      isPermanent: false,
+      EFirst: "",
+      ELast: "",
       password: "",
+      Salary: "",
     };
-  }
-
-  componentDidMount(){
-    // socket.on("SUCCESSFULL_LOGIN",() => {
-      // console.log("success");
-    // })
   }
 
   handleChange = field => event => {
@@ -69,27 +60,18 @@ class SignUpEmployee extends React.Component {
       ...this.state,
       [field]: event.target.value
     })
-    //this.props.handleChange();
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.username,this.state.password);
-  //   this.props.handleConnect({
-  //     username: this.state.username,
-  //     password: this.state.password
-  //   });
-
-    // socket.emit("LOGIN",{
-    //   username: this.state.username,
-    //   password: this.state.password
-    // });
-    // add call to action emitter from this.props
+    this.props.socket.emit("ADD_EMPLOYEE", this.state)
   }
 
   render(){
     const classes  = this.props.classes;
     return (
+      <div>
+      <h2> Add new employee </h2>
       <main className={classes.main}>
         <CssBaseline />
         <Paper className={classes.paper}>
@@ -102,7 +84,7 @@ class SignUpEmployee extends React.Component {
           <form className={classes.form} onSubmit={this.handleSubmit}>
 
             <TextField
-                onChange={this.handleChange("mFirst")}
+                onChange={this.handleChange("EFirst")}
                 label="First Name"
                 margin="normal"
                 required
@@ -111,7 +93,7 @@ class SignUpEmployee extends React.Component {
             </TextField>
 
             <TextField
-                onChange = {this.handleChange("mLast")}
+                onChange = {this.handleChange("ELast")}
                 label="Last Name"
                 margin="normal"
                 required
@@ -129,39 +111,27 @@ class SignUpEmployee extends React.Component {
               >
             </TextField>
             <TextField
-                onChange = {this.handleChange("street")}
-                label="Street"
+                onChange = {this.handleChange("Salary")}
+                label="Salary"
                 margin="normal"
                 required
                 fullWidth
               >
             </TextField>
-            <TextField
-                onChange = {this.handleChange("streetNum")}
-                label="Street Number"
-                margin="normal"
-                required
-                fullWidth
-              >
-            </TextField>
-
-            <TextField
-                onChange={this.handleChange("postalCode")}
-                label="Postal Code"
-                margin="normal"
-                required
-                fullWidth
-              >
-            </TextField>
-            <TextField
-                onChange = {this.handleChange("MBirthDate")}
-                label="Birth Date (i.e. 10/5/98)"
-                margin="normal"
-                required
-                fullWidth
-              >
-            </TextField>
-
+            <FormControlLabel
+            checked={!this.state.isPermanent}
+            control={<Checkbox
+              onClick={()=>this.setState(state => ({...state, isPermanent: !state.isPermanent}))}
+              color="primary" />}
+            label="Temporary"
+            />
+            <FormControlLabel
+            checked={this.state.isPermanent}
+            control={<Checkbox
+              onClick={()=>this.setState(state => ({...state, isPermanent: !state.isPermanent}))}
+              color="primary" />}
+            label="Permament"
+            />
             <Button
                 type="submit"
                 fullWidth
@@ -174,6 +144,7 @@ class SignUpEmployee extends React.Component {
           </form>
         </Paper>
       </main>
+      </div>
     );
   }
 }

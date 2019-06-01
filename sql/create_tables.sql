@@ -108,7 +108,7 @@ CREATE TABLE permanent_employee(
 
 CREATE TABLE temporary_employee(
     empID INTEGER NOT NULL,
-    ContractNr INTEGER,
+    ContractNr INTEGER AS (empID+3000),
     PRIMARY KEY (empID),
     FOREIGN KEY (empID) REFERENCES employee(empID) ON DELETE CASCADE
 );

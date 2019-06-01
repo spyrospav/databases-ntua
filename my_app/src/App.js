@@ -2,7 +2,6 @@ import React from 'react';
 import { Welcome } from './Welcome';
 import { SignIn } from './SignIn';
 import { SignUpMember } from './SignUpMember';
-import { SignUpEmployee } from './SignUpEmployee';
 import { Member } from './Member';
 import { Employee } from './Employee';
 //state = 'welcome', 'signIn', 'signUp', 'memberPage', 'employeePage'
@@ -12,8 +11,8 @@ const url = "http://localhost:8000";
 let socket = io(url);
 
 const initialState = {
-  status: "welcome",
-  employee: false,
+  status: "employeePage",
+  employee: true,
   empID: '',
   navBarStatus: 'search', //'search','manageBooks','borrowedBooks','addEmployee'
   borrowedBooks: [],
@@ -168,12 +167,7 @@ class App extends React.Component {
            <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
            <a href="#home">CODeS Public Library</a>
        </div>
-        {this.state.employee
-          ?
-          <SignUpEmployee socket={socket}/>
-          :
          <SignUpMember socket={socket} handleChangeStatus={this.handleChangeStatus}/>
-        }
          <button
          className="btn"
          onClick={() => this.goToWelcome()}

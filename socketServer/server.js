@@ -256,7 +256,7 @@ io.on('connection', function(socket) {
         });
     });
 
-    socket.on('ADD_EMPLOYEE', ({EFirst, ELast, Salary, isPermanent, secondField}) => {
+    socket.on('ADD_EMPLOYEE', ({EFirst, ELast, Salary, isPermanent}) => {
         const sql = "INSERT INTO employee (EFirst, ELast, Salary) VALUES (?, ?, ?)";
 
         const val = [EFirst, ELast, Salary];
@@ -268,15 +268,14 @@ io.on('connection', function(socket) {
                 if (err) throw err;
                 if (isPermanent) {
                     var sql = "INSERT INTO permanent_employee (empID, HiringDate) VALUES (?, CURDATE())";
-                    var val = [result[0].empID];
                 }
                 else{
                     var sql = "INSERT INTO temporary_employee (empID, ContractNr) VALUES (?, ?)";
-                    var val = [result[0].empID, secondField];
                  }
+                 var val = [result[0].empID];
                 con.query(sql, val, function (err, result) {
                     if (err) throw err;
-                    socket.emit('SUCCESSFUL_MEMBER_ADD', result[0].empID);
+                    socket.emit('SUCCESSFUL_ADD_EMPLOYEE', result[0].empID);
                 });
             });
         });

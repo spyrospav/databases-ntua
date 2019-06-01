@@ -7,7 +7,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const styles = theme => ({
   main: {
@@ -53,12 +54,6 @@ class SignUpMember extends React.Component {
       MBirthDate: "",
       password: "",
     };
-  }
-
-  componentDidMount(){
-    // socket.on("SUCCESSFULL_LOGIN",() => {
-      // console.log("success");
-    // })
   }
 
   handleChange = field => event => {

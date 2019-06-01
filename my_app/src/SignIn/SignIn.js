@@ -49,12 +49,6 @@ class SignIn extends React.Component {
     };
   }
 
-  componentDidMount(){
-    // socket.on("SUCCESSFULL_LOGIN",() => {
-      // console.log("success");
-    // })
-  }
-
   handleChange = field => event => {
     event.preventDefault();
     this.setState({
@@ -65,7 +59,6 @@ class SignIn extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.username,this.state.password);
      this.props.handleConnect(this.state.username, this.state.password);
      if (this.props.employee) {
         this.props.handleEmployeeLogin(this.state.username)
