@@ -7,9 +7,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-// import io from 'socket.io-client';
-//
-// const socket = io('http://localhost:8000');
 
 const styles = theme => ({
   main: {
@@ -64,7 +61,6 @@ class SignIn extends React.Component {
       ...this.state,
       [field]: event.target.value
     })
-    //this.props.handleChange();
   };
 
   handleSubmit = (event) => {
@@ -72,6 +68,7 @@ class SignIn extends React.Component {
     console.log(this.state.username,this.state.password);
      this.props.handleConnect(this.state.username, this.state.password);
      if (this.props.employee) {
+        this.props.handleEmployeeLogin(this.state.username)
          this.props.socket.emit("EMPLOYEE_LOGIN",{
             username: this.state.username,
             password: this.state.password

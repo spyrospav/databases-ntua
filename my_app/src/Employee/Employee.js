@@ -6,6 +6,7 @@ import { ShowPublisherArray } from './ManagePublishers/ShowPublisherArray';
 
 const Employee = ({
   socket,
+  empID,
   navBarStatus,
   foundBooks,
   borrowedBooks,
@@ -14,7 +15,6 @@ const Employee = ({
   publishersArray,
   handleChangeState,
   handleAddEmployee,
-  handleSendReminder
 }) => {
   if (navBarStatus === 'search') {
     return (
@@ -55,7 +55,7 @@ const Employee = ({
             <p className="col6"> {book.copyNr}</p>
             <p className="col6"> {book.date_of_borrowing} </p>
             <p className="col6"> {book.due_date} </p>
-            <button className="col6 btn" onClick={() => handleSendReminder()}>
+            <button className="col6 btn" onClick={() => socket.emit("SENT_REMINDER", {...book, empID: empID})}>
               {" "}
               Send reminder{" "}
             </button>

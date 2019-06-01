@@ -12,10 +12,9 @@ const url = "http://localhost:8000";
 let socket = io(url);
 
 const initialState = {
-  status: "employeePage",
+  status: "welcome",
   employee: false,
-  username: 'steph',
-  password: 'curry',
+  empID: '',
   navBarStatus: 'search', //'search','manageBooks','borrowedBooks','addEmployee'
   borrowedBooks: [],
   foundBooks: [
@@ -73,6 +72,7 @@ class App extends React.Component {
     socket.on("FETCH_ACTIVE_BORROWS_EMPLOYEE", borrowedBooks => this.setState({borrowedBooks: borrowedBooks}))
 
     socket.on('SUCCESSFUL_RETURN_BOOK', () => socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE"));
+    //socket.on('SUCCESSFUL_SENT_REMINDER', () => socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE"));
 
     socket.on("SUCCESSFUL_INSERT_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
     socket.on("SUCCESSFUL_DELETE_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
@@ -116,6 +116,10 @@ class App extends React.Component {
       status: 'signUp'
     })
   }
+
+  handleEmployeeLogin = (empID) => {
+    this.setState({empID: empID});
+  }
   goToWelcome () {
     this.setState({
       status: 'welcome'
@@ -144,6 +148,7 @@ class App extends React.Component {
          <p> Sign in as:<strong> {this.state.employee ? <a>employee</a> : <a>member</a>} </strong></p>
          <SignIn
             socket={socket}
+            handleEmployeeLogin={this.handleEmployeeLogin}
             employee={this.state.employee}
             handleConnect={this.handleConnect}
             handleChangeStatus={this.handleChangeStatus}
@@ -233,6 +238,7 @@ class App extends React.Component {
          </div>
          <Employee
          socket={socket}
+         empID={this.state.empID}
          navBarStatus={this.state.navBarStatus}
          handleChangeStatus={this.handleChangeStatus}
          handleAddEmployee={this.handleAddEmployee}

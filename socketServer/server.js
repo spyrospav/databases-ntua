@@ -314,13 +314,14 @@ io.on('connection', function(socket) {
         //socket.emit('FETCH_BOOK')
     });
 
-    socket.on('INSERT_REMINDER', ({memberID, ISBN, copyNr, date_of_borrowing, empID}) =>{
-        var sql = "INSERT INTO reminder (memberID, ISBN, copyNr, date_of_borrowing, empID) VALUES (?, ?, ?, ?, ?)";
+    socket.on('SENT_REMINDER', ({memberID, ISBN, copyNr, date_of_borrowing, empID}) =>{
+        var sql = "INSERT INTO reminder (memberID, ISBN, copyNr, date_of_borrowing, empID, date_of_reminder)"
+        + "VALUES (?, ?, ?, ?, ?, CURDATE())";
 
         var val = [memberID, ISBN, copyNr, date_of_borrowing, empID];
         con.query(sql, val, function (err, result) {
             if (err) throw err;
-            socket.emit('SUCCESSFUL_INSERT_REMINDER');
+            socket.emit('SUCCESSFUL_SENT_REMINDER');
             console.log("New Reminder");
         });
     });
