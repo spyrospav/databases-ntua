@@ -97,6 +97,55 @@ io.on('connection', function(socket) {
         });
     })
 
+    socket.on('SEARCH_BOOKS', ({title}) => {
+        //SQL Query with JOIN and ORDER BY and AGGREGATE FUNCTION COUNT()
+        const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
+        + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN AND B.title LIKE '%?%' GROUP BY B.ISBN ORDER BY title ASC";
+
+        con.query(sql,[title], async function (err, result) {
+            if (err) throw err;
+            //console.log('Search for ', title);
+            const books = JSON.parse(JSON.stringify(result));
+
+            const promises = books.map(book => {
+                //SQL Query with JOIN
+                const sql2 = "SELECT AFirst, ALast FROM author AS A, written_by as W WHERE W.ISBN LIKE '" + book.ISBN +"' AND A.authID=W.authID";
+                return new Promise((resolve, reject) => {
+                  let authorsString;
+                  con.query(sql2, function (err, result) {
+                      if (err) return reject(err);
+                      const authors = JSON.parse(JSON.stringify(result));
+                      authorsString = authors.reduce((acc, x, index) =>
+                        acc + x.AFirst + " " + x.ALast + " ",
+                      "");
+                      return resolve({...book, author: authorsString});
+                  });
+                })
+            })
+
+            const booksWithAuthors = await Promise.all(promises);
+            socket.emit('SEARCH_BOOKS', booksWithAuthors);
+        });
+    })
+
+    socket.on('SEARCH_CATEGORY', ({category}) => {
+        const sql = "SELECT DISTINCT B.ISBN, B.title, B.numPages"
+        + "FROM book AS B, (SELECT categoryName FROM category WHERE categoryName LIKE '?' OR supercategoryName LIKE '?') AS C,"
+        + " written_by AS W WHERE W.ISBN = B.ISBN AND C.categoryName = W.categoryName";
+
+        con.query(sql, [category], function (err, result) {
+            if (err) throw err;
+            const authors = JSON.parse(JSON.stringify(result));
+            const authorsFixDate = authors.map(author => ({
+              authID: author.authID,
+              AFirst: author.AFirst,
+              ALast: author.ALast,
+              ABirthdate: author.ABirthdate.substr(0,10)
+            }))
+            socket.emit('FETCH_AUTHORS', authorsFixDate)
+        });
+    })
+
     socket.on('FETCH_AUTHORS', () => {
         const sql = "SELECT * FROM author ORDER BY ALast ASC";
 
@@ -263,6 +312,17 @@ io.on('connection', function(socket) {
 
     socket.on('INSERT_BOOK', ({ISBN, title, pubYear, numPages, }) =>{
         //socket.emit('FETCH_BOOK')
+    });
+
+    socket.on('INSERT_REMINDER', ({memberID, ISBN, copyNr, date_of_borrowing, empID}) =>{
+        var sql = "INSERT INTO reminder (memberID, ISBN, copyNr, date_of_borrowing, empID) VALUES (?, ?, ?, ?, ?)";
+
+        var val = [memberID, ISBN, copyNr, date_of_borrowing, empID];
+        con.query(sql, val, function (err, result) {
+            if (err) throw err;
+            socket.emit('SUCCESSFUL_INSERT_REMINDER');
+            console.log("New Reminder");
+        });
     });
 
 //--------------------------- UPDATES ---------------------------\\
