@@ -65,6 +65,11 @@ class EditPublisherFields extends React.Component {
           margin="normal"
           variant="outlined"
         />
+        <button className='btn-small'
+        onClick={() => {
+          this.props.socket.emit("UPDATE_PUBLISHER", this.state)
+          this.props.handleEdit()
+        }}> Update </button>
       </div>
       );
     }

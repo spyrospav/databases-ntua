@@ -8,7 +8,6 @@ class ShowBookArray extends React.Component {
     this.state = {
       status: "", //'insert', 'edit', 'delete'
       indexEdit: -1,
-      indexDelete: -1
     };
   }
   render() {

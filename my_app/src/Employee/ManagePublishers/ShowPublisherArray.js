@@ -8,11 +8,13 @@ class ShowPublisherArray extends React.Component {
     this.state = {
       status: "", //'insert', 'edit', 'delete'
       indexEdit: -1,
-      indexDelete: -1
     };
   }
   handleInsert = () => {
     this.setState({status: ""});
+  }
+  handleEdit = () => {
+    this.setState({status: "", indexEdit: -1})
   }
   render() {
     return (
@@ -42,13 +44,14 @@ class ShowPublisherArray extends React.Component {
             return (
               <div key={publisher.pubName}>
                 <EditPublisherFields
+                  socket={this.props.socket}
+                  handleEdit={this.handleEdit}
                   pubName={publisher.pubName}
                   estYear={publisher.estYear}
                   Street={publisher.Street}
                   Street_num={publisher.Street_num}
                   Postal_code={publisher.Postal_code}
                 />
-                <button className='btn-small'> Update </button>
                 <button className='btn-small'
                 onClick={() => this.setState({indexEdit: -1})}>
                 Undo
