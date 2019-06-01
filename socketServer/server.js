@@ -102,6 +102,7 @@ io.on('connection', function(socket) {
 
         con.query(sql, function (err, result) {
             if (err) throw err;
+
             const authors = JSON.parse(JSON.stringify(result));
             const authorsFixDate = authors.map(author => ({
               authID: author.authID,
@@ -109,6 +110,7 @@ io.on('connection', function(socket) {
               ALast: author.ALast,
               ABirthdate: author.ABirthdate.substr(0,10)
             }))
+            
             socket.emit('FETCH_AUTHORS', authorsFixDate)
         });
     })
@@ -280,8 +282,8 @@ io.on('connection', function(socket) {
     socket.on('UPDATE_AUTHOR', ({authID, AFirst, ALast, ABirthdate}) =>{
         var sql = "UPDATE author"
         + " SET AFirst = ?, ALast = ?, ABirthdate = ? WHERE authID = ?";
-
-        var val = [AFirst, ALast, ABirthdate, authID];
+        const fixedBirthdate = ABirthdate //+ "T22:00:00.000Z";
+        var val = [AFirst, ALast, fixedBirthdate, authID];
         con.query(sql, val, function (err, result) {
             if (err) throw err;
             socket.emit('SUCCESSFUL_UPDATE_AUTHOR');
