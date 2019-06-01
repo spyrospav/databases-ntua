@@ -10,7 +10,8 @@ const con = mysql.createConnection({
     host : "localhost",
     user : "root",
     password : "back34!",
-    database : "library"
+    database : "library",
+    timezone : "UTC"
 });
 
 con.connect(function(err){
@@ -159,7 +160,7 @@ io.on('connection', function(socket) {
               ALast: author.ALast,
               ABirthdate: author.ABirthdate.substr(0,10)
             }))
-            
+
             socket.emit('FETCH_AUTHORS', authorsFixDate)
         });
     })
@@ -198,12 +199,11 @@ io.on('connection', function(socket) {
             const borrowsFixDate = borrows.map(borrow => ({
               memberID: borrow.memberID,
               ISBN: borrow.ISBN,
-              copyNumber: borrow.copyNumber,
+              copyNr: borrow.copyNr,
               date_of_borrowing: borrow.date_of_borrowing.substr(0,10),
               due_date: borrow.due_date.substr(0,10),
             }))
-            console.log(borrowsFixDate);
-            //socket.emit('FETCHED_ACTIVE_BORROWS_EMPLOYEE', borrows);
+            socket.emit('FETCH_ACTIVE_BORROWS_EMPLOYEE', borrowsFixDate);
         });
     })
 
@@ -360,6 +360,18 @@ io.on('connection', function(socket) {
             if (err) throw err;
             socket.emit('SUCCESSFUL_UPDATE_BOOK');
             console.log("Book updated");
+        });
+    });
+
+    socket.on('RETURN_BOOK', ({memberID, ISBN, copyNr, date_of_borrowing}) =>{
+        var sql = "UPDATE borrows"
+        + " SET date_of_return = CURDATE() WHERE memberID = ? AND ISBN LIKE ? AND copyNr = ? AND date_of_borrowing LIKE ?";
+
+        var val = [memberID, ISBN, copyNr, date_of_borrowing];
+        con.query(sql, val, function (err, result) {
+            if (err) throw err;
+            socket.emit('SUCCESSFUL_RETURN_BOOK');
+            console.log("Book returned");
         });
     });
 

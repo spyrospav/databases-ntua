@@ -17,16 +17,7 @@ const initialState = {
   username: 'steph',
   password: 'curry',
   navBarStatus: 'search', //'search','manageBooks','borrowedBooks','addEmployee'
-  borrowedBooks: [
-    {
-      title: "book1",
-      author: "author1"
-    },
-    {
-      title: "book2",
-      author: "author2"
-    }
-  ],
+  borrowedBooks: [],
   foundBooks: [
     {
       title: "book1",
@@ -48,15 +39,6 @@ const initialState = {
     }
   ]
   ,
-  expiredBooks: [
-    {
-      memberID: "1",
-      ISBN: "123012",
-      copyNumber: "123",
-      dateOfBorrowing: "9/6",
-      expirationDate: "1/7"
-    }
-  ],
   booksArray: [],
   authorsArray: [],
   publishersArray: [],
@@ -88,6 +70,9 @@ class App extends React.Component {
     socket.on("FETCH_BOOKS", books => this.setState({booksArray: books}))
     socket.on("FETCH_AUTHORS", authors => this.setState({authorsArray: authors}))
     socket.on("FETCH_PUBLISHERS", publishers => this.setState({publishersArray: publishers}))
+    socket.on("FETCH_ACTIVE_BORROWS_EMPLOYEE", borrowedBooks => this.setState({borrowedBooks: borrowedBooks}))
+
+    socket.on('SUCCESSFUL_RETURN_BOOK', () => socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE"));
 
     socket.on("SUCCESSFUL_INSERT_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
     socket.on("SUCCESSFUL_DELETE_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
@@ -252,7 +237,7 @@ class App extends React.Component {
          handleChangeStatus={this.handleChangeStatus}
          handleAddEmployee={this.handleAddEmployee}
          foundBooks={this.state.foundBooks}
-         expiredBooks={this.state.expiredBooks}
+         borrowedBooks={this.state.borrowedBooks}
          booksArray={this.state.booksArray}
          authorsArray={this.state.authorsArray}
          publishersArray={this.state.publishersArray}

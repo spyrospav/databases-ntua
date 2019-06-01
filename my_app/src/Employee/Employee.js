@@ -8,7 +8,7 @@ const Employee = ({
   socket,
   navBarStatus,
   foundBooks,
-  expiredBooks,
+  borrowedBooks,
   booksArray,
   authorsArray,
   publishersArray,
@@ -48,16 +48,20 @@ const Employee = ({
           <h3 className="col6">Due</h3>
           <h3 className="col6"> </h3>
         </div>
-        {expiredBooks.map(book => (
+        {borrowedBooks.map(book => (
           <div className="row6" key={book.memberID + book.ISBN}>
             <p className="col6">{book.memberID}</p>
             <p className="col6"> {book.ISBN}</p>
-            <p className="col6"> {book.copyNumber}</p>
-            <p className="col6"> {book.dateOfBorrowing} </p>
-            <p className="col6"> {book.expirationDate} </p>
+            <p className="col6"> {book.copyNr}</p>
+            <p className="col6"> {book.date_of_borrowing} </p>
+            <p className="col6"> {book.due_date} </p>
             <button className="col6 btn" onClick={() => handleSendReminder()}>
               {" "}
               Send reminder{" "}
+            </button>
+            <button className='col6 btn'
+            onClick={() => socket.emit("RETURN_BOOK", book)}>
+              Return
             </button>
           </div>
         ))}
