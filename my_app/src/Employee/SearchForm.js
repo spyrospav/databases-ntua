@@ -27,7 +27,9 @@ class SearchForm extends React.Component {
     })
   }
   handleSubmit(event) {
-    //socket.emit(...)
+    if (this.state.option === 'title') {
+      this.props.socket.emit("SEARCH_BOOKS", this.state.value)
+    }
     event.preventDefault();
   }
 

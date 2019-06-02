@@ -16,16 +16,7 @@ const initialState = {
   empID: '',
   navBarStatus: 'search', //'search','manageBooks','borrowedBooks','addEmployee'
   borrowedBooks: [],
-  foundBooks: [
-    {
-      title: "book1",
-      author: "author1"
-    },
-    {
-      title: "book2",
-      author: "author2"
-    }
-  ],
+  foundBooks: [],
   reminders: [
     {
       title: "book3",
@@ -84,6 +75,7 @@ class App extends React.Component {
     socket.on("SUCCESSFUL_DELETE_PUBLISHER", () => socket.emit("FETCH_PUBLISHERS"));
     socket.on("SUCCESSFUL_UPDATE_PUBLISHER", () => socket.emit("FETCH_PUBLISHERS"));
 
+    socket.on("SEARCH_BOOKS", foundBooks => this.setState({foundBooks: foundBooks}))
     //======================
 
 

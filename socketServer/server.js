@@ -98,12 +98,12 @@ io.on('connection', function(socket) {
         });
     })
 
-    socket.on('SEARCH_BOOKS', ({title}) => {
-        const sql = "SELECT * FROM book_view WHERE title LIKE '%?%' ORDER BY title ASC";
+    socket.on('SEARCH_BOOKS', (title) => {
+        const sql = "SELECT * FROM book_view WHERE title LIKE '%" + title + "%' ORDER BY title ASC";
 
-        con.query(sql,[title], async function (err, result) {
+        con.query(sql, async function (err, result) {
             if (err) throw err;
-            //console.log('Search for ', title);
+            console.log('Search for', title);
             const books = JSON.parse(JSON.stringify(result));
 
             const promises = books.map(book => {
