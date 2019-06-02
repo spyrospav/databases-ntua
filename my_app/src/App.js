@@ -176,18 +176,11 @@ class App extends React.Component {
        <div className="navbar">
            <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
            <a href="#">CODeS Public Library</a>
-           <a onClick={() => this.setState({navBarStatus: 'search'})} href="#">Search</a>
            <a onClick={() => {
-
-             socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE");
-             this.setState({navBarStatus: 'borrowedBooks'})
-           }} href="#">Borrowed Books </a>
-           <a onClick={() => this.setState({navBarStatus: 'addEmployee'})} href="#">Add Employee</a>
-       </div>
-         <div className="navbar">
-             <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
-             <a href="#home">CODeS Public Library</a>
-         </div>
+             socket.emit("SEARCH_BOOKS");
+             this.setState({navBarStatus: 'search'})
+           }} href="#">Search</a>
+         <a onClick={ () => {
              socket.emit("FETCH_ACTIVE_BORROWS_MEMBERS", this.state.memberID);
              this.setState({navBarStatus: 'borrowedBooks'})
            }} href="#">Borrowed Books </a>
@@ -258,10 +251,6 @@ class App extends React.Component {
          />
          <button
          className = "btn"
-<<<<<<< HEAD
-=======
-         onClick={() => {this.goToWelcome()}
->>>>>>> 17125b83ffe590f1ae28d8673c0a7eb04980d91e
          onClick={() => {
            this.setState({
              navBarStatus: 'search',
