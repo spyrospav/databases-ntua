@@ -41,6 +41,7 @@ CREATE TABLE author(
     authID INTEGER NOT NULL AUTO_INCREMENT,
     AFirst VARCHAR(20) NOT NULL,
     ALast VARCHAR(25) NOT NULL,
+    /*AFull VARCHAR (50) AS (AFirst + ALast),*/
     ABirthdate DATE,
     PRIMARY KEY(authID)
 );

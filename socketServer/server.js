@@ -127,23 +127,34 @@ io.on('connection', function(socket) {
         });
     })
 
-    socket.on('SEARCH_CATEGORY', ({category}) => {
-        const sql = "SELECT DISTINCT B.ISBN, B.title, B.numPages"
-        + "FROM book AS B, (SELECT categoryName FROM category WHERE categoryName LIKE '?' OR supercategoryName LIKE '?') AS C,"
-        + " written_by AS W WHERE W.ISBN = B.ISBN AND C.categoryName = W.categoryName";
+    socket.on('SEARCH_CATEGORY', (category) => {
+        const sql = "SELECT * FROM book_view as B, (SELECT ISBN FROM belongs_to WHERE categoryName LIKE ?) AS C "+
+        " WHERE C.ISBN = B.ISBN ORDER BY B.title ASC";
 
-        con.query(sql, [category], function (err, result) {
+        con.query(sql, [category], async function (err, result) {
             if (err) throw err;
-            const authors = JSON.parse(JSON.stringify(result));
-            const authorsFixDate = authors.map(author => ({
-              authID: author.authID,
-              AFirst: author.AFirst,
-              ALast: author.ALast,
-              ABirthdate: author.ABirthdate.substr(0,10)
-            }))
-            socket.emit('FETCH_AUTHORS', authorsFixDate)
+            const books = JSON.parse(JSON.stringify(result));
+
+            const promises = books.map(book => {
+                //SQL Query with JOIN
+                const sql2 = "SELECT AFirst, ALast FROM author AS A, written_by as W WHERE W.ISBN LIKE '" + book.ISBN +"' AND A.authID=W.authID";
+                return new Promise((resolve, reject) => {
+                  let authorsString;
+                  con.query(sql2, function (err, result) {
+                      if (err) return reject(err);
+                      const authors = JSON.parse(JSON.stringify(result));
+                      authorsString = authors.reduce((acc, x, index) =>
+                        acc + x.AFirst + " " + x.ALast + " ",
+                      "");
+                      return resolve({...book, author: authorsString});
+                  });
+                })
+            })
+
+            const booksWithAuthors = await Promise.all(promises);
+            socket.emit('SEARCH_BOOKS', booksWithAuthors);
         });
-    })
+    });
 
     socket.on('FETCH_AUTHORS', () => {
         const sql = "SELECT * FROM author ORDER BY ALast ASC";
