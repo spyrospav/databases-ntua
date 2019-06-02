@@ -266,16 +266,17 @@ io.on('connection', function(socket) {
 
             con.query("SELECT empID FROM employee ORDER BY empID DESC LIMIT 1", function (err, result) {
                 if (err) throw err;
+                const id = result[0].empID;
                 if (isPermanent) {
                     var sql = "INSERT INTO permanent_employee (empID, HiringDate) VALUES (?, CURDATE())";
                 }
                 else{
-                    var sql = "INSERT INTO temporary_employee (empID, ContractNr) VALUES (?, ?)";
+                    var sql = "INSERT INTO temporary_employee (empID) VALUES (?)";
                  }
                  var val = [result[0].empID];
                 con.query(sql, val, function (err, result) {
                     if (err) throw err;
-                    socket.emit('SUCCESSFUL_ADD_EMPLOYEE', result[0].empID);
+                    socket.emit('SUCCESSFUL_ADD_EMPLOYEE', id);
                 });
             });
         });
