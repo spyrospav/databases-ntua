@@ -2,6 +2,7 @@ import React from 'react';
 import { SearchForm } from './SearchForm';
 
 const Member = ({
+  navBarStatus,
   foundBooks,
   borrowedBooks,
   reminders,
@@ -10,39 +11,44 @@ const Member = ({
   }) => {
   return (
     <div>
-        <div className="left-div content-box">
-            <h2> Borrowed books </h2>
-          {borrowedBooks.map(book =>
-            <div key={book.title+book.author}>
-              <p> {book.title}, {book.author} </p>
-            </div>
-          )}
+    {(navBarStatus === 'borrowedBooks')
+    ?
+    <div>
+      <h2> Borrowed Books: </h2>
+      <div className="row6">
+        <h3 className="col6">ISBN </h3>
+        <h3 className="col6">Borrowed on</h3>
+        <h3 className="col6">Due</h3>
+        <h3 className="col6"> </h3>
+      </div>
+      {borrowedBooks.map(book => (
+        <div className="row6" key={book.memberID + book.ISBN}>
+          <p className="col6"> {book.ISBN}</p>
+          <p className="col6"> {book.date_of_borrowing} </p>
+          <p className="col6"> {book.due_date} </p>
         </div>
+      ))}
+      </div>
+      :
+      <div></div>
+    }
+    {navBarStatus === "search"
+    ?
+    <div>
+        search books
+    </div>
+    :
+    <div> </div>
+    }
 
-        <div className="middle-div content-box">
-          <SearchForm />
-        <div className="results">
-          <h2>Results</h2>
-                {foundBooks.map(book =>
-                <div key={book.title+book.author} className="book">
-                    <div>
-                        <p> {book.title}, {book.author} </p>
-                        <button className="btn"> borrow </button>
-                    </div>
-                </div>
-                )}
-            </div>
-        </div>
-
-        <div className="right-div content-box">
-          <h2> Reminders </h2>
-          {reminders.map(reminder =>
-            <div key={reminder.title}>
-              <p>return book: {reminder.title}</p>
-              <p>exiration date: {reminder.expirationDate}</p>
-            </div>
-          )}
-        </div>
+    {navBarStatus === "reminders"
+    ?
+    <div>
+      reminders
+    </div>
+    :
+    <div></div>
+    }
     </div>
   );
 };

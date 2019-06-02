@@ -34,7 +34,7 @@ io.on('connection', function(socket) {
 //----------------------------- LOGINS ----------------------------\\
 
     socket.on('LOGIN', ({username, password}) => {
-        //SQL Query with AGGREGATE FUNCTION COUNT
+        //SQL Query with AGGREGATE FUNCTION COUNT ********************************
         const sql = "SELECT COUNT(*) FROM member WHERE memberID = ?";
         con.query(sql, username , function (err, result) {
             if (err) throw err;
@@ -50,7 +50,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('EMPLOYEE_LOGIN', ({username, password}) => {
-        //SQL Query with AGGREGATE FUNCTION COUNT
+        //SQL Query with AGGREGATE FUNCTION COUNT *********************************
         const sql = "SELECT COUNT(*) FROM employee WHERE empID = ?";
         con.query(sql, username , function (err, result) {
             if (err) throw err;
@@ -78,7 +78,7 @@ io.on('connection', function(socket) {
             const books = JSON.parse(JSON.stringify(result));
 
             const promises = books.map(book => {
-                //SQL Query with JOIN
+                //SQL Query with JOIN ************************************************
                 const sql2 = "SELECT AFirst, ALast FROM author AS A, written_by as W WHERE W.ISBN LIKE '" + book.ISBN +"' AND A.authID=W.authID";
                 return new Promise((resolve, reject) => {
                   let authorsString;
@@ -99,6 +99,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('SEARCH_BOOKS', (title) => {
+        //SQL Query with ORDER BY **************************************
         const sql = "SELECT * FROM book_view WHERE title LIKE '%" + title + "%' ORDER BY title ASC";
 
         con.query(sql, async function (err, result) {
@@ -128,6 +129,8 @@ io.on('connection', function(socket) {
     })
 
     socket.on('SEARCH_CATEGORY', (category) => {
+        //Nested SQL query **************************************************
+        //And JOIN **********************************************************
         const sql = "SELECT * FROM book_view as B, (SELECT ISBN FROM belongs_to WHERE categoryName LIKE ?) AS C "+
         " WHERE C.ISBN = B.ISBN ORDER BY B.title ASC";
 
@@ -186,20 +189,25 @@ io.on('connection', function(socket) {
     })
 
     socket.on('FETCH_ACTIVE_BORROWS_MEMBERS', (memberID) => {
-        //SQL Query with ORDER BY
-        const sql = "SELECT (ISBN, date_of_borrowing, due_date) FROM borrows"
-        + "WHERE memberID = ? AND date_of_return IS NULL ORDER BY due_date";
+        //SQL Query with ORDER BY ********************************************
+        const sql = "SELECT ISBN, date_of_borrowing, due_date FROM borrows"
+        + " WHERE memberID = ? AND date_of_return IS NULL ORDER BY due_date ASC";
 
         con.query(sql, [memberID], function (err, result) {
             if (err) throw err;
             const borrows = JSON.parse(JSON.stringify(result));
-            console.log(borrows);
-            //socket.emit('FETCHED_ACTIVE_BORROWS_MEMBERS', borrows);
+            socket.emit('FETCHED_ACTIVE_BORROWS_MEMBERS', borrows);
+            const borrowsFixDate = borrows.map(borrows => ({
+              ISBN: borrows.ISBN,
+              date_of_borrowing: borrows.date_of_borrowing.substr(0,10),
+              due_date: borrows.due_date.substr(0,10),
+            }))
+            socket.emit('FETCH_ACTIVE_BORROWS_MEMBERS', borrowsFixDate);
         });
     })
 
     socket.on('FETCH_ACTIVE_BORROWS_EMPLOYEE', () => {
-        //SQL Query with ORDER BY
+        //SQL Query with ORDER BY ********************************************
         const sql = "SELECT * FROM borrows WHERE date_of_return IS NULL ORDER BY memberID ASC";
 
         con.query(sql, function (err, result) {
@@ -213,6 +221,22 @@ io.on('connection', function(socket) {
               due_date: borrow.due_date.substr(0,10),
             }))
             socket.emit('FETCH_ACTIVE_BORROWS_EMPLOYEE', borrowsFixDate);
+        });
+    })
+
+    socket.on('FETCH_REMINDERS', (memberID) => {
+        //SQL Query with ORDER BY ********************************************
+        const sql = "SELECT ISBN, date_of_borrowing, date_of_reminder FROM reminders WHERE memberID = ? ORDER BY date_of_reminder DESC";
+
+        con.query(sql, [memberID], function (err, result) {
+            if (err) throw err;
+            const reminder = JSON.parse(JSON.stringify(result));
+            const reminderFixDate = borrows.map(reminder => ({
+              ISBN: reminder.ISBN,
+              date_of_borrowing: reminder.date_of_borrowing.substr(0,10),
+              date_of_reminder: reminder.date_of_reminder.substr(0,10)
+            }))
+            socket.emit('FETCH_REMINDERS', reminderFixDate);
         });
     })
 

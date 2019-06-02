@@ -11,9 +11,10 @@ const url = "http://localhost:8000";
 let socket = io(url);
 
 const initialState = {
-  status: "employeePage",
-  employee: true,
+  status: "welcome",
+  employee: false,
   empID: '',
+  memberID: '',
   navBarStatus: 'search', //'search','manageBooks','borrowedBooks','addEmployee'
   borrowedBooks: [],
   foundBooks: [],
@@ -114,6 +115,9 @@ class App extends React.Component {
   handleEmployeeLogin = (empID) => {
     this.setState({empID: empID});
   }
+  handleMemberLogin = (memberID) => {
+    this.setState({memberID: memberID})
+  }
   goToWelcome () {
     this.setState({
       status: 'welcome'
@@ -143,6 +147,7 @@ class App extends React.Component {
          <SignIn
             socket={socket}
             handleEmployeeLogin={this.handleEmployeeLogin}
+            handleMemberLogin={this.handleMemberLogin}
             employee={this.state.employee}
             handleConnect={this.handleConnect}
             handleChangeStatus={this.handleChangeStatus}
@@ -175,11 +180,18 @@ class App extends React.Component {
    else if (this.state.status === 'memberPage') {
      return (
        <div className="App">
-         <div className="navbar">
-             <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
-             <a href="#home">CODeS Public Library</a>
-         </div>
+       <div className="navbar">
+           <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
+           <a href="#">CODeS Public Library</a>
+           <a onClick={() => this.setState({navBarStatus: 'search'})} href="#">Search</a>
+           <a onClick={() => {
+             socket.emit("FETCH_ACTIVE_BORROWS_MEMBERS", this.state.memberID);
+             this.setState({navBarStatus: 'borrowedBooks'})
+           }} href="#">Borrowed Books </a>
+          <a onClick={() => this.setState({navBarStatus: 'reminders'})} href="#">Reminders</a>
+       </div>
          <Member
+          navBarStatus={this.state.navBarStatus}
           handleChangeStatus={this.handleChangeStatus}
           foundBooks={this.state.foundBooks}
           borrowedBooks={this.state.borrowedBooks}
@@ -240,7 +252,15 @@ class App extends React.Component {
          <button
          className = "btn"
          onClick={() => {
-           this.setState({navBarStatus: 'search', empID:''})
+           this.setState({
+             navBarStatus: 'search',
+             empID:'',
+             foundBooks: [],
+             borrowedBooks: [],
+             booksArray: [],
+             authorsArray: [],
+             publishersArray: [],
+           })
            this.goToWelcome()}}
          >
           Logout
