@@ -39,17 +39,13 @@ const Employee = ({
   }
   else if (navBarStatus === 'borrowedBooks') {
     return (
-        <BorrowedBooks
-        socket={socket}
-        empID={empID}
-        borrowedBooks={borrowedBooks}
-        />
+        <BorrowedBooks socket={socket} empID={empID} borrowedBooks={borrowedBooks}/>
     );
   }
   else if (navBarStatus === 'addEmployee') {
     return (
       <SignUpEmployee socket={socket}/>
-    )
+    );
   }
   else if (navBarStatus === 'manageBooks') {
     return (

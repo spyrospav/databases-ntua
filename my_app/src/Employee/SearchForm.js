@@ -5,7 +5,7 @@ class SearchForm extends React.Component {
     super(props);
     this.state = {
       value: '',
-      option: '', //title, author, category
+      option: 'title', //title, author, category
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -13,9 +13,14 @@ class SearchForm extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
+  handleChange = event => {
+    event.preventDefault();
+    this.setState({
+      ...this.state,
+      value: event.target.value
+    })
+  };
+
   handleClick(option) {
     this.setState({
       option: option
@@ -23,7 +28,6 @@ class SearchForm extends React.Component {
   }
   handleSubmit(event) {
     //socket.emit(...)
-    console.log(this.state.value);
     event.preventDefault();
   }
 
@@ -46,6 +50,7 @@ class SearchForm extends React.Component {
                 <input type="radio" name="searchOption" onClick={() => this.handleClick("category")}/> <br/>
             </div>
         </div>
+
             <input type="text" value={this.state.value} onChange={this.handleChange} />
             <input type="submit" value="Search" />
       </form>
