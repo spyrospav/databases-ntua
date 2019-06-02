@@ -2,6 +2,7 @@ import React from 'react';
 import { SearchForm } from './SearchForm';
 
 const Member = ({
+  navBarStatus,
   foundBooks,
   borrowedBooks,
   reminders,
@@ -11,6 +12,7 @@ const Member = ({
   return (
     <div>
         <div className="left-div content-box">
+        
             <h2> Borrowed books </h2>
           {borrowedBooks.map(book =>
             <div key={book.title+book.author}>

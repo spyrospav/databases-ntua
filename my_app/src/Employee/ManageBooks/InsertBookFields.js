@@ -8,7 +8,8 @@ class InsertBookFields extends React.Component {
     this.state = {
       ISBN: '',
       title: '',
-      author: '',
+      AFirst: '',
+      ALast: '',
       publisher: '',
       publicationYear: '',
       copies: '',
@@ -45,18 +46,19 @@ class InsertBookFields extends React.Component {
         />
         <TextField
           id="outlined-name"
-          label="Author"
-          onChange={this.handleChange('author')}
+          label="Author's Name"
+          onChange={this.handleChange('AFirst')}
           margin="normal"
           variant="outlined"
         />
         <TextField
           id="outlined-name"
-          onChange={this.handleChange('publisher')}
-          label="Publisher"
+          label="Author's Last Name"
+          onChange={this.handleChange('ALast')}
           margin="normal"
           variant="outlined"
         />
+        
         <TextField
           id="outlined-name"
           label="Publication Year"

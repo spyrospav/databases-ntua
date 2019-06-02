@@ -74,7 +74,8 @@ class ShowBookArray extends React.Component {
                 >
                   Edit
                 </button>
-                <button className="btn-small">
+                <button className="btn-small"
+                onClick={() => this.props.socket.emit("DELETE_BOOK", book.ISBN)}>
                 Delete
                 </button>
               </div>

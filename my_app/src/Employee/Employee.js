@@ -20,7 +20,7 @@ const Employee = ({
   if (navBarStatus === 'search') {
     return (
     <div>
-      <SearchForm />
+      <SearchForm socket={socket}/>
       <div className="results">
         <h2>Results</h2>
         {foundBooks.map(book => (
