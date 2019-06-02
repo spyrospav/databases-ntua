@@ -10,13 +10,16 @@ class ShowBookArray extends React.Component {
       indexEdit: -1,
     };
   }
+  handleInsert = () => {
+      this.setState({status: ''})
+  }
   render() {
     return (
       <div className="books">
         <h2> Books </h2>
         {this.state.status === "insert" ? (
           <div>
-            <InsertBookFields socket={this.props.socket}/>
+            <InsertBookFields handleInsert={this.handleInsert} socket={this.props.socket}/>
             <button className="btn" onClick={() => this.setState({ status: "" })}>Undo</button>
           </div>
         ) : (
@@ -74,7 +77,8 @@ class ShowBookArray extends React.Component {
                 >
                   Edit
                 </button>
-                <button className="btn-small">
+                <button className="btn-small"
+                onClick={() => this.props.socket.emit("DELETE_BOOK", book.ISBN)}>
                 Delete
                 </button>
               </div>

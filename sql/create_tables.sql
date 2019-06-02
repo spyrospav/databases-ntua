@@ -33,7 +33,6 @@ CREATE TABLE book(
     numPages SMALLINT,
     pubName VARCHAR(50),
     remaining INTEGER DEFAULT 0,
-    total INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
     FOREIGN KEY(pubName) REFERENCES publisher(pubName) ON UPDATE CASCADE ON DELETE SET NULL
 );
@@ -134,16 +133,10 @@ SELECT memberID, MFirst, MLast, Street, Street_num, Postal_code, MBirthdate
 FROM member;
 
 CREATE VIEW book_view AS
-SELECT B.title, B.ISBN, P.pubName, B.pubYear, A.AFirst, A.ALast, B.remaining
-FROM book as B, publisher as P, author as A, written_by as W
-WHERE B.pubName = P.pubName AND B.ISBN = W.ISBN AND A.authID = W.authID;
-
-CREATE TRIGGER increaseTotalCopies
-AFTER INSERT ON copies
-FOR EACH ROW
-    UPDATE book AS b
-    SET total = total + 1
-    WHERE b.ISBN = new.ISBN;
+SELECT title, B.ISBN, pubName, pubYear, numPages, remaining, COUNT(*) AS total
+FROM book AS B, copies AS C
+WHERE B.ISBN = C.ISBN
+GROUP BY ISBN;
 
 CREATE TRIGGER increaseRemainingCopiesAdd
 AFTER INSERT ON copies

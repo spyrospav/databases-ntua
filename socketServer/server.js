@@ -68,9 +68,9 @@ io.on('connection', function(socket) {
 //-------------------------- FETCHES - SEARCHES -----------------------\\
 
     socket.on('FETCH_BOOKS', () => {
-        //SQL Query with JOIN and ORDER BY and AGGREGATE FUNCTION COUNT()
-        const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
-        + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN ORDER BY title ASC";
+        const sql = "SELECT * FROM book_view ORDER BY title ASC";
+        //const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
+        //+ " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN ORDER BY title ASC";
 
         con.query(sql, async function (err, result) {
             if (err) throw err;
@@ -99,9 +99,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('SEARCH_BOOKS', ({title}) => {
-        //SQL Query with JOIN and ORDER BY and AGGREGATE FUNCTION COUNT()
-        const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
-        + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN AND B.title LIKE '%?%' GROUP BY B.ISBN ORDER BY title ASC";
+        const sql = "SELECT * FROM book_view WHERE title LIKE '%?%' ORDER BY title ASC";
 
         con.query(sql,[title], async function (err, result) {
             if (err) throw err;
@@ -158,7 +156,7 @@ io.on('connection', function(socket) {
               authID: author.authID,
               AFirst: author.AFirst,
               ALast: author.ALast,
-              ABirthdate: author.ABirthdate.substr(0,10)
+              ABirthdate: (author.ABirthdate) ? author.ABirthdate.substr(0,10) : undefined
             }))
 
             socket.emit('FETCH_AUTHORS', authorsFixDate)
@@ -209,8 +207,8 @@ io.on('connection', function(socket) {
 
 //--------------------------- DELETES -------------------------------\\
 
-    socket.on('DELETE_BOOK', ({ISBN}) => {
-        const sql = "DELETE FROM book WHERE ISBN = ?";
+    socket.on('DELETE_BOOK', (ISBN) => {
+        const sql = "DELETE FROM book WHERE ISBN LIKE ?";
 
         con.query(sql, [ISBN], function (err, result) {
             if (err) throw err;
@@ -340,7 +338,6 @@ io.on('connection', function(socket) {
 
                 else if (auID.length == 0){
                     con.query("INSERT INTO author (AFIrst, ALast) VALUES (?, ?)", [AFirst, ALast], function (err, reuslt){
-                        console.log("we are here");
                         if (err) throw err;
                         console.log("Author inserted");
 
