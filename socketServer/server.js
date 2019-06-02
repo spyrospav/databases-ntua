@@ -337,8 +337,8 @@ io.on('connection', function(socket) {
                         socket.emit("SUCCESSFUL_INSERT_BOOK");
                     })
                 }
+
                 else if (auID.length == 0){
-                    console.log("back");
                     con.query("INSERT INTO author (AFIrst, ALast) VALUES (?, ?)", [AFirst, ALast], function (err, reuslt){
                         console.log("we are here");
                         if (err) throw err;
