@@ -310,8 +310,51 @@ io.on('connection', function(socket) {
         });
     });
 
-    socket.on('INSERT_BOOK', ({ISBN, title, pubYear, numPages, }) =>{
-        //socket.emit('FETCH_BOOK')
+    socket.on('INSERT_BOOK', ({ISBN, title, pubName, pubYear, numPages, AFirst, ALast, numOfCopies, shelf}) =>{
+        var sql = "INSERT INTO book (ISBN, title, pubName, pubYear, numPages) VALUES (?, ?, ?, ?, ?)"
+
+        var val = [ISBN, title, pubName, pubYear, numPages];
+        con.query(sql, val, function (err, result){
+            if (err) throw err;
+
+            console.log("Book inserted");
+
+            for (var i = 1; i <= numOfCopies; i++){
+                con.query("INSERT INTO copies (ISBN, copyNr, shelf) VALUES (?, ?, ?)", [ISBN, i, shelf], function (err, result){
+                    if (err) throw err;
+                    console.log("Copy inserted");
+                });
+            }
+
+            con.query("SELECT authID FROM author WHERE AFirst LIKE ? AND ALast LIKE ?", [AFirst, ALast], function (err, result){
+                if (err) throw err;
+                const auID = JSON.parse(JSON.stringify(result));
+
+                if (auID.length > 0){
+                    con.query("INSERT INTO written_by (ISBN, authID) VALUES (?, ?)", [ISBN, result[0].authID], function (err, result){
+                        if (err) throw err;
+                        console.log("Written by inserted");
+                        socket.emit("SUCCESSFUL_INSERT_BOOK");
+                    })
+                }
+                else if (auID.length == 0){
+                    console.log("back");
+                    con.query("INSERT INTO author (AFIrst, ALast) VALUES (?, ?)", [AFirst, ALast], function (err, reuslt){
+                        console.log("we are here");
+                        if (err) throw err;
+                        console.log("Author inserted");
+
+                        con.query("SELECT authID as M FROM author ORDER BY authID DESC LIMIT 1", function (err, result){
+                            con.query("INSERT INTO written_by (ISBN, authID) VALUES (?, ?)", [ISBN, result[0].M], function (err, result){
+                                if (err) throw err;
+                                console.log("Written by inserted");
+                                })
+                        })
+                        socket.emit('SUCCESSFUL_INSERT_BOOK');
+                    });
+                }
+            });
+        });
     });
 
     socket.on('SENT_REMINDER', ({memberID, ISBN, copyNr, date_of_borrowing, empID}) =>{

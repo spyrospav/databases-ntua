@@ -8,11 +8,13 @@ class InsertBookFields extends React.Component {
     this.state = {
       ISBN: '',
       title: '',
-      author: '',
-      publisher: '',
-      publicationYear: '',
-      copies: '',
-      pages: ''
+      AFirst: '',
+      ALast: '',
+      pubName: '',
+      pubYear: '',
+      numOfCopies: '',
+      numPages: '',
+      shelf: ''
     }
 
   }
@@ -45,14 +47,21 @@ class InsertBookFields extends React.Component {
         />
         <TextField
           id="outlined-name"
-          label="Author"
-          onChange={this.handleChange('author')}
+          label="Author's First Name"
+          onChange={this.handleChange('AFirst')}
           margin="normal"
           variant="outlined"
         />
         <TextField
           id="outlined-name"
-          onChange={this.handleChange('publisher')}
+          onChange={this.handleChange('ALast')}
+          label="Author's Last Name"
+          margin="normal"
+          variant="outlined"
+        />
+        <TextField
+          id="outlined-name"
+          onChange={this.handleChange('pubName')}
           label="Publisher"
           margin="normal"
           variant="outlined"
@@ -60,21 +69,28 @@ class InsertBookFields extends React.Component {
         <TextField
           id="outlined-name"
           label="Publication Year"
-          onChange={this.handleChange('publicationYear')}
+          onChange={this.handleChange('pubYear')}
           margin="normal"
           variant="outlined"
         />
         <TextField
           id="outlined-name"
-          onChange={this.handleChange('pages')}
+          onChange={this.handleChange('numPages')}
           label="Pages"
           margin="normal"
           variant="outlined"
         />
         <TextField
           id="outlined-name"
-          onChange={this.handleChange('copies')}
+          onChange={this.handleChange('numOfCopies')}
           label="Copies"
+          margin="normal"
+          variant="outlined"
+        />
+        <TextField
+          id="outlined-name"
+          onChange={this.handleChange('shelf')}
+          label="Shelf number"
           margin="normal"
           variant="outlined"
         />

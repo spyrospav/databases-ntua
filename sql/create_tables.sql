@@ -253,28 +253,22 @@ END IF;
 END$$
 DELIMITER ;
 
-DELIMITER $$
 CREATE TRIGGER DeleteBorrows
-BEFORE DELETE on borrows
+BEFORE DELETE on book
 FOR EACH ROW
-BEGIN
-IF (old.date_of_return IS NULL) THEN
-    UPDATE copies AS C
-    SET C.available = true
-    WHERE old.ISBN = C.ISBN AND old.copyNr = C.copyNr;
-END IF;
-END$$
-DELIMITER ;
+    DELETE FROM borrows
+    WHERE ISBN = old.ISBN;
+
 
 DELIMITER $$
-CREATE TRIGGER DeleteBorrows2
+CREATE TRIGGER updateMemberAtDeleteBorrows
 BEFORE DELETE on borrows
 FOR EACH ROW
 BEGIN
 IF (old.date_of_return IS NULL) THEN
-    UPDATE book AS B
-    SET B.remaining = B.remaining +1
-    WHERE B.ISBN = old.ISBN;
+    UPDATE member as M
+    SET M.current_borrows = M.current_borrows - 1
+    WHERE M.memberID = old.memberID;
 END IF;
 END$$
 DELIMITER ;
