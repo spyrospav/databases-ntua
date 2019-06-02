@@ -178,7 +178,7 @@ class App extends React.Component {
            <a href="#">CODeS Public Library</a>
            <a onClick={() => this.setState({navBarStatus: 'search'})} href="#">Search</a>
            <a onClick={() => {
-<<<<<<< HEAD
+
              socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE");
              this.setState({navBarStatus: 'borrowedBooks'})
            }} href="#">Borrowed Books </a>
@@ -188,7 +188,6 @@ class App extends React.Component {
              <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
              <a href="#home">CODeS Public Library</a>
          </div>
-=======
              socket.emit("FETCH_ACTIVE_BORROWS_MEMBERS", this.state.memberID);
              this.setState({navBarStatus: 'borrowedBooks'})
            }} href="#">Borrowed Books </a>
@@ -197,7 +196,6 @@ class App extends React.Component {
             this.setState({navBarStatus: 'reminders'})
           }} href="#">Reminders</a>
        </div>
->>>>>>> d382a374d770383ccb912922d8487c3799b2ebe0
          <Member
           navBarStatus={this.state.navBarStatus}
           handleChangeStatus={this.handleChangeStatus}
@@ -259,9 +257,7 @@ class App extends React.Component {
          />
          <button
          className = "btn"
-<<<<<<< HEAD
          onClick={() => {this.goToWelcome()}
-=======
          onClick={() => {
            this.setState({
              navBarStatus: 'search',
@@ -273,7 +269,6 @@ class App extends React.Component {
              publishersArray: [],
            })
            this.goToWelcome()}}
->>>>>>> d382a374d770383ccb912922d8487c3799b2ebe0
          >
           Logout
          </button>
