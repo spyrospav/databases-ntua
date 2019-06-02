@@ -2,6 +2,7 @@ import React from 'react';
 import { SearchForm } from './SearchForm';
 
 const Member = ({
+  socket,
   navBarStatus,
   foundBooks,
   borrowedBooks,
@@ -11,7 +12,7 @@ const Member = ({
   }) => {
   return (
     <div>
-=======
+
     {(navBarStatus === 'borrowedBooks')
     ?
     <div>
@@ -26,7 +27,6 @@ const Member = ({
           <p className="col6"> {book.ISBN}</p>
           <p className="col6"> {book.date_of_borrowing} </p>
           <p className="col6"> {book.due_date} </p>
->>>>>>> d382a374d770383ccb912922d8487c3799b2ebe0
         </div>
       ))}
       </div>
@@ -36,7 +36,7 @@ const Member = ({
     {navBarStatus === "search"
     ?
     <div>
-        search books
+        <SearchForm socket={socket}/>
     </div>
     :
     <div> </div>

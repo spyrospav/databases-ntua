@@ -47,23 +47,15 @@ class InsertBookFields extends React.Component {
         />
         <TextField
           id="outlined-name"
-<<<<<<< HEAD
-          label="Author's Name"
-=======
           label="Author's First Name"
->>>>>>> d382a374d770383ccb912922d8487c3799b2ebe0
           onChange={this.handleChange('AFirst')}
           margin="normal"
           variant="outlined"
         />
         <TextField
           id="outlined-name"
-<<<<<<< HEAD
           label="Author's Last Name"
           onChange={this.handleChange('ALast')}
-=======
-          onChange={this.handleChange('ALast')}
-          label="Author's Last Name"
           margin="normal"
           variant="outlined"
         />
@@ -71,7 +63,6 @@ class InsertBookFields extends React.Component {
           id="outlined-name"
           onChange={this.handleChange('pubName')}
           label="Publisher"
->>>>>>> d382a374d770383ccb912922d8487c3799b2ebe0
           margin="normal"
           variant="outlined"
         />
