@@ -1,9 +1,16 @@
 import React from 'react';
 import { SearchForm } from './SearchForm';
+import { MyInfo } from './MyInfo';
 
 const Member = ({
   socket,
   memberID,
+  MFirst,
+  MLast,
+  Street,
+  Street_num,
+  Postal_code,
+  MBirthdate,
   navBarStatus,
   foundBooks,
   borrowedBooks,
@@ -97,6 +104,21 @@ const Member = ({
         ))}
       </div>
     </div>
+    :
+    <div></div>
+    }
+    {navBarStatus === 'myInfo'
+    ?
+    <MyInfo
+    socket={socket}
+    memberID={memberID}
+    MFirst={MFirst}
+    MLast={MLast}
+    Street={Street}
+    Street_num={Street_num}
+    Postal_code={Postal_code}
+    MBirthdate={MBirthdate}
+    />
     :
     <div></div>
     }

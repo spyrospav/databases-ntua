@@ -15,6 +15,12 @@ const initialState = {
   employee: false,
   empID: '',
   memberID: '',
+  MFirst: '',
+  MLast: '',
+  Street: '',
+  Street_num: '',
+  Postal_code: '',
+  MBirthdate: '',
   navBarStatus: 'search', //'search','manageBooks','borrowedBooks','addEmployee'
   borrowedBooks: [],
   foundBooks: [],
@@ -54,13 +60,24 @@ class App extends React.Component {
     socket.on("FETCH_REMINDERS", reminders => this.setState({reminders: reminders}))
     socket.on("FETCH_ACTIVE_BORROWS_EMPLOYEE", borrowedBooks => this.setState({borrowedBooks: borrowedBooks}))
     socket.on("FETCH_ACTIVE_BORROWS_MEMBERS", borrowedBooks => this.setState({borrowedBooks: borrowedBooks}))
+    socket.on("FETCH_MEMBER", ({MFirst, MLast, Street, Street_num, Postal_code, MBirthdate}) => this.setState({
+      MFirst: MFirst,
+      MLast: MLast,
+      Street: Street,
+      Street_num: Street_num,
+      Postal_code: Postal_code,
+      MBirthdate: MBirthdate
+    }))
 
     socket.on('SUCCESSFUL_RETURN_BOOK', () => socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE"));
     socket.on('SUCCESSFUL_ADD_EMPLOYEE', id => alert(`Id of employee inserted: ${id}`));
     socket.on('SUCCESSFUL_INSERT_BOOK', () => socket.emit("FETCH_BOOKS"));
     socket.on('SUCCESSFUL_DELETE_BOOK', () => socket.emit("FETCH_BOOKS"));
+
     socket.on("SUCCESSFUL_BORROW", () => {alert("Successful borrow"); socket.emit("FETCH_BOOKS")})
     socket.on("UNSUCCESSFUL_BORROW", () => alert("Cannot borrow more than 5 books..."))
+
+    socket.on("SUCCESSFUL_UPDATE_MEMBER", () => {alert("Updated member info!"); socket.emit("FETCH_MEMBER", this.state.memberID)})
     //socket.on('SUCCESSFUL_SENT_REMINDER', () => socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE"));
 
     socket.on("SUCCESSFUL_INSERT_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
@@ -190,10 +207,23 @@ class App extends React.Component {
             socket.emit("FETCH_REMINDERS", this.state.memberID);
             this.setState({navBarStatus: 'reminders'})
           }} href="#">Reminders</a>
+          <a href="#"
+          onClick = {() => {
+            socket.emit("FETCH_MEMBER", this.state.memberID);
+            this.setState({navBarStatus: 'myInfo'})
+          }}>
+            My info
+          </a>
        </div>
          <Member
           socket={socket}
           memberID={this.state.memberID}
+          MFirst={this.state.MFirst}
+          MLast={this.state.MLast}
+          Street={this.state.Street}
+          Street_num={this.state.Street_num}
+          Postal_code={this.state.Postal_code}
+          MBirthdate={this.state.MBirthdate}
           navBarStatus={this.state.navBarStatus}
           handleChangeStatus={this.handleChangeStatus}
           foundBooks={this.state.foundBooks}

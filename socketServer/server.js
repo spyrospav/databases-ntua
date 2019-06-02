@@ -222,6 +222,25 @@ io.on('connection', function(socket) {
         });
     })
 
+    socket.on('FETCH_MEMBER', (memberID) => {
+        //SQL Query with ORDER BY ********************************************
+        const sql = "SELECT MFirst, MLast, Street, Street_num, Postal_code, MBirthdate FROM member_view WHERE memberID = ?";
+
+        con.query(sql, [memberID], function (err, result) {
+            if (err) throw err;
+            const member = JSON.parse(JSON.stringify(result));
+            const memberFixDate = member.map(member => ({
+              MFirst: member.MFirst,
+              MLast: member.MLast,
+              Street: member.Street,
+              Street_num: member.Street_num,
+              Postal_code: member.Postal_code,
+              MBirthdate: member.MBirthdate.substr(0,10)
+            }))
+            socket.emit('FETCH_MEMBER', memberFixDate[0]);
+        });
+    })
+
     socket.on('FETCH_REMINDERS', (memberID) => {
         //SQL Query with ORDER BY ********************************************
         const sql = "SELECT * FROM reminder WHERE memberID = ? ORDER BY date_of_reminder DESC";
@@ -444,13 +463,29 @@ io.on('connection', function(socket) {
 
     socket.on('UPDATE_BOOK', ({ISBN, title, pubYear, numPages, pubName}) =>{
         var sql = "UPDATE author"
-        + " SET ISBN = ?, title = ?, pubYear = ?, numPages = ? pubName= ? WHERE ISBN LIKE '?'";
+        + " SET ISBN = ?, title = ?, pubYear = ?, numPages = ?, pubName= ? WHERE ISBN LIKE '?'";
 
         var val = [ISBN, title, pubYear, numPages, pubName, ISBN];
         con.query(sql, val, function (err, result) {
             if (err) throw err;
             socket.emit('SUCCESSFUL_UPDATE_BOOK');
             console.log("Book updated");
+        });
+    });
+
+    socket.on('UPDATE_MEMBER', ({memberID, MFirst, MLast, Street, Street_num, Postal_code, MBirthdate}) =>{
+        var sql = "UPDATE member_view"
+        + " SET MFirst = ?, MLast = ?, Street = ?, Street_num = ?, Postal_code = ?, MBirthdate = ?  WHERE memberID = ?";
+
+        var val = [MFirst, MLast, Street, Street_num, Postal_code, MBirthdate, memberID];
+        con.query(sql, val, function (err, result) {
+            if (err) {
+                socket.emit('UNSUCCESSFUL_UPDATE_MEMBER');
+            }
+            else {
+                socket.emit('SUCCESSFUL_UPDATE_MEMBER');
+                console.log("Member updated");
+            }
         });
     });
 
