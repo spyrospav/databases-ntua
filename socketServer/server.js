@@ -226,13 +226,16 @@ io.on('connection', function(socket) {
 
     socket.on('FETCH_REMINDERS', (memberID) => {
         //SQL Query with ORDER BY ********************************************
-        const sql = "SELECT ISBN, date_of_borrowing, date_of_reminder FROM reminders WHERE memberID = ? ORDER BY date_of_reminder DESC";
+        const sql = "SELECT * FROM reminder WHERE memberID = ? ORDER BY date_of_reminder DESC";
 
         con.query(sql, [memberID], function (err, result) {
             if (err) throw err;
             const reminder = JSON.parse(JSON.stringify(result));
-            const reminderFixDate = borrows.map(reminder => ({
+            const reminderFixDate = reminder.map(reminder => ({
+              memberID : reminder.memberID,
               ISBN: reminder.ISBN,
+              copyNr: reminder.copyNr,
+              empID: reminder.empID,
               date_of_borrowing: reminder.date_of_borrowing.substr(0,10),
               date_of_reminder: reminder.date_of_reminder.substr(0,10)
             }))

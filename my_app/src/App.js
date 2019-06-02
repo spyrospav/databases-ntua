@@ -18,17 +18,7 @@ const initialState = {
   navBarStatus: 'search', //'search','manageBooks','borrowedBooks','addEmployee'
   borrowedBooks: [],
   foundBooks: [],
-  reminders: [
-    {
-      title: "book3",
-      expirationDate: '1/7'
-    },
-    {
-      title: 'book4',
-      expirationDate: '2/7'
-    }
-  ]
-  ,
+  reminders: [],
   booksArray: [],
   authorsArray: [],
   publishersArray: [],
@@ -60,7 +50,9 @@ class App extends React.Component {
     socket.on("FETCH_BOOKS", books => this.setState({booksArray: books}))
     socket.on("FETCH_AUTHORS", authors => this.setState({authorsArray: authors}))
     socket.on("FETCH_PUBLISHERS", publishers => this.setState({publishersArray: publishers}))
+    socket.on("FETCH_REMINDERS", reminders => this.setState({reminders: reminders}))
     socket.on("FETCH_ACTIVE_BORROWS_EMPLOYEE", borrowedBooks => this.setState({borrowedBooks: borrowedBooks}))
+    socket.on("FETCH_ACTIVE_BORROWS_MEMBERS", borrowedBooks => this.setState({borrowedBooks: borrowedBooks}))
 
     socket.on('SUCCESSFUL_RETURN_BOOK', () => socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE"));
     socket.on('SUCCESSFUL_ADD_EMPLOYEE', id => alert(`Id of employee inserted: ${id}`));
@@ -188,7 +180,10 @@ class App extends React.Component {
              socket.emit("FETCH_ACTIVE_BORROWS_MEMBERS", this.state.memberID);
              this.setState({navBarStatus: 'borrowedBooks'})
            }} href="#">Borrowed Books </a>
-          <a onClick={() => this.setState({navBarStatus: 'reminders'})} href="#">Reminders</a>
+          <a onClick={() => {
+            socket.emit("FETCH_REMINDERS", this.state.memberID);
+            this.setState({navBarStatus: 'reminders'})
+          }} href="#">Reminders</a>
        </div>
          <Member
           navBarStatus={this.state.navBarStatus}
