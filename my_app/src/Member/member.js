@@ -3,6 +3,7 @@ import { SearchForm } from './SearchForm';
 
 const Member = ({
   socket,
+  memberID,
   navBarStatus,
   foundBooks,
   borrowedBooks,
@@ -37,6 +38,43 @@ const Member = ({
     ?
     <div>
         <SearchForm socket={socket}/>
+        {foundBooks.length !== 0
+          ?
+          <div className="books">
+            <div className="row6 bold">
+                <p className="col7">ISBN</p>
+                <p className="col7">Title</p>
+                <p className="col7">Author</p>
+                <p className="col7">Publisher</p>
+                <p className="col7">Published</p>
+                <p className="col7">Pages</p>
+                <p className="col7">Avail. Copies</p>
+            </div>
+            {foundBooks.map(book => (
+              <div className="row7" key={book.ISBN}>
+                <p className="col7">{book.ISBN}</p>
+                <p className="col7">{book.title}</p>
+                <p className="col7">{book.author}</p>
+                <p className="col7">{book.pubName}</p>
+                <p className="col7">{book.pubYear}</p>
+                <p className="col7">{book.numPages}</p>
+                <p className="col7">{book.remaining}</p>
+                {book.remaining > 0
+                  ?
+                <button
+                className='btn'
+                onClick={ () => {
+                  socket.emit("BORROW_BOOK", {memberID, ISBN: book.ISBN})
+                }} > Borrow </button>
+                :
+                <p></p>
+                }
+              </div>
+            ))}
+          </div>
+        :
+        <div> </div>
+        }
     </div>
     :
     <div> </div>

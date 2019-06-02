@@ -74,7 +74,6 @@ io.on('connection', function(socket) {
 
         con.query(sql, async function (err, result) {
             if (err) throw err;
-            //console.log('Search for ', title);
             const books = JSON.parse(JSON.stringify(result));
 
             const promises = books.map(book => {
@@ -100,7 +99,7 @@ io.on('connection', function(socket) {
 
     socket.on('SEARCH_BOOKS', (title) => {
         //SQL Query with ORDER BY **************************************
-        const sql = "SELECT * FROM book_view WHERE title LIKE '%" + title + "%' ORDER BY title ASC";
+        const sql = "SELECT DISTINCT * FROM book_view WHERE title LIKE '%" + title + "%' ORDER BY title ASC";
 
         con.query(sql, async function (err, result) {
             if (err) throw err;
@@ -122,7 +121,6 @@ io.on('connection', function(socket) {
                   });
                 })
             })
-
             const booksWithAuthors = await Promise.all(promises);
             socket.emit('SEARCH_BOOKS', booksWithAuthors);
         });
@@ -320,8 +318,22 @@ io.on('connection', function(socket) {
 
 //--------------------------- INSERTS ---------------------------\\
 
-    socket.on('BORROW', ({ISBN, memberID}) => {
+    socket.on('BORROW_BOOK', ({ISBN, memberID}) => {
+        var sql = "SELECT max(copyNr) as M FROM copies WHERE ISBN LIKE ? AND AVAILABLE = true"
 
+        con.query(sql, [ISBN], function (err, result) {
+            if (err) throw err;
+            const copyNr = JSON.parse(JSON.stringify(result));
+            var sql = "INSERT INTO borrows (ISBN, copyNr, memberID, date_of_borrowing) VALUES (?, ?, ?, CURDATE())";
+            con.query(sql, [ISBN, copyNr[0].M, memberID], function (err, result) {
+                if (err) {
+                  socket.emit("UNSUCCESSFUL_BORROW");
+                }
+                else {
+                    socket.emit("SUCCESSFUL_BORROW");
+                }
+            });
+        });
     });
 
     socket.on('INSERT_PUBLISHER', ({pubName, estYear, Street, Street_num, Postal_code}) =>{

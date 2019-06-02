@@ -35,6 +35,7 @@ class App extends React.Component {
       }
       else {
         this.setState({status: 'memberPage'});
+        socket.emit("FETCH_BOOKS");
       }
     })
 
@@ -47,7 +48,7 @@ class App extends React.Component {
     socket.on("FETCH_EXPIRED_BOOKS", (expiredBooks) =>
       this.setState({expiredBooks: expiredBooks}))
 
-    socket.on("FETCH_BOOKS", books => this.setState({booksArray: books}))
+    socket.on("FETCH_BOOKS", books => this.setState({booksArray: books, foundBooks: books}))
     socket.on("FETCH_AUTHORS", authors => this.setState({authorsArray: authors}))
     socket.on("FETCH_PUBLISHERS", publishers => this.setState({publishersArray: publishers}))
     socket.on("FETCH_REMINDERS", reminders => this.setState({reminders: reminders}))
@@ -58,6 +59,8 @@ class App extends React.Component {
     socket.on('SUCCESSFUL_ADD_EMPLOYEE', id => alert(`Id of employee inserted: ${id}`));
     socket.on('SUCCESSFUL_INSERT_BOOK', () => socket.emit("FETCH_BOOKS"));
     socket.on('SUCCESSFUL_DELETE_BOOK', () => socket.emit("FETCH_BOOKS"));
+    socket.on("SUCCESSFUL_BORROW", () => {alert("Successful borrow"); socket.emit("FETCH_BOOKS")})
+    socket.on("UNSUCCESSFUL_BORROW", () => alert("Cannot borrow more than 5 books..."))
     //socket.on('SUCCESSFUL_SENT_REMINDER', () => socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE"));
 
     socket.on("SUCCESSFUL_INSERT_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
@@ -177,7 +180,6 @@ class App extends React.Component {
            <img src="images/icons8-book-shelf-100.png" alt="Our Logo"/>
            <a href="#">CODeS Public Library</a>
            <a onClick={() => {
-             socket.emit("SEARCH_BOOKS");
              this.setState({navBarStatus: 'search'})
            }} href="#">Search</a>
          <a onClick={ () => {
@@ -191,6 +193,7 @@ class App extends React.Component {
        </div>
          <Member
           socket={socket}
+          memberID={this.state.memberID}
           navBarStatus={this.state.navBarStatus}
           handleChangeStatus={this.handleChangeStatus}
           foundBooks={this.state.foundBooks}
@@ -199,7 +202,10 @@ class App extends React.Component {
           />
          <button
          className="btn"
-         onClick={() => this.goToWelcome()}>
+         onClick={() => {
+           this.setState({...initialState})
+           this.goToWelcome()
+         }}>
           Logout
           </button>
        </div>
@@ -252,15 +258,7 @@ class App extends React.Component {
          <button
          className = "btn"
          onClick={() => {
-           this.setState({
-             navBarStatus: 'search',
-             empID:'',
-             foundBooks: [],
-             borrowedBooks: [],
-             booksArray: [],
-             authorsArray: [],
-             publishersArray: [],
-           })
+           this.setState({...initialState})
            this.goToWelcome()}}
          >
           Logout
