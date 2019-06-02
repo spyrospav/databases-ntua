@@ -33,7 +33,6 @@ CREATE TABLE book(
     numPages SMALLINT,
     pubName VARCHAR(50),
     remaining INTEGER DEFAULT 0,
-    total INTEGER DEFAULT 0,
     PRIMARY KEY(ISBN),
     FOREIGN KEY(pubName) REFERENCES publisher(pubName) ON UPDATE CASCADE ON DELETE SET NULL
 );
@@ -42,6 +41,7 @@ CREATE TABLE author(
     authID INTEGER NOT NULL AUTO_INCREMENT,
     AFirst VARCHAR(20) NOT NULL,
     ALast VARCHAR(25) NOT NULL,
+    /*AFull VARCHAR (50) AS (AFirst + ALast),*/
     ABirthdate DATE,
     PRIMARY KEY(authID)
 );
@@ -73,7 +73,7 @@ CREATE TABLE borrows(
     PRIMARY KEY (memberID, ISBN, copyNr, date_of_borrowing),
     FOREIGN KEY (memberID) REFERENCES member(memberID) ON DELETE CASCADE,
     FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr) ON UPDATE CASCADE
+    FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE category(
@@ -126,7 +126,7 @@ CREATE TABLE reminder(
     FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (memberID, ISBN, copyNr, date_of_borrowing) REFERENCES borrows(memberID, ISBN, copyNr, date_of_borrowing)
         ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr)
+    FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE VIEW member_view AS
@@ -134,16 +134,10 @@ SELECT memberID, MFirst, MLast, Street, Street_num, Postal_code, MBirthdate
 FROM member;
 
 CREATE VIEW book_view AS
-SELECT B.title, B.ISBN, P.pubName, B.pubYear, A.AFirst, A.ALast, B.remaining
-FROM book as B, publisher as P, author as A, written_by as W
-WHERE B.pubName = P.pubName AND B.ISBN = W.ISBN AND A.authID = W.authID;
-
-CREATE TRIGGER increaseTotalCopies
-AFTER INSERT ON copies
-FOR EACH ROW
-    UPDATE book AS b
-    SET total = total + 1
-    WHERE b.ISBN = new.ISBN;
+SELECT title, B.ISBN, pubName, pubYear, numPages, remaining, COUNT(*) AS total
+FROM book AS B, copies AS C
+WHERE B.ISBN = C.ISBN
+GROUP BY ISBN;
 
 CREATE TRIGGER increaseRemainingCopiesAdd
 AFTER INSERT ON copies
@@ -253,28 +247,22 @@ END IF;
 END$$
 DELIMITER ;
 
-DELIMITER $$
 CREATE TRIGGER DeleteBorrows
-BEFORE DELETE on borrows
+BEFORE DELETE on book
 FOR EACH ROW
-BEGIN
-IF (old.date_of_return IS NULL) THEN
-    UPDATE copies AS C
-    SET C.available = true
-    WHERE old.ISBN = C.ISBN AND old.copyNr = C.copyNr;
-END IF;
-END$$
-DELIMITER ;
+    DELETE FROM borrows
+    WHERE ISBN = old.ISBN;
+
 
 DELIMITER $$
-CREATE TRIGGER DeleteBorrows2
+CREATE TRIGGER updateMemberAtDeleteBorrows
 BEFORE DELETE on borrows
 FOR EACH ROW
 BEGIN
 IF (old.date_of_return IS NULL) THEN
-    UPDATE book AS B
-    SET B.remaining = B.remaining +1
-    WHERE B.ISBN = old.ISBN;
+    UPDATE member as M
+    SET M.current_borrows = M.current_borrows - 1
+    WHERE M.memberID = old.memberID;
 END IF;
 END$$
 DELIMITER ;

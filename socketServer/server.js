@@ -34,7 +34,7 @@ io.on('connection', function(socket) {
 //----------------------------- LOGINS ----------------------------\\
 
     socket.on('LOGIN', ({username, password}) => {
-        //SQL Query with AGGREGATE FUNCTION COUNT
+        //SQL Query with AGGREGATE FUNCTION COUNT ********************************
         const sql = "SELECT COUNT(*) FROM member WHERE memberID = ?";
         con.query(sql, username , function (err, result) {
             if (err) throw err;
@@ -50,7 +50,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('EMPLOYEE_LOGIN', ({username, password}) => {
-        //SQL Query with AGGREGATE FUNCTION COUNT
+        //SQL Query with AGGREGATE FUNCTION COUNT *********************************
         const sql = "SELECT COUNT(*) FROM employee WHERE empID = ?";
         con.query(sql, username , function (err, result) {
             if (err) throw err;
@@ -68,9 +68,9 @@ io.on('connection', function(socket) {
 //-------------------------- FETCHES - SEARCHES -----------------------\\
 
     socket.on('FETCH_BOOKS', () => {
-        //SQL Query with JOIN and ORDER BY and AGGREGATE FUNCTION COUNT()
-        const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
-        + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN ORDER BY title ASC";
+        const sql = "SELECT * FROM book_view ORDER BY title ASC";
+        //const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
+        //+ " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN ORDER BY title ASC";
 
         con.query(sql, async function (err, result) {
             if (err) throw err;
@@ -78,7 +78,7 @@ io.on('connection', function(socket) {
             const books = JSON.parse(JSON.stringify(result));
 
             const promises = books.map(book => {
-                //SQL Query with JOIN
+                //SQL Query with JOIN ************************************************
                 const sql2 = "SELECT AFirst, ALast FROM author AS A, written_by as W WHERE W.ISBN LIKE '" + book.ISBN +"' AND A.authID=W.authID";
                 return new Promise((resolve, reject) => {
                   let authorsString;
@@ -98,14 +98,13 @@ io.on('connection', function(socket) {
         });
     })
 
-    socket.on('SEARCH_BOOKS', ({title}) => {
-        //SQL Query with JOIN and ORDER BY and AGGREGATE FUNCTION COUNT()
-        const sql = "SELECT B.ISBN, B.title, B.pubYear, B.numPages, B.pubName, B.remaining, COUNT(*)"
-        + " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN AND B.title LIKE '%?%' GROUP BY B.ISBN ORDER BY title ASC";
+    socket.on('SEARCH_BOOKS', (title) => {
+        //SQL Query with ORDER BY **************************************
+        const sql = "SELECT * FROM book_view WHERE title LIKE '%" + title + "%' ORDER BY title ASC";
 
-        con.query(sql,[title], async function (err, result) {
+        con.query(sql, async function (err, result) {
             if (err) throw err;
-            //console.log('Search for ', title);
+            console.log('Search for', title);
             const books = JSON.parse(JSON.stringify(result));
 
             const promises = books.map(book => {
@@ -129,23 +128,36 @@ io.on('connection', function(socket) {
         });
     })
 
-    socket.on('SEARCH_CATEGORY', ({category}) => {
-        const sql = "SELECT DISTINCT B.ISBN, B.title, B.numPages"
-        + "FROM book AS B, (SELECT categoryName FROM category WHERE categoryName LIKE '?' OR supercategoryName LIKE '?') AS C,"
-        + " written_by AS W WHERE W.ISBN = B.ISBN AND C.categoryName = W.categoryName";
+    socket.on('SEARCH_CATEGORY', (category) => {
+        //Nested SQL query **************************************************
+        //And JOIN **********************************************************
+        const sql = "SELECT * FROM book_view as B, (SELECT ISBN FROM belongs_to WHERE categoryName LIKE ?) AS C "+
+        " WHERE C.ISBN = B.ISBN ORDER BY B.title ASC";
 
-        con.query(sql, [category], function (err, result) {
+        con.query(sql, [category], async function (err, result) {
             if (err) throw err;
-            const authors = JSON.parse(JSON.stringify(result));
-            const authorsFixDate = authors.map(author => ({
-              authID: author.authID,
-              AFirst: author.AFirst,
-              ALast: author.ALast,
-              ABirthdate: author.ABirthdate.substr(0,10)
-            }))
-            socket.emit('FETCH_AUTHORS', authorsFixDate)
+            const books = JSON.parse(JSON.stringify(result));
+
+            const promises = books.map(book => {
+                //SQL Query with JOIN
+                const sql2 = "SELECT AFirst, ALast FROM author AS A, written_by as W WHERE W.ISBN LIKE '" + book.ISBN +"' AND A.authID=W.authID";
+                return new Promise((resolve, reject) => {
+                  let authorsString;
+                  con.query(sql2, function (err, result) {
+                      if (err) return reject(err);
+                      const authors = JSON.parse(JSON.stringify(result));
+                      authorsString = authors.reduce((acc, x, index) =>
+                        acc + x.AFirst + " " + x.ALast + " ",
+                      "");
+                      return resolve({...book, author: authorsString});
+                  });
+                })
+            })
+
+            const booksWithAuthors = await Promise.all(promises);
+            socket.emit('SEARCH_BOOKS', booksWithAuthors);
         });
-    })
+    });
 
     socket.on('FETCH_AUTHORS', () => {
         const sql = "SELECT * FROM author ORDER BY ALast ASC";
@@ -158,7 +170,7 @@ io.on('connection', function(socket) {
               authID: author.authID,
               AFirst: author.AFirst,
               ALast: author.ALast,
-              ABirthdate: author.ABirthdate.substr(0,10)
+              ABirthdate: (author.ABirthdate) ? author.ABirthdate.substr(0,10) : undefined
             }))
 
             socket.emit('FETCH_AUTHORS', authorsFixDate)
@@ -177,20 +189,25 @@ io.on('connection', function(socket) {
     })
 
     socket.on('FETCH_ACTIVE_BORROWS_MEMBERS', (memberID) => {
-        //SQL Query with ORDER BY
-        const sql = "SELECT (ISBN, date_of_borrowing, due_date) FROM borrows"
-        + "WHERE memberID = ? AND date_of_return IS NULL ORDER BY due_date";
+        //SQL Query with ORDER BY ********************************************
+        const sql = "SELECT ISBN, date_of_borrowing, due_date FROM borrows"
+        + " WHERE memberID = ? AND date_of_return IS NULL ORDER BY due_date ASC";
 
         con.query(sql, [memberID], function (err, result) {
             if (err) throw err;
             const borrows = JSON.parse(JSON.stringify(result));
-            console.log(borrows);
-            //socket.emit('FETCHED_ACTIVE_BORROWS_MEMBERS', borrows);
+            socket.emit('FETCHED_ACTIVE_BORROWS_MEMBERS', borrows);
+            const borrowsFixDate = borrows.map(borrows => ({
+              ISBN: borrows.ISBN,
+              date_of_borrowing: borrows.date_of_borrowing.substr(0,10),
+              due_date: borrows.due_date.substr(0,10),
+            }))
+            socket.emit('FETCH_ACTIVE_BORROWS_MEMBERS', borrowsFixDate);
         });
     })
 
     socket.on('FETCH_ACTIVE_BORROWS_EMPLOYEE', () => {
-        //SQL Query with ORDER BY
+        //SQL Query with ORDER BY ********************************************
         const sql = "SELECT * FROM borrows WHERE date_of_return IS NULL ORDER BY memberID ASC";
 
         con.query(sql, function (err, result) {
@@ -207,15 +224,34 @@ io.on('connection', function(socket) {
         });
     })
 
+    socket.on('FETCH_REMINDERS', (memberID) => {
+        //SQL Query with ORDER BY ********************************************
+        const sql = "SELECT * FROM reminder WHERE memberID = ? ORDER BY date_of_reminder DESC";
+
+        con.query(sql, [memberID], function (err, result) {
+            if (err) throw err;
+            const reminder = JSON.parse(JSON.stringify(result));
+            const reminderFixDate = reminder.map(reminder => ({
+              memberID : reminder.memberID,
+              ISBN: reminder.ISBN,
+              copyNr: reminder.copyNr,
+              empID: reminder.empID,
+              date_of_borrowing: reminder.date_of_borrowing.substr(0,10),
+              date_of_reminder: reminder.date_of_reminder.substr(0,10)
+            }))
+            socket.emit('FETCH_REMINDERS', reminderFixDate);
+        });
+    })
+
 //--------------------------- DELETES -------------------------------\\
 
-    socket.on('DELETE_BOOK', ({ISBN}) => {
-        const sql = "DELETE FROM book WHERE ISBN = ?";
+    socket.on('DELETE_BOOK', (ISBN) => {
+        const sql = "DELETE FROM book WHERE ISBN LIKE ?";
 
         con.query(sql, [ISBN], function (err, result) {
             if (err) throw err;
             console.log("Deleted book");
-            //socket.emit('SUCCESSFUL_DELETE_BOOK');
+            socket.emit('SUCCESSFUL_DELETE_BOOK');
         });
     })
 
@@ -266,16 +302,17 @@ io.on('connection', function(socket) {
 
             con.query("SELECT empID FROM employee ORDER BY empID DESC LIMIT 1", function (err, result) {
                 if (err) throw err;
+                const id = result[0].empID;
                 if (isPermanent) {
                     var sql = "INSERT INTO permanent_employee (empID, HiringDate) VALUES (?, CURDATE())";
                 }
                 else{
-                    var sql = "INSERT INTO temporary_employee (empID, ContractNr) VALUES (?, ?)";
+                    var sql = "INSERT INTO temporary_employee (empID) VALUES (?)";
                  }
                  var val = [result[0].empID];
                 con.query(sql, val, function (err, result) {
                     if (err) throw err;
-                    socket.emit('SUCCESSFUL_ADD_EMPLOYEE', result[0].empID);
+                    socket.emit('SUCCESSFUL_ADD_EMPLOYEE', id);
                 });
             });
         });
@@ -309,8 +346,50 @@ io.on('connection', function(socket) {
         });
     });
 
-    socket.on('INSERT_BOOK', ({ISBN, title, pubYear, numPages, }) =>{
-        //socket.emit('FETCH_BOOK')
+    socket.on('INSERT_BOOK', ({ISBN, title, pubName, pubYear, numPages, AFirst, ALast, numOfCopies, shelf}) =>{
+        var sql = "INSERT INTO book (ISBN, title, pubName, pubYear, numPages) VALUES (?, ?, ?, ?, ?)"
+
+        var val = [ISBN, title, pubName, pubYear, numPages];
+        con.query(sql, val, function (err, result){
+            if (err) throw err;
+
+            console.log("Book inserted");
+
+            for (var i = 1; i <= numOfCopies; i++){
+                con.query("INSERT INTO copies (ISBN, copyNr, shelf) VALUES (?, ?, ?)", [ISBN, i, shelf], function (err, result){
+                    if (err) throw err;
+                    console.log("Copy inserted");
+                });
+            }
+
+            con.query("SELECT authID FROM author WHERE AFirst LIKE ? AND ALast LIKE ?", [AFirst, ALast], function (err, result){
+                if (err) throw err;
+                const auID = JSON.parse(JSON.stringify(result));
+
+                if (auID.length > 0){
+                    con.query("INSERT INTO written_by (ISBN, authID) VALUES (?, ?)", [ISBN, result[0].authID], function (err, result){
+                        if (err) throw err;
+                        console.log("Written by inserted");
+                        socket.emit("SUCCESSFUL_INSERT_BOOK");
+                    })
+                }
+
+                else if (auID.length == 0){
+                    con.query("INSERT INTO author (AFIrst, ALast) VALUES (?, ?)", [AFirst, ALast], function (err, reuslt){
+                        if (err) throw err;
+                        console.log("Author inserted");
+
+                        con.query("SELECT authID as M FROM author ORDER BY authID DESC LIMIT 1", function (err, result){
+                            con.query("INSERT INTO written_by (ISBN, authID) VALUES (?, ?)", [ISBN, result[0].M], function (err, result){
+                                if (err) throw err;
+                                console.log("Written by inserted");
+                                })
+                        })
+                        socket.emit('SUCCESSFUL_INSERT_BOOK');
+                    });
+                }
+            });
+        });
     });
 
     socket.on('SENT_REMINDER', ({memberID, ISBN, copyNr, date_of_borrowing, empID}) =>{

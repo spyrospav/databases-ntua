@@ -21,19 +21,33 @@ const Employee = ({
     return (
     <div>
       <SearchForm socket={socket}/>
-      <div className="results">
-        <h2>Results</h2>
-        {foundBooks.map(book => (
-          <div key={book.title + book.author} className="book">
-            <div>
-              <p>
-                {" "}
-                {book.title}, {book.author}{" "}
-              </p>
-            </div>
+      {foundBooks.length !== 0
+        ?
+        <div className="books">
+          <div className="row6 bold">
+              <p className="col7">ISBN</p>
+              <p className="col7">Title</p>
+              <p className="col7">Author</p>
+              <p className="col7">Publisher</p>
+              <p className="col7">Published</p>
+              <p className="col7">Pages</p>
+              <p className="col7">Avail. Copies</p>
           </div>
-        ))}
-      </div>
+          {foundBooks.map(book => (
+            <div className="row7" key={book.ISBN}>
+              <p className="col7">{book.ISBN}</p>
+              <p className="col7">{book.title}</p>
+              <p className="col7">{book.author}</p>
+              <p className="col7">{book.pubName}</p>
+              <p className="col7">{book.pubYear}</p>
+              <p className="col7">{book.numPages}</p>
+              <p className="col7">{book.remaining}</p>
+            </div>
+          ))}
+        </div>
+      :
+      <div> </div>
+      }
     </div>
     );
   }

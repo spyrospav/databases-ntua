@@ -5,7 +5,7 @@ class SearchForm extends React.Component {
     super(props);
     this.state = {
       value: '',
-      option: 'title', //title, author, category
+      option: 'title', //title, category
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -27,7 +27,12 @@ class SearchForm extends React.Component {
     })
   }
   handleSubmit(event) {
-    //socket.emit(...)
+    if (this.state.option === 'title') {
+      this.props.socket.emit("SEARCH_BOOKS", this.state.value)
+    }
+    else if (this.state.option === "category") {
+      this.props.socket.emit("SEARCH_CATEGORY", this.state.value)
+    }
     event.preventDefault();
   }
 
@@ -40,10 +45,6 @@ class SearchForm extends React.Component {
             <div className="radiotext">
                 <p> by Title </p>
                 <input type="radio" name="searchOption" onClick={() => this.handleClick("title")}/>
-            </div>
-            <div className="radiotext">
-                <p> by Author </p>
-                <input type="radio" name="searchOption" onClick={() => this.handleClick("author")}/>
             </div>
             <div className="radiotext">
                 <p> by Category </p>

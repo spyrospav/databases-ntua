@@ -68,7 +68,7 @@ class SignIn extends React.Component {
           });
      }
      else {
-       this.props.handleMemberLogin(this.state.username);
+        this.props.handleMemberLogin(this.state.username);
          this.props.socket.emit("LOGIN",{
             username: this.state.username,
             password: this.state.password
