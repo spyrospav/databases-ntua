@@ -215,7 +215,7 @@ io.on('connection', function(socket) {
         con.query(sql, [ISBN], function (err, result) {
             if (err) throw err;
             console.log("Deleted book");
-            //socket.emit('SUCCESSFUL_DELETE_BOOK');
+            socket.emit('SUCCESSFUL_DELETE_BOOK');
         });
     })
 
