@@ -71,7 +71,7 @@ CREATE TABLE borrows(
     due_date DATE AS (DATE_ADD(date_of_borrowing, INTERVAL 30 DAY)),
     date_of_return DATE,
     PRIMARY KEY (memberID, ISBN, copyNr, date_of_borrowing),
-    FOREIGN KEY (memberID) REFERENCES member(memberID) ON DELETE CASCADE,
+    FOREIGN KEY (memberID) REFERENCES member(memberID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -121,11 +121,10 @@ CREATE TABLE reminder(
     date_of_borrowing DATE NOT NULL,
     date_of_reminder DATE NOT NULL,
     PRIMARY KEY (memberID, empID, ISBN, copyNr, date_of_borrowing, date_of_reminder),
-    FOREIGN KEY (empID) REFERENCES employee(empID),
-    FOREIGN KEY (memberID) REFERENCES member(memberID) ON DELETE CASCADE,
+    FOREIGN KEY (empID) REFERENCES employee(empID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (memberID) REFERENCES member(memberID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (memberID, ISBN, copyNr, date_of_borrowing) REFERENCES borrows(memberID, ISBN, copyNr, date_of_borrowing)
-        ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (memberID, ISBN, copyNr, date_of_borrowing) REFERENCES borrows(memberID, ISBN, copyNr, date_of_borrowing) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (ISBN, copyNr) REFERENCES copies(ISBN, copyNr) ON UPDATE CASCADE ON DELETE CASCADE
 );
 

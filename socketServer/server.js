@@ -102,7 +102,8 @@ io.on('connection', function(socket) {
         const sql = "SELECT DISTINCT * FROM book_view WHERE title LIKE '%" + title + "%' ORDER BY title ASC";
 
         con.query(sql, async function (err, result) {
-            if (err) throw err;
+            if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
+            else{
             console.log('Search for', title);
             const books = JSON.parse(JSON.stringify(result));
 
@@ -123,6 +124,7 @@ io.on('connection', function(socket) {
             })
             const booksWithAuthors = await Promise.all(promises);
             socket.emit('SEARCH_BOOKS', booksWithAuthors);
+        }
         });
     })
 
@@ -133,7 +135,8 @@ io.on('connection', function(socket) {
         " WHERE C.ISBN = B.ISBN ORDER BY B.title ASC";
 
         con.query(sql, [category], async function (err, result) {
-            if (err) throw err;
+            if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
+            else{
             const books = JSON.parse(JSON.stringify(result));
 
             const promises = books.map(book => {
@@ -154,6 +157,7 @@ io.on('connection', function(socket) {
 
             const booksWithAuthors = await Promise.all(promises);
             socket.emit('SEARCH_BOOKS', booksWithAuthors);
+        }
         });
     });
 
@@ -443,9 +447,11 @@ io.on('connection', function(socket) {
         + " SET pubName = ?, estYear = ?, Street = ?, Street_num = ?, Postal_code = ? WHERE pubName LIKE ?";
 
         con.query(sql, val, function (err, result) {
-            if (err) throw err;
-            socket.emit('SUCCESSFUL_UPDATE_PUBLISHER');
-            console.log("Publisher updated");
+            if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
+            else{
+                socket.emit('SUCCESSFUL_UPDATE_PUBLISHER');
+                console.log("Publisher updated");
+            }
         });
     });
 
@@ -455,9 +461,11 @@ io.on('connection', function(socket) {
         const fixedBirthdate = ABirthdate //+ "T22:00:00.000Z";
         var val = [AFirst, ALast, fixedBirthdate, authID];
         con.query(sql, val, function (err, result) {
-            if (err) throw err;
-            socket.emit('SUCCESSFUL_UPDATE_AUTHOR');
-            console.log("Author updated");
+            if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
+            else{
+                socket.emit('SUCCESSFUL_UPDATE_AUTHOR');
+                console.log("Author updated");
+            }
         });
     });
 
@@ -467,9 +475,11 @@ io.on('connection', function(socket) {
 
         var val = [ISBN, title, pubYear, numPages, pubName, ISBN];
         con.query(sql, val, function (err, result) {
-            if (err) throw err;
-            socket.emit('SUCCESSFUL_UPDATE_BOOK');
-            console.log("Book updated");
+            if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
+            else{
+                socket.emit('SUCCESSFUL_UPDATE_BOOK');
+                console.log("Book updated");
+            }
         });
     });
 
@@ -480,6 +490,7 @@ io.on('connection', function(socket) {
         var val = [MFirst, MLast, Street, Street_num, Postal_code, MBirthdate, memberID];
         con.query(sql, val, function (err, result) {
             if (err) {
+                console.log("Error, probably greek characters or invalid date / number");
                 socket.emit('UNSUCCESSFUL_UPDATE_MEMBER');
             }
             else {
