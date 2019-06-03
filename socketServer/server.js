@@ -386,8 +386,8 @@ io.on('connection', function(socket) {
 
         var val = [ISBN, title, pubName, pubYear, numPages];
         con.query(sql, val, function (err, result){
-            if (err) throw err;
-
+            if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
+            else{
             console.log("Book inserted");
 
             for (var i = 1; i <= numOfCopies; i++){
@@ -398,32 +398,39 @@ io.on('connection', function(socket) {
             }
 
             con.query("SELECT authID FROM author WHERE AFirst LIKE ? AND ALast LIKE ?", [AFirst, ALast], function (err, result){
-                if (err) throw err;
-                const auID = JSON.parse(JSON.stringify(result));
+                if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
+                else{
+                    const auID = JSON.parse(JSON.stringify(result));
 
-                if (auID.length > 0){
-                    con.query("INSERT INTO written_by (ISBN, authID) VALUES (?, ?)", [ISBN, result[0].authID], function (err, result){
-                        if (err) throw err;
-                        console.log("Written by inserted");
-                        socket.emit("SUCCESSFUL_INSERT_BOOK");
-                    })
-                }
-
-                else if (auID.length == 0){
-                    con.query("INSERT INTO author (AFIrst, ALast) VALUES (?, ?)", [AFirst, ALast], function (err, reuslt){
-                        if (err) throw err;
-                        console.log("Author inserted");
-
-                        con.query("SELECT authID as M FROM author ORDER BY authID DESC LIMIT 1", function (err, result){
-                            con.query("INSERT INTO written_by (ISBN, authID) VALUES (?, ?)", [ISBN, result[0].M], function (err, result){
-                                if (err) throw err;
+                    if (auID.length > 0){
+                        con.query("INSERT INTO written_by (ISBN, authID) VALUES (?, ?)", [ISBN, result[0].authID], function (err, result){
+                            if (err) {console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
+                            else{
                                 console.log("Written by inserted");
-                                })
+                                socket.emit("SUCCESSFUL_INSERT_BOOK");
+                            }
                         })
-                        socket.emit('SUCCESSFUL_INSERT_BOOK');
-                    });
+                    }
+
+                    else if (auID.length == 0){
+                        con.query("INSERT INTO author (AFIrst, ALast) VALUES (?, ?)", [AFirst, ALast], function (err, reuslt){
+                            if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
+                            else{
+                                console.log("Author inserted");
+
+                                con.query("SELECT authID as M FROM author ORDER BY authID DESC LIMIT 1", function (err, result){
+                                    con.query("INSERT INTO written_by (ISBN, authID) VALUES (?, ?)", [ISBN, result[0].M], function (err, result){
+                                        if (err) throw err;
+                                        console.log("Written by inserted");
+                                        })
+                                })
+                                socket.emit('SUCCESSFUL_INSERT_BOOK');
+                            }
+                        });
+                    }
                 }
             });
+        }
         });
     });
 
@@ -433,9 +440,11 @@ io.on('connection', function(socket) {
 
         var val = [memberID, ISBN, copyNr, date_of_borrowing, empID];
         con.query(sql, val, function (err, result) {
-            if (err) throw err;
-            socket.emit('SUCCESSFUL_SENT_REMINDER');
-            console.log("New Reminder");
+            if (err) { console.log("Can't send the same reminder twice a day"); socket.emit("ERROR_REMINDER");}
+            else{
+                socket.emit('SUCCESSFUL_SENT_REMINDER');
+                console.log("New Reminder");
+            }
         });
     });
 
@@ -506,9 +515,11 @@ io.on('connection', function(socket) {
 
         var val = [memberID, ISBN, copyNr, date_of_borrowing];
         con.query(sql, val, function (err, result) {
-            if (err) throw err;
-            socket.emit('SUCCESSFUL_RETURN_BOOK');
-            console.log("Book returned");
+            if (err) { console.log("Unknown error"); socket.emit("ERROR_UNKOWN");}
+            else{
+                socket.emit('SUCCESSFUL_RETURN_BOOK');
+                console.log("Book returned");
+            }
         });
     });
 
