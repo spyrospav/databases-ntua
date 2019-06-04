@@ -480,7 +480,7 @@ io.on('connection', function(socket) {
 
     socket.on('UPDATE_BOOK', ({ISBN, title, pubYear, numPages, pubName}) =>{
         var sql = "UPDATE author"
-        + " SET ISBN = ?, title = ?, pubYear = ?, numPages = ?, pubName= ? WHERE ISBN LIKE '?'";
+        + " SET title = ?, pubYear = ?, numPages = ?, pubName= ? WHERE ISBN LIKE '?'";
 
         var val = [ISBN, title, pubYear, numPages, pubName, ISBN];
         con.query(sql, val, function (err, result) {
