@@ -265,3 +265,14 @@ IF (old.date_of_return IS NULL) THEN
 END IF;
 END$$
 DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER updatePublisher
+BEFORE UPDATE on book
+FOR EACH ROW
+BEGIN
+IF (new.pubName NOT IN (SELECT P.pubName FROM publisher as P)) THEN
+    INSERT INTO publisher(pubName) VALUES (new.pubName);
+END IF;
+END$$
+DELIMITER ;
