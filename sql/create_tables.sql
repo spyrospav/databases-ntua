@@ -252,7 +252,6 @@ FOR EACH ROW
     DELETE FROM borrows
     WHERE ISBN = old.ISBN;
 
-
 DELIMITER $$
 CREATE TRIGGER updateMemberAtDeleteBorrows
 BEFORE DELETE on borrows
