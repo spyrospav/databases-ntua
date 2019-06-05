@@ -73,8 +73,8 @@ io.on('connection', function(socket) {
         //+ " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN ORDER BY title ASC";
 
         con.query(sql, async function (err, result) {
-            if (err) {socket.emit("ERROR_FETCH")};
-            else{
+            if (err) {socket.emit("ERROR_FETCH")}
+            else {
             const books = JSON.parse(JSON.stringify(result));
 
             const promises = books.map(book => {
@@ -187,7 +187,6 @@ io.on('connection', function(socket) {
         con.query(sql, function (err, result) {
             if (err) throw err;
             const publishers = JSON.parse(JSON.stringify(result));
-            //console.log(publishers);
             socket.emit('FETCH_PUBLISHERS', publishers)
         });
     })
@@ -327,8 +326,8 @@ io.on('connection', function(socket) {
 
         const val = [mFirst, mLast, street, streetNum, postalCode, MBirthDate];
         con.query(sql, val , function (err, result) {
-            if (err) {console.log("Invalid input"); socket.emit("ERROR_INPUT")};
-            else{
+            if (err) {console.log("Invalid input"); socket.emit("ERROR_INPUT")}
+            else {
                 console.log('Member inserted');
 
                 con.query("SELECT memberID FROM member ORDER BY memberID DESC LIMIT 1", function (err, result) {
@@ -344,8 +343,8 @@ io.on('connection', function(socket) {
 
         const val = [EFirst, ELast, Salary];
         con.query(sql, val , function (err, result) {
-            if (err) {socket.emit("ERROR_INPUT");}
-            else{
+            if (err) {socket.emit("ERROR_INPUT")}
+            else {
             console.log('Employee inserted');
 
             con.query("SELECT empID FROM employee ORDER BY empID DESC LIMIT 1", function (err, result) {
@@ -392,9 +391,13 @@ io.on('connection', function(socket) {
 
         var val = [pubName, estYear, Street, Street_num, Postal_code];
         con.query(sql, val, function (err, result) {
-            if (err) throw err;
-            socket.emit('SUCCESSFUL_INSERT_PUBLISHER');
-            console.log("Publisher inserted");
+            if (err) {
+              socket.emit("ERROR_INPUT");
+            }
+            else {
+              socket.emit('SUCCESSFUL_INSERT_PUBLISHER');
+              console.log("Publisher inserted");
+          }
         });
     });
 
@@ -403,9 +406,13 @@ io.on('connection', function(socket) {
 
         var val = [AFirst, ALast, ABirthdate];
         con.query(sql, val, function (err, result) {
-            if (err) throw err;
-            socket.emit('SUCCESSFUL_INSERT_AUTHOR');
-            console.log("Author inserted");
+            if (err) {
+              socket.emit("ERROR_INPUT");
+            }
+            else {
+              socket.emit('SUCCESSFUL_INSERT_AUTHOR');
+              console.log("Author inserted");
+            }
         });
     });
 
@@ -415,12 +422,15 @@ io.on('connection', function(socket) {
         var val = [ISBN, title, pubName, pubYear, numPages];
         con.query(sql, val, function (err, result){
             if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
-            else{
+            else {
             console.log("Book inserted");
 
             for (var i = 1; i <= numOfCopies; i++){
                 con.query("INSERT INTO copies (ISBN, copyNr, shelf) VALUES (?, ?, ?)", [ISBN, i, shelf], function (err, result){
-                    if (err) throw err;
+                    if (err){
+                        console.log("insert copies error");
+                        socket.emit("ERROR_INPUT")
+                    }
                     console.log("Copy inserted");
                 });
             }
