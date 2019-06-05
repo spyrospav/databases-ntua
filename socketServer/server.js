@@ -200,7 +200,7 @@ io.on('connection', function(socket) {
         con.query(sql, [memberID], function (err, result) {
             if (err) throw err;
             const borrows = JSON.parse(JSON.stringify(result));
-            socket.emit('FETCHED_ACTIVE_BORROWS_MEMBERS', borrows);
+            //socket.emit('FETCHED_ACTIVE_BORROWS_MEMBERS', borrows);
             const borrowsFixDate = borrows.map(borrows => ({
               ISBN: borrows.ISBN,
               date_of_borrowing: borrows.date_of_borrowing.substr(0,10),
