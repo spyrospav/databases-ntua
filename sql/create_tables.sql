@@ -80,7 +80,7 @@ CREATE TABLE category(
     categoryName VARCHAR(25),
     supercategoryName VARCHAR(25),
     PRIMARY KEY (categoryName),
-    FOREIGN KEY (supercategoryName) REFERENCES category(categoryName)
+    FOREIGN KEY (supercategoryName) REFERENCES category(categoryName) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE belongs_to(
@@ -88,7 +88,7 @@ CREATE TABLE belongs_to(
     categoryName VARCHAR(25),
     PRIMARY KEY (ISBN, categoryName),
     FOREIGN KEY (ISBN) REFERENCES book(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (categoryName) REFERENCES category(categoryName) ON DELETE CASCADE
+    FOREIGN KEY (categoryName) REFERENCES category(categoryName) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE employee(
