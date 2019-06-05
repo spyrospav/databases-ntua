@@ -6,28 +6,32 @@ const Statistics = ({
 }) => (
   <div>
     <h2> Statistics</h2>
-    <div>
-      <div>
-        <p> Publisher{"'"}s Name </p>
-        <p> Books Published</p>
+    <div className="halfview">
+        <div className="row2 bold">
+          <p className="col2"> Publisher{"'"}s Name </p>
+          <p className="col2"> Books Published</p>
+        </div>
         {topPublishers.map(val => (
-            <div key={val.pubName}>
-              <p>{val.pubName}</p>
-              <p>{val.bookNum} </p>
+            <div className="row2" key={val.pubName}>
+              <p className="col2">{val.pubName}</p>
+              <p className="col2">{val.bookNum} </p>
             </div>
           ))}
-        <p> Member ID </p>
-        <p> Books Borrowed</p>
-        {topBorrowers.map(val => (
-          <div key={val.memberID}>
-            <p>{val.memberID}</p>
-            <p>{val.borrowNum} </p>
-          </div>
-      ))}
-
-
-      </div>
     </div>
+
+    <div className="halfview">
+        <div className="row2 bold">
+            <p className="col2"> Member ID </p>
+            <p className="col2"> Books Borrowed</p>
+        </div>
+        {topBorrowers.map(val => (
+          <div className="row2" key={val.memberID}>
+            <p className="col2">{val.memberID}</p>
+            <p className="col2">{val.borrowNum} </p>
+          </div>
+        ))}
+    </div>
+
   </div>
 );
 

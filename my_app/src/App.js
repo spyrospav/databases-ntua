@@ -77,10 +77,10 @@ class App extends React.Component {
     socket.on('SUCCESSFUL_DELETE_BOOK', () => socket.emit("FETCH_BOOKS"));
     socket.on("SUCCESSFUL_UPDATE_BOOK", () => socket.emit("FETCH_BOOKS"));
 
-    socket.on("SUCCESSFUL_BORROW", () => {alert("Successful borrow"); socket.emit("FETCH_BOOKS")})
-    socket.on("UNSUCCESSFUL_BORROW", () => alert("Cannot borrow more than 5 books..."))
+    socket.on("SUCCESSFUL_BORROW", () => {alert("Successful borrow\n Press ok"); socket.emit("FETCH_BOOKS")})
+    socket.on("UNSUCCESSFUL_BORROW", () => alert("Cannot borrow more than 5 books...\n Press ok"))
 
-    socket.on("SUCCESSFUL_UPDATE_MEMBER", () => {alert("Updated member info!"); socket.emit("FETCH_MEMBER", this.state.memberID)})
+    socket.on("SUCCESSFUL_UPDATE_MEMBER", () => {alert("Updated member info!\n Press ok"); socket.emit("FETCH_MEMBER", this.state.memberID)})
     //socket.on('SUCCESSFUL_SENT_REMINDER', () => socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE"));
 
     socket.on("SUCCESSFUL_INSERT_AUTHOR", () => socket.emit("FETCH_AUTHORS"));
@@ -95,6 +95,9 @@ class App extends React.Component {
     socket.on("SUCCESSFUL_FETCH_TOP_BORROWERS", topBorrowers =>  this.setState({topBorrowers: topBorrowers}));
 
     socket.on("SEARCH_BOOKS", foundBooks => this.setState({foundBooks: foundBooks}))
+
+    socket.on("ERROR_INPUT", () => alert("Input error\n Press ok"))
+    socket.on("ERROR_REMINDER", () => alert("Error reminder\n Press ok"))
     //======================
 
 
@@ -220,6 +223,10 @@ class App extends React.Component {
           }}>
             My info
           </a>
+          <a onClick={() => {
+            this.setState({...initialState})
+            this.goToWelcome()}}
+          href="#"> Logout </a>
        </div>
          <Member
           socket={socket}
@@ -236,14 +243,6 @@ class App extends React.Component {
           borrowedBooks={this.state.borrowedBooks}
           reminders={this.state.reminders}
           />
-         <button
-         className="btn"
-         onClick={() => {
-           this.setState({...initialState})
-           this.goToWelcome()
-         }}>
-          Logout
-          </button>
        </div>
      );
    }
@@ -283,6 +282,10 @@ class App extends React.Component {
                socket.emit("FETCH_TOP_BORROWERS");
                this.setState({navBarStatus: 'statistics'})
              }} href="#"> Statistics </a>
+             <a onClick={() => {
+               this.setState({...initialState})
+               this.goToWelcome()}}
+             href="#"> Logout </a>
          </div>
          <Employee
          socket={socket}
@@ -298,14 +301,7 @@ class App extends React.Component {
          topPublishers={this.state.topPublishers}
          topBorrowers={this.state.topBorrowers}
          />
-         <button
-         className = "btn"
-         onClick={() => {
-           this.setState({...initialState})
-           this.goToWelcome()}}
-         >
-          Logout
-         </button>
+
        </div>
 
      );

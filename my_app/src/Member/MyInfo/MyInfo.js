@@ -18,12 +18,30 @@ class MyInfo extends React.Component {
         ?
       <div>
         <h2> My info </h2>
-        <p>First Name: {this.props.MFirst}</p>
-        <p>Last Name: {this.props.MLast}</p>
-        <p> Street: {this.props.Street}</p>
-        <p> Street Number: {this.props.Street_num} </p>
-        <p> Postal Code: {this.props.Postal_code}</p>
-        <p> Birthdate: {this.props.MBirthdate} </p>
+        <div className="row2">
+            <h5 className="col2">First Name:</h5>
+            <p className="col2">{this.props.MFirst}</p>
+        </div>
+        <div className="row2">
+            <h5 className="col2">Last Name:</h5>
+            <p className="col2">{this.props.MLast}</p>
+        </div>
+        <div className="row2">
+            <h5 className="col2"> Street:</h5>
+            <p className="col2"> {this.props.Street}</p>
+        </div>
+        <div className="row2">
+            <h5 className="col2"> Street Number:</h5>
+            <p className="col2">{this.props.Street_num} </p>
+        </div>
+        <div className="row2">
+          <h5 className="col2"> Postal Code: </h5>
+          <p className='col2'>{this.props.Postal_code}</p>
+        </div>
+        <div className="row2">
+          <h5 className="col2"> Birthdate: </h5>
+          <p className="col2">{this.props.MBirthdate} </p>
+        </div>
         <button className='btn' onClick={() => this.setState({edit: true})}> Edit </button>
       </div>
       :

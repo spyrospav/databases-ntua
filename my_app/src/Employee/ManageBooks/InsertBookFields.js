@@ -95,6 +95,7 @@ class InsertBookFields extends React.Component {
           margin="normal"
           variant="outlined"
         />
+        <br />
         <button className="btn" onClick={() => {
           this.props.handleInsert();
           this.props.socket.emit("INSERT_BOOK", this.state)

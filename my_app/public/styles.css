@@ -214,8 +214,8 @@ body {
 }
 
 .col3 {
-  text-align: left;
-  width: 30%;
+  text-align: center;
+  width: 25%;
   display: inline-block;
   float: left;
   padding-right: 5px;
@@ -225,7 +225,7 @@ body {
 .row3 {
   display: inline-block;
   margin-bottom: 50px;
-  width: 70%;
+  width: 76%;
   margin: 0 10%;
   border-bottom: 1px solid #ddd;
 }
@@ -247,7 +247,47 @@ body {
   margin-right: 5px;
 }
 
+.row2 {
+    display: inline-block;
+    margin-bottom: 50px;
+    width: 50%;
+    margin: 0 25%;
+    border-bottom: 1px solid #ddd;
+}
+
+.col2 {
+    text-align: center;
+    width: 45%;
+    display: inline-block;
+    float: left;
+    padding-right: 5px;
+    margin-right: 5px;
+}
+
+.col5 {
+    text-align: center;
+    width: 18%;
+    display: inline-block;
+    float: left;
+    padding-right: 5px;
+    margin-right: 5px;
+}
+
+.row5 {
+    display: inline-block;
+    margin-bottom: 50px;
+    width: 90%;
+    margin: 0 5%;
+    border-bottom: 1px solid #ddd;
+}
+
+
 .bold {
   font-weight: bold;
   text-decoration: underline;
+}
+
+.halfview {
+    width: 49%;
+    float: left;
 }

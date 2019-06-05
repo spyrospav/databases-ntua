@@ -9,7 +9,7 @@ const mysql = require('mysql');
 const con = mysql.createConnection({
     host : "localhost",
     user : "root",
-    password : "back34!",
+    password : "password",
     database : "library",
     timezone : "UTC"
 });

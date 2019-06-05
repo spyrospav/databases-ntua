@@ -60,6 +60,7 @@ class InsertPublisherFields extends React.Component {
           margin="normal"
           variant="outlined"
         />
+        <br />
         <button className="btn" onClick={ () => {
           this.props.socket.emit("INSERT_PUBLISHER", this.state)
           this.props.handleInsert();

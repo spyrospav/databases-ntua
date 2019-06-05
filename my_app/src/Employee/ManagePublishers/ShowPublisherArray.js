@@ -26,16 +26,16 @@ class ShowPublisherArray extends React.Component {
             <button className="btn" onClick={() => this.setState({ status: ""})}>Undo</button>
           </div>
         ) : (
-          <button className="btn" onClick={() => this.setState({ status: "insert" })}>
+          <button className="btn-large" onClick={() => this.setState({ status: "insert", indexEdit:-1})}>
             Insert Publisher
           </button>
         )}
-        <div className="row6 bold">
-            <p className="col7">Publisher Name</p>
-            <p className='col7'>Year</p>
-            <p className='col7'>Street</p>
-            <p className='col7'>Street Number</p>
-            <p className='col7'>Postal code</p>
+        <div className="row5 bold">
+            <p className="col5">Publisher Name</p>
+            <p className='col5'>Year</p>
+            <p className='col5'>Street</p>
+            <p className='col5'>Street Number</p>
+            <p className='col5'>Postal code</p>
 
         </div>
 
@@ -61,12 +61,12 @@ class ShowPublisherArray extends React.Component {
           } else {
             return (
 
-              <div className="row7" key={publisher.pubName}>
-                <p className="col7">{publisher.pubName}</p>
-                <p className="col7">{publisher.estYear}</p>
-                <p className="col7">{publisher.Street}</p>
-                <p className="col7">{publisher.Street_num}</p>
-                <p className="col7">{publisher.Postal_code}</p>
+              <div className="row5" key={publisher.pubName}>
+                <p className="col5">{publisher.pubName}</p>
+                <p className="col5">{publisher.estYear}</p>
+                <p className="col5">{publisher.Street}</p>
+                <p className="col5">{publisher.Street_num}</p>
+                <p className="col5">{publisher.Postal_code}</p>
                 <button
                   className="btn-small"
                   onClick={() =>

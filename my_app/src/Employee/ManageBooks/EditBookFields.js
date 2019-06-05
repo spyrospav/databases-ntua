@@ -58,6 +58,7 @@ class EditBookFields extends React.Component {
           margin="normal"
           variant="outlined"
         />
+        <br/>
         <button className='btn-small' onClick={ () => {
           this.props.socket.emit("UPDATE_BOOK", this.state);
           this.props.handleEdit();

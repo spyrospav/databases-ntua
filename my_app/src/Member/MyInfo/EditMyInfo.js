@@ -75,7 +75,8 @@ class EditMyInfo extends React.Component {
           margin="normal"
           variant="outlined"
         />
-        <button className='btn-small' onClick={() => {
+        <br/>
+        <button className='btn-large' onClick={() => {
           this.props.socket.emit("UPDATE_MEMBER", this.state);
           this.props.handleEdit();
         }}>
