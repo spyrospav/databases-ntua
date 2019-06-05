@@ -73,7 +73,8 @@ io.on('connection', function(socket) {
         //+ " AS numOfCopies FROM book as B, copies as C WHERE B.ISBN=C.ISBN GROUP BY B.ISBN ORDER BY title ASC";
 
         con.query(sql, async function (err, result) {
-            if (err) throw err;
+            if (err) {socket.emit("ERROR_FETCH")};
+            else{
             const books = JSON.parse(JSON.stringify(result));
 
             const promises = books.map(book => {
@@ -94,6 +95,7 @@ io.on('connection', function(socket) {
 
             const booksWithAuthors = await Promise.all(promises);
             socket.emit('FETCH_BOOKS', booksWithAuthors);
+        }
         });
     })
 
@@ -325,7 +327,7 @@ io.on('connection', function(socket) {
 
         const val = [mFirst, mLast, street, streetNum, postalCode, MBirthDate];
         con.query(sql, val , function (err, result) {
-            if (err) throw err;
+            if (err) {console.log("Invalid input"); socket.emit("ERROR_INPUT")};
             console.log('Member inserted');
 
             con.query("SELECT memberID FROM member ORDER BY memberID DESC LIMIT 1", function (err, result) {
