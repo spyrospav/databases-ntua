@@ -328,12 +328,14 @@ io.on('connection', function(socket) {
         const val = [mFirst, mLast, street, streetNum, postalCode, MBirthDate];
         con.query(sql, val , function (err, result) {
             if (err) {console.log("Invalid input"); socket.emit("ERROR_INPUT")};
-            console.log('Member inserted');
+            else{
+                console.log('Member inserted');
 
-            con.query("SELECT memberID FROM member ORDER BY memberID DESC LIMIT 1", function (err, result) {
-                if (err) throw err;
-                socket.emit('SUCCESSFUL_SIGNUP', result[0].memberID);
-            });
+                con.query("SELECT memberID FROM member ORDER BY memberID DESC LIMIT 1", function (err, result) {
+                    if (err) throw err;
+                    socket.emit('SUCCESSFUL_SIGNUP', result[0].memberID);
+                });
+            }
         });
     });
 
@@ -342,7 +344,8 @@ io.on('connection', function(socket) {
 
         const val = [EFirst, ELast, Salary];
         con.query(sql, val , function (err, result) {
-            if (err) throw err;
+            if (err) {socket.emit("ERROR_INPUT");}
+            else{
             console.log('Employee inserted');
 
             con.query("SELECT empID FROM employee ORDER BY empID DESC LIMIT 1", function (err, result) {
@@ -360,6 +363,7 @@ io.on('connection', function(socket) {
                     socket.emit('SUCCESSFUL_ADD_EMPLOYEE', id);
                 });
             });
+        }
         });
     });
 
