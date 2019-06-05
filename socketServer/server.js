@@ -267,6 +267,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('FETCH_TOP_PUBLISHERS', () => {
+        //SQL query with group by
         const sql = "SELECT pubName, COUNT(*) AS bookNum FROM book GROUP BY pubName ORDER BY count(*) DESC";
 
         con.query(sql, function (err, result) {
@@ -278,6 +279,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('FETCH_TOP_BORROWERS', () => {
+        //SQL query with group by having
         const sql = "SELECT memberID, COUNT(*) as borrowNum FROM borrows GROUP BY memberID HAVING count(*)>0 ORDER BY count(*) DESC";
 
         con.query(sql, function (err, result) {
