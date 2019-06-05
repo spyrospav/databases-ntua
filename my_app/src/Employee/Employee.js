@@ -1,11 +1,11 @@
 import React from "react";
 import { SearchForm } from "./SearchForm";
-import { ShowBookArray } from "./ManageBooks/ShowBookArray";
-import { ShowAuthorArray } from "./ManageAuthors/ShowAuthorArray";
-import { ShowPublisherArray } from './ManagePublishers/ShowPublisherArray';
+import { ShowBookArray } from "./ManageBooks";
+import { ShowAuthorArray } from "./ManageAuthors";
+import { ShowPublisherArray } from './ManagePublishers';
 import { SignUpEmployee } from './SignUpEmployee';
-import { BorrowedBooks } from './BorrowedBooks/BorrowedBooks';
-import { Statistics } from './Statistics';
+import { BorrowedBooks } from './BorrowedBooks';
+import { Statistics } from './Stats';
 
 const Employee = ({
   socket,
@@ -22,38 +22,7 @@ const Employee = ({
 }) => {
   if (navBarStatus === 'search') {
     return (
-    <div>
-      <SearchForm socket={socket}/>
-      {foundBooks.length !== 0
-        ?
-        <div className="books">
-          <div className="row6 bold">
-              <p className="col7">ISBN</p>
-              <p className="col7">Title</p>
-              <p className="col7">Author</p>
-              <p className="col7">Publisher</p>
-              <p className="col7">Published</p>
-              <p className="col7">Pages</p>
-              <p className="col7">Avail. Copies</p>
-              <p className='col7'>Total Copies </p>
-          </div>
-          {foundBooks.map(book => (
-            <div className="row7" key={book.ISBN}>
-              <p className="col7">{book.ISBN}</p>
-              <p className="col7">{book.title}</p>
-              <p className="col7">{book.author}</p>
-              <p className="col7">{book.pubName}</p>
-              <p className="col7">{book.pubYear}</p>
-              <p className="col7">{book.numPages}</p>
-              <p className="col7">{book.remaining}</p>
-              <p className="col7">{book.total} </p>
-            </div>
-          ))}
-        </div>
-      :
-      <div> </div>
-      }
-    </div>
+      <SearchForm socket={socket} foundBooks={foundBooks}/>  
     );
   }
   else if (navBarStatus === 'borrowedBooks') {
