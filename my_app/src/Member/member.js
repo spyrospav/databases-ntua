@@ -48,7 +48,7 @@ const Member = ({
         MBirthdate={MBirthdate}
       />
     );
-  }  
+  }
 };
 
 export { Member };

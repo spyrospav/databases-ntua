@@ -139,7 +139,7 @@ class SignUpMember extends React.Component {
 
             <TextField
                 onChange = {this.handleChange("MBirthDate")}
-                label="Birth Date (i.e. 10/5/98)"
+                label="Birth Date (YYYY-MM-DD)"
                 margin="normal"
                 required
                 fullWidth

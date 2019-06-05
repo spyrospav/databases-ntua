@@ -49,7 +49,7 @@ class App extends React.Component {
 
     socket.on("SUCCESSFUL_SIGNUP", (memberID) => {
       alert(`Your member id is: ${memberID}`);
-      this.setState({status: 'memberPage'});
+      this.setState({status: 'memberPage', memberID: memberID});
     })
     socket.on("UNSUCCESSFUL_LOGIN", () => alert("Invalid credentials."))
     //employee page:
