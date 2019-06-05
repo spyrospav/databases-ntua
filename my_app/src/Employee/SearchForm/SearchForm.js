@@ -60,26 +60,26 @@ class SearchForm extends React.Component {
       {this.props.foundBooks.length !== 0
         ?
         <div className="books">
-          <div className="row6 bold">
-              <p className="col7">ISBN</p>
-              <p className="col7">Title</p>
-              <p className="col7">Author</p>
-              <p className="col7">Publisher</p>
-              <p className="col7">Published</p>
-              <p className="col7">Pages</p>
-              <p className="col7">Avail. Copies</p>
-              <p className='col7'>Total Copies </p>
+          <div className="row8 bold">
+              <p className="col8">ISBN</p>
+              <p className="col8">Title</p>
+              <p className="col8">Author</p>
+              <p className="col8">Publisher</p>
+              <p className="col8">Published</p>
+              <p className="col8">Pages</p>
+              <p className="col8">Avail. Copies</p>
+              <p className='col8'>Total Copies </p>
           </div>
           {this.props.foundBooks.map(book => (
-            <div className="row7" key={book.ISBN}>
-              <p className="col7">{book.ISBN}</p>
-              <p className="col7">{book.title}</p>
-              <p className="col7">{book.author}</p>
-              <p className="col7">{book.pubName}</p>
-              <p className="col7">{book.pubYear}</p>
-              <p className="col7">{book.numPages}</p>
-              <p className="col7">{book.remaining}</p>
-              <p className="col7">{book.total} </p>
+            <div className="row8" key={book.ISBN}>
+              <p className="col8">{book.ISBN}</p>
+              <p className="col8">{book.title}</p>
+              <p className="col8">{book.author}</p>
+              <p className="col8">{book.pubName}</p>
+              <p className="col8">{book.pubYear}</p>
+              <p className="col8">{book.numPages}</p>
+              <p className="col8">{book.remaining}</p>
+              <p className="col8">{book.total} </p>
             </div>
           ))}
         </div>

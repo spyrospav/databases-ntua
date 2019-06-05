@@ -23,8 +23,8 @@ server.listen(8000, () => console.log("server running..."));
 
 app.get('/', (req, res) => {
   const q = url.parse(req.url);
-  res.send("this is a server");
-//  res.sendFile(path.join(__dirname,'/../my_app/build','index.html'));
+//  res.send("this is a server");
+  //res.sendFile(path.join(__dirname,'/../my_app/build','index.html'));
 })
 
 //app.use(express.static(path.join(__dirname,'/../my_app/build')));

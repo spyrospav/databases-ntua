@@ -40,6 +40,7 @@ class App extends React.Component {
     socket.on("SUCCESSFUL_LOGIN", () => {
       if (this.state.employee) {
         this.setState({status: 'employeePage'})
+        socket.emit("FETCH_BOOKS");
       }
       else {
         this.setState({status: 'memberPage'});
@@ -48,10 +49,10 @@ class App extends React.Component {
     })
 
     socket.on("SUCCESSFUL_SIGNUP", (memberID) => {
-      alert(`Your member id is: ${memberID}`);
+      alert(`Your member id is: ${memberID}\n Press ok.`);
       this.setState({status: 'memberPage', memberID: memberID});
     })
-    socket.on("UNSUCCESSFUL_LOGIN", () => alert("Invalid credentials."))
+    socket.on("UNSUCCESSFUL_LOGIN", () => alert("Invalid credentials\n Press ok"))
     //employee page:
     socket.on("FETCH_EXPIRED_BOOKS", (expiredBooks) =>
       this.setState({expiredBooks: expiredBooks}))
@@ -72,7 +73,7 @@ class App extends React.Component {
     }))
 
     socket.on('SUCCESSFUL_RETURN_BOOK', () => socket.emit("FETCH_ACTIVE_BORROWS_EMPLOYEE"));
-    socket.on('SUCCESSFUL_ADD_EMPLOYEE', id => alert(`Id of employee inserted: ${id}`));
+    socket.on('SUCCESSFUL_ADD_EMPLOYEE', id => alert(`Id of employee inserted: ${id}\n Press ok`));
     socket.on('SUCCESSFUL_INSERT_BOOK', () => socket.emit("FETCH_BOOKS"));
     socket.on('SUCCESSFUL_DELETE_BOOK', () => socket.emit("FETCH_BOOKS"));
     socket.on("SUCCESSFUL_UPDATE_BOOK", () => socket.emit("FETCH_BOOKS"));
@@ -93,6 +94,8 @@ class App extends React.Component {
 
     socket.on("SUCCESSFUL_FETCH_TOP_PUBLISHERS", topPublishers => this.setState({topPublishers: topPublishers}));
     socket.on("SUCCESSFUL_FETCH_TOP_BORROWERS", topBorrowers =>  this.setState({topBorrowers: topBorrowers}));
+
+    socket.on("UNSUCCESSFUL_UPDATE_MEMBER", () => alert("Invalid input\n Press ok"))
 
     socket.on("SEARCH_BOOKS", foundBooks => this.setState({foundBooks: foundBooks}))
 
