@@ -13,6 +13,11 @@ class ShowBookArray extends React.Component {
   handleInsert = () => {
       this.setState({status: ''})
   }
+
+  handleEdit = () => {
+    this.setState({status: "", indexEdit: -1});
+  }
+
   render() {
     return (
       <div className="books">
@@ -50,8 +55,9 @@ class ShowBookArray extends React.Component {
                   publicationYear={book.pubYear}
                   numOfPages={book.numPages}
                   numOfCopies={book.remaining}
+                  handleEdit={this.handleEdit}
+                  socket={this.props.socket}
                 />
-                <button className='btn-small'> Update </button>
                 <button className='btn-small'
                 onClick={() => this.setState({indexEdit: -1})}>
                 Undo

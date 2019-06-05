@@ -5,6 +5,7 @@ import { ShowAuthorArray } from "./ManageAuthors/ShowAuthorArray";
 import { ShowPublisherArray } from './ManagePublishers/ShowPublisherArray';
 import { SignUpEmployee } from './SignUpEmployee';
 import { BorrowedBooks } from './BorrowedBooks/BorrowedBooks';
+import { Statistics } from './Statistics';
 
 const Employee = ({
   socket,
@@ -15,6 +16,8 @@ const Employee = ({
   booksArray,
   authorsArray,
   publishersArray,
+  topPublishers,
+  topBorrowers,
   handleChangeState,
 }) => {
   if (navBarStatus === 'search') {
@@ -32,6 +35,7 @@ const Employee = ({
               <p className="col7">Published</p>
               <p className="col7">Pages</p>
               <p className="col7">Avail. Copies</p>
+              <p className='col7'>Total Copies </p>
           </div>
           {foundBooks.map(book => (
             <div className="row7" key={book.ISBN}>
@@ -42,6 +46,7 @@ const Employee = ({
               <p className="col7">{book.pubYear}</p>
               <p className="col7">{book.numPages}</p>
               <p className="col7">{book.remaining}</p>
+              <p className="col7">{book.total} </p>
             </div>
           ))}
         </div>
@@ -74,6 +79,11 @@ const Employee = ({
   else if (navBarStatus === 'managePublishers') {
     return (
       <ShowPublisherArray socket={socket} publishersArray={publishersArray}/>
+    );
+  }
+  else if (navBarStatus === "statistics") {
+    return (
+      <Statistics topPublishers={topPublishers} topBorrowers={topBorrowers}/>
     );
   }
 };

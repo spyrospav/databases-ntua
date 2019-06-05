@@ -8,11 +8,9 @@ class EditBookFields extends React.Component {
     this.state = {
       ISBN: this.props.ISBN,
       title: this.props.title,
-      author: this.props.author,
-      publisher: this.props.publisher,
-      publicationYear: this.props.publicationYear,
-      numOfCopies: this.props.numOfCopies,
-      numOfPages: this.props.numOfPages,
+      pubName: this.props.publisher,
+      pubYear: this.props.publicationYear,
+      numPages: this.props.numOfPages,
     }
   }
 
@@ -30,14 +28,6 @@ class EditBookFields extends React.Component {
       <div>
         <TextField
           id="outlined-name"
-          label="ISBN"
-          value={this.state.ISBN}
-          onChange={this.handleChange('ISBN')}
-          margin="normal"
-          variant="outlined"
-        />
-        <TextField
-          id="outlined-name"
           label="Title"
           value={this.state.title}
           onChange={this.handleChange('title')}
@@ -46,16 +36,8 @@ class EditBookFields extends React.Component {
         />
         <TextField
           id="outlined-name"
-          label="Author"
-          value={this.state.author}
-          onChange={this.handleChange('author')}
-          margin="normal"
-          variant="outlined"
-        />
-        <TextField
-          id="outlined-name"
-          onChange={this.handleChange('publisher')}
-          value={this.state.publisher}
+          onChange={this.handleChange('pubName')}
+          value={this.state.pubName}
           label="Publisher"
           margin="normal"
           variant="outlined"
@@ -63,27 +45,24 @@ class EditBookFields extends React.Component {
         <TextField
           id="outlined-name"
           label="Publication Year"
-          value={this.state.publicationYear}
-          onChange={this.handleChange('publicationYear')}
+          value={this.state.pubYear}
+          onChange={this.handleChange('pubYear')}
           margin="normal"
           variant="outlined"
         />
         <TextField
           id="outlined-name"
-          onChange={this.handleChange('numOfPages')}
+          onChange={this.handleChange('numPages')}
           label="Pages"
-          value={this.state.numOfPages}
+          value={this.state.numPages}
           margin="normal"
           variant="outlined"
         />
-        <TextField
-          id="outlined-name"
-          onChange={this.handleChange('numOfCopies')}
-          label="Copies"
-          value={this.state.numOfCopies}
-          margin="normal"
-          variant="outlined"
-        />
+        <button className='btn-small' onClick={ () => {
+          this.props.socket.emit("UPDATE_BOOK", this.state);
+          this.props.handleEdit();
+        }}>
+        Update </button>
       </div>
       );
     }

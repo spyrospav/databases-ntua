@@ -28,6 +28,8 @@ const initialState = {
   booksArray: [],
   authorsArray: [],
   publishersArray: [],
+  topPublishers: [],
+  topBorrowers: [],
 };
 
 class App extends React.Component {
@@ -73,6 +75,7 @@ class App extends React.Component {
     socket.on('SUCCESSFUL_ADD_EMPLOYEE', id => alert(`Id of employee inserted: ${id}`));
     socket.on('SUCCESSFUL_INSERT_BOOK', () => socket.emit("FETCH_BOOKS"));
     socket.on('SUCCESSFUL_DELETE_BOOK', () => socket.emit("FETCH_BOOKS"));
+    socket.on("SUCCESSFUL_UPDATE_BOOK", () => socket.emit("FETCH_BOOKS"));
 
     socket.on("SUCCESSFUL_BORROW", () => {alert("Successful borrow"); socket.emit("FETCH_BOOKS")})
     socket.on("UNSUCCESSFUL_BORROW", () => alert("Cannot borrow more than 5 books..."))
@@ -87,6 +90,9 @@ class App extends React.Component {
     socket.on("SUCCESSFUL_INSERT_PUBLISHER", () => socket.emit("FETCH_PUBLISHERS"));
     socket.on("SUCCESSFUL_DELETE_PUBLISHER", () => socket.emit("FETCH_PUBLISHERS"));
     socket.on("SUCCESSFUL_UPDATE_PUBLISHER", () => socket.emit("FETCH_PUBLISHERS"));
+
+    socket.on("SUCCESSFUL_FETCH_TOP_PUBLISHERS", topPublishers => this.setState({topPublishers: topPublishers}));
+    socket.on("SUCCESSFUL_FETCH_TOP_BORROWERS", topBorrowers =>  this.setState({topBorrowers: topBorrowers}));
 
     socket.on("SEARCH_BOOKS", foundBooks => this.setState({foundBooks: foundBooks}))
     //======================
@@ -272,6 +278,11 @@ class App extends React.Component {
                this.setState({navBarStatus: 'borrowedBooks'})
              }} href="#">Borrowed Books </a>
              <a onClick={() => this.setState({navBarStatus: 'addEmployee'})} href="#">Add Employee</a>
+             <a onClick={() => {
+               socket.emit("FETCH_TOP_PUBLISHERS");
+               socket.emit("FETCH_TOP_BORROWERS");
+               this.setState({navBarStatus: 'statistics'})
+             }} href="#"> Statistics </a>
          </div>
          <Employee
          socket={socket}
@@ -284,6 +295,8 @@ class App extends React.Component {
          booksArray={this.state.booksArray}
          authorsArray={this.state.authorsArray}
          publishersArray={this.state.publishersArray}
+         topPublishers={this.state.topPublishers}
+         topBorrowers={this.state.topBorrowers}
          />
          <button
          className = "btn"

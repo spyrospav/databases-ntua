@@ -9,7 +9,7 @@ const mysql = require('mysql');
 const con = mysql.createConnection({
     host : "localhost",
     user : "root",
-    password : "back34!",
+    password : "password",
     database : "library",
     timezone : "UTC"
 });
@@ -264,6 +264,28 @@ io.on('connection', function(socket) {
         });
     })
 
+    socket.on('FETCH_TOP_PUBLISHERS', () => {
+        const sql = "SELECT pubName, COUNT(*) AS bookNum FROM book GROUP BY pubName ORDER BY count(*) DESC";
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log(JSON.parse(JSON.stringify(result)));
+            console.log("Fetch top publishers");
+            socket.emit('SUCCESSFUL_FETCH_TOP_PUBLISHERS', JSON.parse(JSON.stringify(result)));
+        });
+    })
+
+    socket.on('FETCH_TOP_BORROWERS', () => {
+        const sql = "SELECT memberID, COUNT(*) as borrowNum FROM borrows GROUP BY memberID HAVING count(*)>0 ORDER BY count(*) DESC";
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log(JSON.parse(JSON.stringify(result)));
+            console.log("Fetch top borrowers");
+            socket.emit('SUCCESSFUL_FETCH_TOP_BORROWERS', JSON.parse(JSON.stringify(result)));
+        });
+    })
+
 //--------------------------- DELETES -------------------------------\\
 
     socket.on('DELETE_BOOK', (ISBN) => {
@@ -479,10 +501,9 @@ io.on('connection', function(socket) {
     });
 
     socket.on('UPDATE_BOOK', ({ISBN, title, pubYear, numPages, pubName}) =>{
-        var sql = "UPDATE author"
-        + " SET title = ?, pubYear = ?, numPages = ?, pubName= ? WHERE ISBN LIKE '?'";
-
-        var val = [ISBN, title, pubYear, numPages, pubName, ISBN];
+        var sql = "UPDATE book SET title = ?, pubYear = ?, numPages = ?, pubName = ? WHERE ISBN LIKE ?";
+        console.log(pubYear);
+        var val = [title, pubYear, numPages, pubName, ISBN];
         con.query(sql, val, function (err, result) {
             if (err) { console.log("Error, probably greek characters"); socket.emit("ERROR_INPUT");}
             else{
@@ -515,7 +536,7 @@ io.on('connection', function(socket) {
 
         var val = [memberID, ISBN, copyNr, date_of_borrowing];
         con.query(sql, val, function (err, result) {
-            if (err) { console.log("Unknown error"); socket.emit("ERROR_UNKOWN");}
+            if (err) { console.log("Unknown error"); socket.emit("ERROR_INPUT");}
             else{
                 socket.emit('SUCCESSFUL_RETURN_BOOK');
                 console.log("Book returned");
