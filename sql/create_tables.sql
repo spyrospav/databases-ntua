@@ -275,3 +275,5 @@ IF (new.pubName NOT IN (SELECT P.pubName FROM publisher as P)) THEN
 END IF;
 END$$
 DELIMITER ;
+
+                        
